@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gdsc-web-backend", "gdsc-web-backend\gdsc-web-backend.csproj", "{19C6B87F-1946-4A06-B436-3302BFDF48E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19C6B87F-1946-4A06-B436-3302BFDF48E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19C6B87F-1946-4A06-B436-3302BFDF48E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19C6B87F-1946-4A06-B436-3302BFDF48E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19C6B87F-1946-4A06-B436-3302BFDF48E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
