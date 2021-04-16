@@ -17,7 +17,7 @@ namespace gdsc_web_backend.Controllers
                 Id = "1",
                 Name = "some setting here",
                 Slug = "some-setting",
-                Type = SettingTypeEnum.Example1,
+                Type = SettingTypeEnum.Text,
                 Value = true,
                 Image = "probabil o sa vina o imagine aici :)"
             },
@@ -26,7 +26,7 @@ namespace gdsc_web_backend.Controllers
                 Id = "2",
                 Name = "second setting here",
                 Slug = "second-setting",
-                Type = SettingTypeEnum.Example2,
+                Type = SettingTypeEnum.Image,
                 Value = false,
                 Image = "probabil o sa vina o imagine disabled aici :)"
             }

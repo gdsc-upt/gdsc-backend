@@ -2,7 +2,8 @@
 {
     public enum SettingTypeEnum
     {
-        Example1,
-        Example2
+        Text,
+        Image,
+        Boolean
     }
 }
