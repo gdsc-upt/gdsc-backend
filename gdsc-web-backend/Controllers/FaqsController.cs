@@ -7,7 +7,7 @@ namespace gdsc_web_backend.Controllers
     
     [ApiController] 
     [Route("api/[controller]")]
-    public class FaqController: ControllerBase
+    public class FaqsController: ControllerBase
     {
         
         [HttpGet]
