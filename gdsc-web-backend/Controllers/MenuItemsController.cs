@@ -16,14 +16,14 @@ namespace gdsc_web_backend.Controllers
             {
                 Id = "1",
                 Name = "site color",
-                Type = TypeEnum.ExternalLink,
+                Type = MenuItemTypeEnum.ExternalLink,
                 Link = "www.google.com"
             },
             new MenuItemModel
             {
                 Id = "2",
                 Name = "language",
-                Type = TypeEnum.InternalLink,
+                Type = MenuItemTypeEnum.InternalLink,
                 Link = "www.linkedin.com"
             }
         };

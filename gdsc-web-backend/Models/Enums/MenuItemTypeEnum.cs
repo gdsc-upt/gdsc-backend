@@ -1,6 +1,6 @@
 namespace gdsc_web_backend.Models.Enums
 {
-    public enum TypeEnum
+    public enum MenuItemTypeEnum
     {
         InternalLink,
         ExternalLink
