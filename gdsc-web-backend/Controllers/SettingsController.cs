@@ -1,0 +1,47 @@
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
+using gdsc_web_backend.Models;
+using gdsc_web_backend.Models.Enums;
+using Microsoft.AspNetCore.Mvc;
+
+namespace gdsc_web_backend.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")] 
+    public class SettingsController : ControllerBase
+    {
+        public List<SettingModel> Settings = new List<SettingModel>
+        {
+            new SettingModel
+            {
+                Id = "1",
+                Name = "some setting here",
+                Slug = "some-setting",
+                Type = SettingTypeEnum.Example1,
+                Value = true,
+                Image = "probabil o sa vina o imagine aici :)"
+            },
+            new SettingModel
+            {
+                Id = "2",
+                Name = "second setting here",
+                Slug = "second-setting",
+                Type = SettingTypeEnum.Example2,
+                Value = false,
+                Image = "probabil o sa vina o imagine disabled aici :)"
+            }
+        };
+        
+        [HttpGet]
+        public List<SettingModel> Get()
+        {
+            return Settings;
+        }
+    
+        [HttpGet("{id}")]
+        public SettingModel Get(string id)
+        {
+            return Settings.Find(x => x.Id == id);
+        }
+    }
+}
