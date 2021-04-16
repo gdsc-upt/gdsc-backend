@@ -7,7 +7,7 @@ namespace gdsc_web_backend.Controllers
     [ApiController]
     [Route("api/[controller]")]
     
-    public class TeamController : ControllerBase
+    public class TeamsController : ControllerBase
     {
         [HttpGet]
         public List<TeamModel> Get()
