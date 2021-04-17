@@ -15,10 +15,10 @@ namespace gdsc_web_backend.Controllers
             new PageModel()
             {
                 Id = "1",
-                Title = "gdsc-web-backend",
+                Title = "Home",
                 Body = "In progress",
                 isPublished = false,
-                Slug = "Home",
+                Slug = "home-page",
                 ShortDescription = "Shows a description about the site",
                 Image = "Smth 'bout Google",
 
@@ -26,10 +26,10 @@ namespace gdsc_web_backend.Controllers
             new PageModel()
             {
                 Id = "2",
-                Title = "gdsc-web-backend",
+                Title = "Contact",
                 Body = "Still in progress",
                 isPublished = false,
-                Slug = "About us",
+                Slug = "contact",
                 ShortDescription = "Some data about us and how you could get in touch",
                 Image = "Smth 'bout us",
             }
