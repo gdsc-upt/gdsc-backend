@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using gdsc_web_backend.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gdsc_web_backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]  
-    public class EventController : ControllerBase
+    public class EventsController : ControllerBase
     {
         public List<EventModel> EventModels = new List<EventModel>
         {
@@ -19,7 +20,7 @@ namespace gdsc_web_backend.Controllers
             },
             new EventModel
             {
-                Id = "1",
+                Id = "2",
                 Title = "example 2",
                 Description = "description 2",
                 Image = "image link 2"
@@ -28,9 +29,9 @@ namespace gdsc_web_backend.Controllers
         
         // HTTP Get method without any ID, returning the whole list of events
         [HttpGet]
-        public List<EventModel> Get()
+        public ActionResult<List<EventModel>> Get()
         {
-            return EventModels;
+            return Ok(EventModels);
         }
         
         // HTTP Get method with a specific ID, which will return the event having that ID
@@ -38,6 +39,30 @@ namespace gdsc_web_backend.Controllers
         public EventModel Get(string id)
         {
             return EventModels.Find(eventElement => eventElement.Id == id);
+        }
+        
+        // HTTP Post method
+        [HttpPost]
+        [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(EventModel), StatusCodes.Status201Created)]
+        public ActionResult<ContactModel> Post([FromBody] EventModel entity)
+        {
+            if (entity is null)
+            {
+                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
+            }
+
+            // See if the entity given does already exist
+            var doesExist = EventModels.Find(element => element.Id == entity.Id);
+            if (doesExist != null)
+            {
+                return BadRequest(new ErrorViewModel {Message = $"{entity} already exists"});
+            }
+
+            EventModels.Add(entity);
+
+            entity = EventModels.Find(e => e == entity);
+            return Created("api/Event/" + entity!.Id, entity);
         }
     }
 }
