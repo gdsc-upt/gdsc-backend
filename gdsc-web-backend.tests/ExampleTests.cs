@@ -27,14 +27,13 @@ namespace gdsc_web_backend.tests
                 Title = "First example",
                 Type = ExampleTypeEnum.EasyExample
             };
-            var example2 =
-                new ExampleModel
-                {
-                    Id = "4",
-                    Number = 4,
-                    Title = "Second example",
-                    Type = ExampleTypeEnum.WtfExample
-                };
+            var example2 = new ExampleModel
+            {
+                Id = "4",
+                Number = 4,
+                Title = "Second example",
+                Type = ExampleTypeEnum.WtfExample
+            };
 
             // Act
             var added1 = controller.Post(example1).Result as CreatedResult;
@@ -48,6 +47,42 @@ namespace gdsc_web_backend.tests
             Assert.NotNull(added2);
             Assert.Equal(StatusCodes.Status201Created, added2.StatusCode);
             Assert.Equal(example2, added2.Value as ExampleModel);
+        }
+
+        [Fact]
+        public void Post_ReturnsError_WhenIdNotUnique()
+        {
+            // Arrange
+            var controller = new ExamplesController();
+            var example1 = new ExampleModel
+            {
+                Id = "1",
+                Number = 2,
+                Title = "First example",
+                Type = ExampleTypeEnum.EasyExample
+            };
+            var example2 = new ExampleModel
+            {
+                Id = "1",
+                Number = 4,
+                Title = "Second example",
+                Type = ExampleTypeEnum.WtfExample
+            };
+
+            // Act
+            var added1 = controller.Post(example1).Result as CreatedResult;
+            var added2 = controller.Post(example2).Result as BadRequestObjectResult;
+            Assert.NotNull(added2);
+            var error = added2.Value as ErrorViewModel;
+
+            // Assert
+            Assert.NotNull(added1);
+            Assert.Equal(StatusCodes.Status201Created, added1.StatusCode);
+            Assert.Equal(example1, added1.Value as ExampleModel);
+
+            Assert.NotNull(error);
+            Assert.Equal(StatusCodes.Status400BadRequest, added2.StatusCode);
+            Assert.Equal("An object with the same ID already exists", error.Message);
         }
 
         [Fact]

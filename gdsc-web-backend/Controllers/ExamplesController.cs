@@ -43,6 +43,12 @@ namespace gdsc_web_backend.Controllers
                 return BadRequest(new ErrorViewModel {Message = "Request has no body"});
             }
 
+            var existing = _mockExamples.Find(e => e.Id == entity.Id);
+            if (existing != null)
+            {
+                return BadRequest(new ErrorViewModel {Message = "An object with the same ID already exists"});
+            }
+
             _mockExamples.Add(entity);
             entity = _mockExamples.Find(example => example == entity);
 
