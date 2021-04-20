@@ -7,9 +7,8 @@ namespace gdsc_web_backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PagesController:ControllerBase
+    public class PagesController : ControllerBase
     {
-
         public List<PageModel> pageModels = new List<PageModel>
         {
             new PageModel()
@@ -21,7 +20,6 @@ namespace gdsc_web_backend.Controllers
                 Slug = "home-page",
                 ShortDescription = "Shows a description about the site",
                 Image = "Smth 'bout Google",
-
             },
             new PageModel()
             {
@@ -35,12 +33,10 @@ namespace gdsc_web_backend.Controllers
             }
         };
 
-
         [HttpGet("{slug}")]
-        public PageModel  Get(string slug)
+        public PageModel Get(string slug)
         {
-            return pageModels.Find(page => page.Slug ==slug);
-
+            return pageModels.Find(page => page.Slug == slug);
         }
     }
 }
