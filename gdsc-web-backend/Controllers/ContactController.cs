@@ -11,6 +11,7 @@ namespace gdsc_web_backend.Controllers
     {
         private readonly List<ContactModel> _mockContact = new();
 
+        
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ContactModel), StatusCodes.Status201Created)]
@@ -20,17 +21,18 @@ namespace gdsc_web_backend.Controllers
             {
                 return BadRequest(new ErrorViewModel {Message = "Request has no body"});
             }
+
             //create a variable where we return the value of the find function applied on the _mockContact
             var doesExists = _mockContact.Find(p => p.Id == entity.Id);
             if (doesExists != null)
             {
-                return BadRequest(new ErrorViewModel { Message = $"{entity} already exists"});
+                return BadRequest(new ErrorViewModel {Message = $"{entity} already exists"});
             }
-            
+
             _mockContact.Add(entity);
 
             entity = _mockContact.Find(e => e == entity);
-                return Created("api/Contact/" + entity!.Id, entity);
+            return Created("api/Contact/" + entity!.Id, entity);
         }
     }
 }
