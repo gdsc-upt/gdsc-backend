@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+WORKDIR /gdsc-web-backend
+
+
+COPY *.csproj ./
+RUN dotnet restore
+
+
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /gdsc-web-backend
+COPY --from=build-env /gdsc-web-backend/out .
+ENTRYPOINT ["dotnet", "gdsc-web-backend.dll"]

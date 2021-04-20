@@ -1,0 +1,9 @@
+version: "3.1"
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8081:5000"
+
+
