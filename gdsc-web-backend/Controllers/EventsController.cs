@@ -1,23 +1,13 @@
 ﻿using System.Collections.Generic;
 using gdsc_web_backend.Models;
-using gdsc_web_backend.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gdsc_web_backend.Controllers
 {
-    // This marks this controller as a public one that can be called from the internet
-    [ApiController]  
-    // This sets the URL that we can enter to call the controller's methods
-    // ex: https://localhost:5000/api/Example
+    [ApiController]
     [Route("api/[controller]")]  
     public class EventController : ControllerBase
     {
-        /// <summary>
-        /// This method is called when someone makes a GET request for an Event
-        /// </summary>
-        /// <example>GET http://localhost:5000/api/Event</example>
-        /// <returns>EventModel</returns>
-        /// 
         public List<EventModel> EventModels = new List<EventModel>
         {
             new EventModel
@@ -35,16 +25,19 @@ namespace gdsc_web_backend.Controllers
                 Image = "image link 2"
             }
         };
+        
+        // HTTP Get method without any ID, returning the whole list of events
         [HttpGet]
         public List<EventModel> Get()
         {
             return EventModels;
         }
         
+        // HTTP Get method with a specific ID, which will return the event having that ID
         [HttpGet("{id}")]
         public EventModel Get(string id)
         {
-            return EventModels.Find(x => x.Id == id);
+            return EventModels.Find(eventElement => eventElement.Id == id);
         }
     }
 }
