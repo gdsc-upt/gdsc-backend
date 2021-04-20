@@ -35,6 +35,9 @@ jobs:
       # set report file and title 
     - name: Set Test Title
       run: | 
+            # disable command workflow processing
+            echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
+
             if ${{ github.event_name == 'pull_request' }}
             then
               echo "::set-env name=title::Test Run for PR #${{steps.PRNUMBER.outputs.pr}} (${{github.run_number}})"
