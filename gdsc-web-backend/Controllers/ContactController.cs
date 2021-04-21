@@ -32,7 +32,7 @@ namespace gdsc_web_backend.Controllers
             _mockContact.Add(entity);
 
             entity = _mockContact.Find(e => e == entity);
-            return Created("api/Contact/" + entity!.Id, entity);
+            return Ok(entity);
         }
     }
 }
