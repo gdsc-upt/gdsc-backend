@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using gdsc_web_backend.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace gdsc_web_backend
 {
@@ -31,6 +33,9 @@ namespace gdsc_web_backend
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "gdsc_web_backend", Version = "v1"});
             });
+            
+            var connectionString = Configuration.GetConnectionString("Default");
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
