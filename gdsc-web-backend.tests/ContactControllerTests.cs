@@ -14,7 +14,7 @@ namespace gdsc_web_backend.tests
         }
 
         [Fact]
-        public void Post_ReturnsWhenIdNotUnique()
+        public void Post_ReturnsErrors_WhenIdNotUnique()
         {
             //arrange
             var controller = new ContactController();
@@ -35,16 +35,17 @@ namespace gdsc_web_backend.tests
                 Text = "bla texgsagsat"
             };
             //Act
-            var added1 = controller.Post(example1).Result as CreatedResult;
+            var added1 = controller.Post(example1).Result as OkObjectResult;
             var added2 = controller.Post(example2).Result as BadRequestObjectResult;
 
 
-            //verified if the values are not null
+            //Assert
             Assert.NotNull(added1);
             Assert.NotNull(added2);
 
-            //verify if the result are as expected
-            Assert.Equal(StatusCodes.Status201Created, added1.StatusCode);
+
+            Assert.Equal(StatusCodes.Status200OK, added1.StatusCode);
+            Assert.Equal(example1, added1.Value as ContactModel);
             Assert.Equal(StatusCodes.Status400BadRequest, added2.StatusCode);
         }
 
@@ -69,15 +70,20 @@ namespace gdsc_web_backend.tests
                 Subject = "bla subjeasgsact",
                 Text = "bla texgsagsat"
             };
-
-            var added1 = controller.Post(example1).Result as CreatedResult;
-            var added2 = controller.Post(example2).Result as CreatedResult;
+            //Act
+            var added1 = controller.Post(example1).Result as OkObjectResult;
+            var added2 = controller.Post(example2).Result as OkObjectResult;
             
+            //Assert
             Assert.NotNull(added1);
             Assert.NotNull(added2);
             
-            Assert.Equal(StatusCodes.Status201Created, added1.StatusCode);
-            Assert.Equal(StatusCodes.Status201Created, added2.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, added1.StatusCode);
+            Assert.Equal(example1, added1.Value as ContactModel);
+
+            Assert.Equal(StatusCodes.Status200OK, added2.StatusCode);
+            Assert.Equal(example1, added1.Value as ContactModel);
+
         }
     }
 }
