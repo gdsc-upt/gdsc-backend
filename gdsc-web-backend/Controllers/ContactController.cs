@@ -11,7 +11,7 @@ namespace gdsc_web_backend.Controllers
     {
         private readonly List<ContactModel> _mockContact = new();
 
-        
+
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ContactModel), StatusCodes.Status201Created)]
