@@ -34,7 +34,7 @@ namespace gdsc_web_backend.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ContactModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(FaqModel), StatusCodes.Status201Created)]
         public ActionResult<FaqModel> Post([FromBody] FaqModel entity)
         {
             if (entity is null)
