@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using gdsc_web_backend.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gdsc_web_backend.Controllers
@@ -9,34 +10,37 @@ namespace gdsc_web_backend.Controllers
     [Route("api/[controller]")]
     public class PagesController : ControllerBase
     {
-        public List<PageModel> pageModels = new List<PageModel>
-        {
-            new PageModel()
-            {
-                Id = "1",
-                Title = "Home",
-                Body = "In progress",
-                isPublished = false,
-                Slug = "home-page",
-                ShortDescription = "Shows a description about the site",
-                Image = "Smth 'bout Google",
-            },
-            new PageModel()
-            {
-                Id = "2",
-                Title = "Contact",
-                Body = "Still in progress",
-                isPublished = false,
-                Slug = "contact",
-                ShortDescription = "Some data about us and how you could get in touch",
-                Image = "Smth 'bout us",
-            }
-        };
+        private readonly List<PageModel> _mockFaq = new();
+
 
         [HttpGet("{slug}")]
-        public PageModel Get(string slug)
+        [ProducesResponseType(typeof(IEnumerable<PageModel>), StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<PageModel>> Get(string slug)
         {
-            return pageModels.Find(page => page.Slug == slug);
+            return Ok(_mockFaq.Find(page => page.Slug == slug));
+        }
+
+
+        [HttpPost]
+        [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(PageModel), StatusCodes.Status201Created)]
+        public ActionResult<PageModel> Post([FromBody] PageModel entity)
+        {
+            if (entity is null)
+            {
+                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
+            }
+
+            //create a variable where we return the value of the find function applied on the _mockFaq
+            var doesExist = _mockFaq.Find(model => model.Id == entity.Id);
+            if (doesExist is not null)
+            {
+                return BadRequest(new ErrorViewModel {Message = $"{entity} already exists"});
+            }
+
+            _mockFaq.Add(entity);
+            entity = _mockFaq.Find(m => m == entity);
+            return Ok(entity);
         }
     }
 }

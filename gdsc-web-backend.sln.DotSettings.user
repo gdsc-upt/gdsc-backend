@@ -5,5 +5,6 @@
     &lt;TestId&gt;xUnit::981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1::net5.0::gdsc_web_backend.tests.TeamsControllerTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1::net5.0::gdsc_web_backend.tests.FaqControllerTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1::net5.0::gdsc_web_backend.tests.ContactControllerTests.Post_ReturnsErrors_WhenIdNotUnique&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1::net5.0::gdsc_web_backend.tests.PagesControllerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
