@@ -34,7 +34,7 @@ namespace gdsc_web_backend.tests
 
             //Act
             var added1 = controller.Post(example1).Result as OkObjectResult;
-            var added2 = controller.Post(example2).Result as BadRequestResult;
+            var added2 = controller.Post(example2).Result as BadRequestObjectResult;
 
             //Assert
             Assert.NotNull(added1);
@@ -42,7 +42,7 @@ namespace gdsc_web_backend.tests
             Assert.Equal(example1, added1.Value as FaqModel);
 
             Assert.NotNull(added2);
-            Assert.Equal(StatusCodes.Status200OK, added2.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, added2.StatusCode);
             var enumerable = new ErrorViewModel().Message;
             if (enumerable != null) Assert.Equal("An object with the same ID already exists", enumerable);
         }

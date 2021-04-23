@@ -9,28 +9,16 @@ namespace gdsc_web_backend.Controllers
     [Route("api/[controller]")]
     public class FaqsController : ControllerBase
     {
-        [HttpGet]
-        public List<FaqModel> Get()
-        {
-            return new List<FaqModel>
-            {
-                new FaqModel
-                {
-                    Id = "1",
-                    Question = "Ce faci ?",
-                    Answer = "Uite bine."
-                },
+        private readonly List<FaqModel> _mockFaq = new();
 
-                new FaqModel
-                {
-                    Id = "2",
-                    Question = "Apropo,tu ce faci?",
-                    Answer = "Si mai bine decat tine"
-                }
-            };
+
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<FaqModel>), StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<FaqModel>> Get()
+        {
+            return Ok(_mockFaq);
         }
 
-        private readonly List<FaqModel> _mockFaq = new();
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
