@@ -10,14 +10,14 @@ namespace gdsc_web_backend.Controllers
     [Route("api/[controller]")]
     public class PagesController : ControllerBase
     {
-        private readonly List<PageModel> _mockFaq = new();
+        private readonly List<PageModel> _mockPages = new();
 
 
         [HttpGet("{slug}")]
         [ProducesResponseType(typeof(IEnumerable<PageModel>), StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<PageModel>> Get(string slug)
         {
-            return Ok(_mockFaq.Find(page => page.Slug == slug));
+            return Ok(_mockPages.Find(page => page.Slug == slug));
         }
 
 
@@ -32,14 +32,14 @@ namespace gdsc_web_backend.Controllers
             }
 
             //create a variable where we return the value of the find function applied on the _mockFaq
-            var doesExist = _mockFaq.Find(model => model.Id == entity.Id);
+            var doesExist = _mockPages.Find(model => model.Id == entity.Id);
             if (doesExist is not null)
             {
                 return BadRequest(new ErrorViewModel {Message = $"{entity} already exists"});
             }
 
-            _mockFaq.Add(entity);
-            entity = _mockFaq.Find(m => m == entity);
+            _mockPages.Add(entity);
+            entity = _mockPages.Find(m => m == entity);
             return Ok(entity);
         }
     }

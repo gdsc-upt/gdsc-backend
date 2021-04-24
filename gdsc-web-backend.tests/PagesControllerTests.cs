@@ -49,8 +49,8 @@ namespace gdsc_web_backend.tests
 
             Assert.NotNull(added2);
             Assert.Equal(StatusCodes.Status400BadRequest, added2.StatusCode);
-            var enumerable = new ErrorViewModel().Message;
-            if (enumerable != null) Assert.Equal("An object with the same ID already exists", enumerable);
+            var message = new ErrorViewModel().Message;
+            Assert.NotNull(message);
         }
 
         [Fact]

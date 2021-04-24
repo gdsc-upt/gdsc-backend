@@ -7,7 +7,7 @@ namespace gdsc_web_backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class FaqsController : ControllerBase
+    public class FaqsController: ControllerBase
     {
         private readonly List<FaqModel> _mockFaq = new();
         [HttpGet]
