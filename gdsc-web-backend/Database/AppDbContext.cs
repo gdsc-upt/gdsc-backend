@@ -8,7 +8,6 @@ namespace gdsc_web_backend.Database
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-
         public DbSet<ExampleModel> Examples { get; set; }
         public DbSet<ContactModel> Contacts { get; set; }
         public DbSet<EventModel> Events { get; set; }
@@ -18,7 +17,5 @@ namespace gdsc_web_backend.Database
         public DbSet<PageModel> Pages { get; set; }
         public DbSet<SettingModel> Settings { get; set; }
         public DbSet<TeamModel> Teams { get; set; }
-
-       
     }
 }
