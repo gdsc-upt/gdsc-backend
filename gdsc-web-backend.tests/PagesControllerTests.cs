@@ -49,8 +49,6 @@ namespace gdsc_web_backend.tests
 
             Assert.NotNull(added2);
             Assert.Equal(StatusCodes.Status400BadRequest, added2.StatusCode);
-            var message = new ErrorViewModel().Message;
-            Assert.NotNull(message);
         }
 
         [Fact]
