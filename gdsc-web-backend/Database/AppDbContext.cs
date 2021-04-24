@@ -1,4 +1,3 @@
-using System.Reflection;
 using gdsc_web_backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +19,6 @@ namespace gdsc_web_backend.Database
         public DbSet<SettingModel> Settings { get; set; }
         public DbSet<TeamModel> Teams { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
+       
     }
 }
