@@ -1,4 +1,5 @@
 using gdsc_web_backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace gdsc_web_backend.Database
