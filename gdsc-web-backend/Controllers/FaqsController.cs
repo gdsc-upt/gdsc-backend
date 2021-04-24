@@ -10,8 +10,6 @@ namespace gdsc_web_backend.Controllers
     public class FaqsController : ControllerBase
     {
         private readonly List<FaqModel> _mockFaq = new();
-
-
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<FaqModel>), StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<FaqModel>> Get()
