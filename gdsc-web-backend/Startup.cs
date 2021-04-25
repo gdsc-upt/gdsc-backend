@@ -27,6 +27,7 @@ namespace gdsc_web_backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddApiVersioning(config =>
             {
                 config.DefaultApiVersion = new ApiVersion(1, 0);

@@ -21,7 +21,7 @@ namespace gdsc_web_backend.Controllers.v1
                 ShortDescription = "Shows a description about the site",
                 Image = "Smth 'bout Google"
             },
-            new PageModel()
+            new PageModel
             {
                 Id = "2",
                 Title = "Contact",

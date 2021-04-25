@@ -19,7 +19,7 @@ namespace gdsc_web_backend.Controllers.v1
                 Type = MenuItemTypeEnum.ExternalLink,
                 Link = "www.google.com"
             },
-            new MenuItemModel()
+            new MenuItemModel
             {
                 Id = "2",
                 Name = "language",
