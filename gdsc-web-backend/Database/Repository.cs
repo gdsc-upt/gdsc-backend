@@ -23,17 +23,6 @@ namespace gdsc_web_backend.Database
             return entity;
         }
 
-        private async Task<T> GetById(string Id)
-        {
-            var result = _context.Set<T>().FirstOrDefaultAsync(e => e.Id == Id);
-            return await result;
-        }
-
-        private async Task<IEnumerable<T>> GetAll()
-        {
-            return await _context.Set<T>().ToListAsync();
-        }
-
 
         public async Task<IEnumerable<T>> Get()
         {
@@ -43,6 +32,17 @@ namespace gdsc_web_backend.Database
         public async Task<T> Get(string Id)
         {
             return await GetById(Id);
+        }
+
+        private async Task<T> GetById(string Id)
+        {
+            var result = _context.Set<T>().FirstOrDefaultAsync(e => e.Id == Id);
+            return await result;
+        }
+
+        private async Task<IEnumerable<T>> GetAll()
+        {
+            return await _context.Set<T>().ToListAsync();
         }
     }
 }

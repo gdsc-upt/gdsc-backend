@@ -2,7 +2,7 @@
 
 namespace gdsc_web_backend.Models
 {
-    public class SettingModel: Model
+    public class SettingModel : Model
     {
         public string Name { get; set; }
         public string Slug { get; set; }

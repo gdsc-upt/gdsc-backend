@@ -21,7 +21,7 @@ namespace gdsc_web_backend.Controllers.v1
                 Value = true,
                 Image = "probabil o sa vina o imagine aici :)"
             },
-            new SettingModel()
+            new SettingModel
             {
                 Id = "2",
                 Name = "second setting here",

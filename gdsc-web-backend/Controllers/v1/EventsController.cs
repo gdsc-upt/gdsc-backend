@@ -18,7 +18,7 @@ namespace gdsc_web_backend.Controllers.v1
                 Description = "description 1",
                 Image = "image link 1"
             },
-            new EventModel()
+            new EventModel
             {
                 Id = "1",
                 Title = "example 2",

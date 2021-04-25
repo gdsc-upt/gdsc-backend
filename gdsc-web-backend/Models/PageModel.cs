@@ -1,6 +1,6 @@
 ﻿namespace gdsc_web_backend.Models
 {
-    public class PageModel: Model
+    public class PageModel : Model
     {
         public string Title { get; set; }
         public string Body { get; set; }

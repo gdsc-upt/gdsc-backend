@@ -1,11 +1,7 @@
-using gdsc_web_backend.Controllers.v1;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Castle.DynamicProxy.Generators;
+using gdsc_web_backend.Controllers.v1;
 using gdsc_web_backend.Database;
 using gdsc_web_backend.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -15,7 +11,7 @@ namespace gdsc_web_backend.tests
 {
     public class ContactControllerTests : TestingBase
     {
-        private readonly Mock<IRepository<ContactModel>> _repository = new Mock<IRepository<ContactModel>>();
+        private readonly Mock<IRepository<ContactModel>> _repository = new();
 
         public ContactControllerTests(ITestOutputHelper helper) : base(helper)
         {
@@ -24,11 +20,10 @@ namespace gdsc_web_backend.tests
         [Fact]
         public async Task Post_Object_Is_Null()
         {
-            var example1 = new ContactModel();
-            example1 = null;
+            ContactModel example1 = null;
             _repository.Setup(x => x.Add(example1)).ReturnsAsync(() => null);
-            var _sut = new ContactController(_repository.Object);
-            var result = (await _sut.Post(example1)).Result as BadRequestObjectResult;
+            var sut = new ContactController(_repository.Object);
+            var result = (await sut.Post(example1)).Result as BadRequestObjectResult;
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
@@ -44,8 +39,8 @@ namespace gdsc_web_backend.tests
                 Text = "tralala"
             };
             _repository.Setup(x => x.Add(example)).ReturnsAsync(() => example);
-            var _sut = new ContactController(_repository.Object);
-            var result = (await _sut.Post(example)).Result as OkObjectResult;
+            var sut = new ContactController(_repository.Object);
+            var result = (await sut.Post(example)).Result as OkObjectResult;
             Assert.IsType<OkObjectResult>(result);
         }
     }

@@ -19,7 +19,7 @@ namespace gdsc_web_backend.Controllers.v1
                     Id = "1",
                     Name = "FCB"
                 },
-                new TeamModel()
+                new TeamModel
                 {
                     Id = "2",
                     Name = "LFC"
@@ -39,7 +39,7 @@ namespace gdsc_web_backend.Controllers.v1
                     Email = "yahoo@gigel.com",
                     TeamId = teamId
                 },
-                new MemberModel()
+                new MemberModel
                 {
                     Id = "2",
                     Name = "Dorel",
