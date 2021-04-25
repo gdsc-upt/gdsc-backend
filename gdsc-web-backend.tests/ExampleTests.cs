@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using gdsc_web_backend.Controllers;
+using gdsc_web_backend.Controllers.v1;
 using gdsc_web_backend.Models;
 using gdsc_web_backend.Models.Enums;
 using Microsoft.AspNetCore.Http;
@@ -105,7 +105,7 @@ namespace gdsc_web_backend.tests
                     Number = 4,
                     Title = "Second example",
                     Type = ExampleTypeEnum.WtfExample
-                },
+                }
             };
             controller.Post(examples[0]);
             controller.Post(examples[1]);
