@@ -1,7 +1,13 @@
 using gdsc_web_backend.Controllers.v1;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Castle.DynamicProxy.Generators;
+using gdsc_web_backend.Database;
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -9,80 +15,38 @@ namespace gdsc_web_backend.tests
 {
     public class ContactControllerTests : TestingBase
     {
-        public ContactControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
+        private readonly Mock<IRepository<ContactModel>> _repository = new Mock<IRepository<ContactModel>>();
+
+        public ContactControllerTests(ITestOutputHelper helper) : base(helper)
         {
         }
 
         [Fact]
-        public void Post_ReturnsErrors_WhenIdNotUnique()
+        public async Task Post_Object_Is_Null()
         {
-            //arrange
-            var controller = new ContactController();
-            var example1 = new ContactModel
-            {
-                Id = "1",
-                Name = "Bla",
-                Email = "bla@email",
-                Subject = "bla subject",
-                Text = "bla text"
-            };
-            var example2 = new ContactModel
-            {
-                Id = "1",
-                Name = "Bsagsag",
-                Email = "bla@emgsagasail",
-                Subject = "bla subjeasgsact",
-                Text = "bla texgsagsat"
-            };
-            //Act
-            var added1 = controller.Post(example1).Result as OkObjectResult;
-            var added2 = controller.Post(example2).Result as BadRequestObjectResult;
-
-
-            //Assert
-            Assert.NotNull(added1);
-            Assert.NotNull(added2);
-
-
-            Assert.Equal(StatusCodes.Status200OK, added1.StatusCode);
-            Assert.Equal(example1, added1.Value as ContactModel);
-            Assert.Equal(StatusCodes.Status400BadRequest, added2.StatusCode);
+            var example1 = new ContactModel();
+            example1 = null;
+            _repository.Setup(x => x.Add(example1)).ReturnsAsync(() => null);
+            var _sut = new ContactController(_repository.Object);
+            var result = (await _sut.Post(example1)).Result as BadRequestObjectResult;
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]
-        public void Post_ReturnsCreateObject()
+        public async Task Post_Returns_OK()
         {
-            var controller = new ContactController();
-
-            var example1 = new ContactModel
+            var example = new ContactModel
             {
                 Id = "1",
-                Name = "Bla",
-                Email = "bla@email",
-                Subject = "bla subject",
-                Text = "bla text"
+                Email = "blabla@gmai.com",
+                Name = "bula",
+                Subject = "subject",
+                Text = "tralala"
             };
-            var example2 = new ContactModel
-            {
-                Id = "2",
-                Name = "Bsagsag",
-                Email = "bla@emgsagasail",
-                Subject = "bla subjeasgsact",
-                Text = "bla texgsagsat"
-            };
-            //Act
-            var added1 = controller.Post(example1).Result as OkObjectResult;
-            var added2 = controller.Post(example2).Result as OkObjectResult;
-
-            //Assert
-            Assert.NotNull(added1);
-            Assert.NotNull(added2);
-
-            Assert.Equal(StatusCodes.Status200OK, added1.StatusCode);
-            Assert.Equal(example1, added1.Value as ContactModel);
-
-            Assert.Equal(StatusCodes.Status200OK, added2.StatusCode);
-            Assert.Equal(example1, added1.Value as ContactModel);
+            _repository.Setup(x => x.Add(example)).ReturnsAsync(() => example);
+            var _sut = new ContactController(_repository.Object);
+            var result = (await _sut.Post(example)).Result as OkObjectResult;
+            Assert.IsType<OkObjectResult>(result);
         }
     }
 }

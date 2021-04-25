@@ -2,9 +2,8 @@
 
 namespace gdsc_web_backend.Models
 {
-    public class SettingModel
+    public class SettingModel: Model
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public string Slug { get; set; }
         public SettingTypeEnum Type { get; set; }

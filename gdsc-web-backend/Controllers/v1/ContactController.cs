@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using gdsc_web_backend.Database;
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace gdsc_web_backend.Controllers.v1
 {
@@ -10,29 +13,23 @@ namespace gdsc_web_backend.Controllers.v1
     [Route("api/v1/contact")]
     public class ContactController : ControllerBase
     {
-        private readonly List<ContactModel> _mockContact = new();
+        private readonly IRepository<ContactModel> _repository;
 
+
+        public ContactController(IRepository<ContactModel> repository)
+        {
+            _repository = repository;
+        }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ContactModel), StatusCodes.Status201Created)]
-        public ActionResult<ContactModel> Post([FromBody] ContactModel entity)
+        public async Task<ActionResult<IEnumerable<ContactModel>>> Post(ContactModel entity)
         {
             if (entity is null)
             {
                 return BadRequest(new ErrorViewModel {Message = "Request has no body"});
             }
 
-            //create a variable where we return the value of the find function applied on the _mockContact
-            var doesExists = _mockContact.Find(p => p.Id == entity.Id);
-            if (doesExists != null)
-            {
-                return BadRequest(new ErrorViewModel {Message = $"{entity} already exists"});
-            }
-
-            _mockContact.Add(entity);
-
-            entity = _mockContact.Find(e => e == entity);
+            await _repository.Add(entity);
             return Ok(entity);
         }
     }
