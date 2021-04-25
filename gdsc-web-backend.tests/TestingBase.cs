@@ -1,9 +1,10 @@
+using System;
 using Newtonsoft.Json;
 using Xunit.Abstractions;
 
 namespace gdsc_web_backend.tests
 {
-    public class TestingBase
+    public class TestingBase : IDisposable
     {
         private readonly ITestOutputHelper _outputHelper;
 
@@ -22,5 +23,8 @@ namespace gdsc_web_backend.tests
         {
             _outputHelper.WriteLine(obj);
         }
+
+        // Cleanup hook after each test
+        public virtual void Dispose() {}
     }
 }
