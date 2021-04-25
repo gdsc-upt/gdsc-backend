@@ -2,22 +2,23 @@
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers
+namespace gdsc_web_backend.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class EventController : ControllerBase
+    [ApiVersion("1")]
+    [Route("api/v1/events")]
+    public class EventsController : ControllerBase
     {
         public List<EventModel> EventModels = new()
         {
-            new()
+            new EventModel
             {
                 Id = "1",
                 Title = "example 1",
                 Description = "description 1",
                 Image = "image link 1"
             },
-            new()
+            new EventModel()
             {
                 Id = "1",
                 Title = "example 2",

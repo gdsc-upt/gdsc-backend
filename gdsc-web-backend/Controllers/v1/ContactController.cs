@@ -3,10 +3,11 @@ using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers
+namespace gdsc_web_backend.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v1/contact")]
     public class ContactController : ControllerBase
     {
         private readonly List<ContactModel> _mockContact = new();

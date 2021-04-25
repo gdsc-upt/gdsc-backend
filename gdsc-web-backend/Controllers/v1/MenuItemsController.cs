@@ -3,22 +3,23 @@ using gdsc_web_backend.Models;
 using gdsc_web_backend.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers
+namespace gdsc_web_backend.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v1/menu-items")]
     public class MenuItemsController : ControllerBase
     {
         public List<MenuItemModel> MenuItems = new()
         {
-            new()
+            new MenuItemModel
             {
                 Id = "1",
                 Name = "site color",
                 Type = MenuItemTypeEnum.ExternalLink,
                 Link = "www.google.com"
             },
-            new()
+            new MenuItemModel()
             {
                 Id = "2",
                 Name = "language",

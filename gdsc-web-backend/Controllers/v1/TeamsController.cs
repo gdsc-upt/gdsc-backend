@@ -2,10 +2,11 @@
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers
+namespace gdsc_web_backend.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v1/teams")]
     public class TeamsController : ControllerBase
     {
         [HttpGet]
@@ -13,12 +14,12 @@ namespace gdsc_web_backend.Controllers
         {
             return new()
             {
-                new()
+                new TeamModel
                 {
                     Id = "1",
                     Name = "FCB"
                 },
-                new()
+                new TeamModel()
                 {
                     Id = "2",
                     Name = "LFC"
@@ -31,14 +32,14 @@ namespace gdsc_web_backend.Controllers
         {
             return new()
             {
-                new()
+                new MemberModel
                 {
                     Id = "1",
                     Name = "Gigel",
                     Email = "yahoo@gigel.com",
                     TeamId = teamId
                 },
-                new()
+                new MemberModel()
                 {
                     Id = "2",
                     Name = "Dorel",

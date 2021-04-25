@@ -3,13 +3,14 @@ using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers
+namespace gdsc_web_backend.Controllers.v1
 {
     // This marks this controller as a public one that can be called from the internet
     [ApiController]
+    [ApiVersion("1")]
     // This sets the URL that we can enter to call the controller's methods
     // ex: https://localhost:5000/api/Example
-    [Route("api/[controller]")]
+    [Route("api/v1/examples")]
     [Consumes("application/json")] // specifies which type of data this controller accepts
     [Produces("application/json")] // specifies which type of data this conrtoller returns
     public class ExamplesController : ControllerBase

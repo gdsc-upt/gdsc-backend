@@ -2,15 +2,16 @@
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers
+namespace gdsc_web_backend.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v1/pages")]
     public class PagesController : ControllerBase
     {
         public List<PageModel> pageModels = new()
         {
-            new()
+            new PageModel
             {
                 Id = "1",
                 Title = "Home",
@@ -20,7 +21,7 @@ namespace gdsc_web_backend.Controllers
                 ShortDescription = "Shows a description about the site",
                 Image = "Smth 'bout Google"
             },
-            new()
+            new PageModel()
             {
                 Id = "2",
                 Title = "Contact",

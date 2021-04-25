@@ -3,15 +3,16 @@ using gdsc_web_backend.Models;
 using gdsc_web_backend.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers
+namespace gdsc_web_backend.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v1/settings")]
     public class SettingsController : ControllerBase
     {
         public List<SettingModel> Settings = new()
         {
-            new()
+            new SettingModel
             {
                 Id = "1",
                 Name = "some setting here",
@@ -20,7 +21,7 @@ namespace gdsc_web_backend.Controllers
                 Value = true,
                 Image = "probabil o sa vina o imagine aici :)"
             },
-            new()
+            new SettingModel()
             {
                 Id = "2",
                 Name = "second setting here",

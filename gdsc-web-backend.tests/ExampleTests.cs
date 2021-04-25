@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using gdsc_web_backend.Controllers;
+using gdsc_web_backend.Controllers.v1;
 using gdsc_web_backend.Models;
 using gdsc_web_backend.Models.Enums;
 using Microsoft.AspNetCore.Http;
