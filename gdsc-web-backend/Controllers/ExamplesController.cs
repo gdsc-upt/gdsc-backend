@@ -17,10 +17,12 @@ namespace gdsc_web_backend.Controllers
         private readonly List<ExampleModel> _mockExamples = new();
 
         /// <summary>
-        /// This method is called when someone makes a GET request
+        ///     This method is called when someone makes a GET request
         /// </summary>
         /// <example>GET http://localhost:5000/api/Example</example>
-        /// <returns><code>List of ExampleModel</code></returns>
+        /// <returns>
+        ///     <code>List of ExampleModel</code>
+        /// </returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ExampleModel>), StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<ExampleModel>> Get()
@@ -29,7 +31,7 @@ namespace gdsc_web_backend.Controllers
         }
 
         /// <summary>
-        /// This method is called when someone makes a POST request with a new ExampleModel in body
+        ///     This method is called when someone makes a POST request with a new ExampleModel in body
         /// </summary>
         /// <example>POST http://localhost:5000/api/Example</example>
         /// <returns>ExampleModel</returns>

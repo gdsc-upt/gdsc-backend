@@ -1,6 +1,4 @@
-﻿using gdsc_web_backend.Models.Enums;
-
-namespace gdsc_web_backend.Models
+﻿namespace gdsc_web_backend.Models
 {
     public class EventModel
     {

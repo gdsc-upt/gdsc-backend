@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Xml.Linq;
 using gdsc_web_backend.Models;
 using gdsc_web_backend.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -7,19 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace gdsc_web_backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")] 
+    [Route("api/[controller]")]
     public class MenuItemsController : ControllerBase
     {
-        public List<MenuItemModel> MenuItems = new List<MenuItemModel>
+        public List<MenuItemModel> MenuItems = new()
         {
-            new MenuItemModel
+            new()
             {
                 Id = "1",
                 Name = "site color",
                 Type = MenuItemTypeEnum.ExternalLink,
                 Link = "www.google.com"
             },
-            new MenuItemModel
+            new()
             {
                 Id = "2",
                 Name = "language",
@@ -27,13 +26,13 @@ namespace gdsc_web_backend.Controllers
                 Link = "www.linkedin.com"
             }
         };
-        
+
         [HttpGet]
         public List<MenuItemModel> Get()
         {
             return MenuItems;
         }
-    
+
         [HttpGet("{id}")]
         public MenuItemModel Get(string id)
         {

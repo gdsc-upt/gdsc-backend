@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Linq;
 using gdsc_web_backend.Models;
 using gdsc_web_backend.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -7,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace gdsc_web_backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")] 
+    [Route("api/[controller]")]
     public class SettingsController : ControllerBase
     {
-        public List<SettingModel> Settings = new List<SettingModel>
+        public List<SettingModel> Settings = new()
         {
-            new SettingModel
+            new()
             {
                 Id = "1",
                 Name = "some setting here",
@@ -21,7 +20,7 @@ namespace gdsc_web_backend.Controllers
                 Value = true,
                 Image = "probabil o sa vina o imagine aici :)"
             },
-            new SettingModel
+            new()
             {
                 Id = "2",
                 Name = "second setting here",
@@ -31,13 +30,13 @@ namespace gdsc_web_backend.Controllers
                 Image = "probabil o sa vina o imagine disabled aici :)"
             }
         };
-        
+
         [HttpGet]
         public List<SettingModel> Get()
         {
             return Settings;
         }
-    
+
         [HttpGet("{id}")]
         public SettingModel Get(string id)
         {

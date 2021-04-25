@@ -1,9 +1,9 @@
 using gdsc_web_backend.Controllers;
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using Xunit.Abstractions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace gdsc_web_backend.tests
 {
@@ -53,7 +53,7 @@ namespace gdsc_web_backend.tests
         public void Post_ReturnsCreateObject()
         {
             var controller = new ContactController();
-            
+
             var example1 = new ContactModel
             {
                 Id = "1",
@@ -73,17 +73,16 @@ namespace gdsc_web_backend.tests
             //Act
             var added1 = controller.Post(example1).Result as OkObjectResult;
             var added2 = controller.Post(example2).Result as OkObjectResult;
-            
+
             //Assert
             Assert.NotNull(added1);
             Assert.NotNull(added2);
-            
+
             Assert.Equal(StatusCodes.Status200OK, added1.StatusCode);
             Assert.Equal(example1, added1.Value as ContactModel);
 
             Assert.Equal(StatusCodes.Status200OK, added2.StatusCode);
             Assert.Equal(example1, added1.Value as ContactModel);
-
         }
     }
 }

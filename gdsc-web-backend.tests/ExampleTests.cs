@@ -105,7 +105,7 @@ namespace gdsc_web_backend.tests
                     Number = 4,
                     Title = "Second example",
                     Type = ExampleTypeEnum.WtfExample
-                },
+                }
             };
             controller.Post(examples[0]);
             controller.Post(examples[1]);

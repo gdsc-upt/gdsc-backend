@@ -5,19 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace gdsc_web_backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]  
+    [Route("api/[controller]")]
     public class EventController : ControllerBase
     {
-        public List<EventModel> EventModels = new List<EventModel>
+        public List<EventModel> EventModels = new()
         {
-            new EventModel
+            new()
             {
                 Id = "1",
                 Title = "example 1",
                 Description = "description 1",
                 Image = "image link 1"
             },
-            new EventModel
+            new()
             {
                 Id = "1",
                 Title = "example 2",
@@ -25,14 +25,14 @@ namespace gdsc_web_backend.Controllers
                 Image = "image link 2"
             }
         };
-        
+
         // HTTP Get method without any ID, returning the whole list of events
         [HttpGet]
         public List<EventModel> Get()
         {
             return EventModels;
         }
-        
+
         // HTTP Get method with a specific ID, which will return the event having that ID
         [HttpGet("{id}")]
         public EventModel Get(string id)

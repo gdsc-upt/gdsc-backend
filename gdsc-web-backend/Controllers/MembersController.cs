@@ -8,16 +8,16 @@ namespace gdsc_web_backend.Controllers
     [Route("api/[controller]")]
     public class MembersController : ControllerBase
     {
-        private static List<MemberModel> members = new List<MemberModel>
+        private static readonly List<MemberModel> members = new()
         {
-            new MemberModel 
+            new()
             {
                 Id = "1",
                 Name = "Gigel",
                 Email = "yahoo@gigel.com",
                 TeamId = "1"
             },
-            new MemberModel 
+            new()
             {
                 Id = "2",
                 Name = "Dorel",
@@ -32,6 +32,5 @@ namespace gdsc_web_backend.Controllers
         {
             return members;
         }
-
     }
 }

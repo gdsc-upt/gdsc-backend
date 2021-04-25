@@ -1,5 +1,4 @@
-﻿using System.IO;
-using gdsc_web_backend.Models.Enums;
+﻿using gdsc_web_backend.Models.Enums;
 
 namespace gdsc_web_backend.Models
 {

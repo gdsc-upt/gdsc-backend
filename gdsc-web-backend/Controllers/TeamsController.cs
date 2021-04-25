@@ -4,21 +4,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace gdsc_web_backend.Controllers
 {
-    [ApiController]  
-    [Route("api/[controller]")]  
+    [ApiController]
+    [Route("api/[controller]")]
     public class TeamsController : ControllerBase
     {
         [HttpGet]
         public List<TeamModel> Get()
         {
-            return new List<TeamModel>
+            return new()
             {
-                new TeamModel
+                new()
                 {
                     Id = "1",
                     Name = "FCB"
                 },
-                new TeamModel
+                new()
                 {
                     Id = "2",
                     Name = "LFC"
@@ -29,16 +29,16 @@ namespace gdsc_web_backend.Controllers
         [HttpGet("{teamId}/members")]
         public List<MemberModel> GetMembers(string teamId)
         {
-            return new List<MemberModel>
+            return new()
             {
-                new MemberModel 
+                new()
                 {
                     Id = "1",
                     Name = "Gigel",
                     Email = "yahoo@gigel.com",
                     TeamId = teamId
                 },
-                new MemberModel 
+                new()
                 {
                     Id = "2",
                     Name = "Dorel",
