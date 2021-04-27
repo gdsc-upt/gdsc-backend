@@ -13,6 +13,11 @@ namespace gdsc_web_backend.tests
             _outputHelper = outputHelper;
         }
 
+        // Cleanup hook after each test
+        public virtual void Dispose()
+        {
+        }
+
         // This method will print formatted objects to testing console
         protected void WriteLine(object obj)
         {
@@ -23,8 +28,5 @@ namespace gdsc_web_backend.tests
         {
             _outputHelper.WriteLine(obj);
         }
-
-        // Cleanup hook after each test
-        public virtual void Dispose() {}
     }
 }

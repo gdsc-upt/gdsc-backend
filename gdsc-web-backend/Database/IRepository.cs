@@ -7,7 +7,7 @@ namespace gdsc_web_backend.Database
     public interface IRepository<T> where T : Model
     {
         Task<T> Add(T entity);
-        Task<T> Get(string Id);
+        Task<T> Get(string id);
         Task<IEnumerable<T>> Get();
     }
 }

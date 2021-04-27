@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using Xunit.Abstractions;
 
-
 namespace gdsc_web_backend.tests
 {
     public class MembersControllerTests : TestingBase
@@ -22,16 +21,16 @@ namespace gdsc_web_backend.tests
         public void Get_Should_Return_All_Members()
         {
             // Arrange
-            var mockedList = new List<MemberModel>()
+            var mockedList = new List<MemberModel>
             {
-                new MemberModel
+                new()
                 {
                     Id = "1",
                     Name = "Gigel",
                     Email = "yahoo@gigel.com",
                     TeamId = "1"
                 },
-                new MemberModel
+                new()
                 {
                     Id = "2",
                     Name = "Dorel",

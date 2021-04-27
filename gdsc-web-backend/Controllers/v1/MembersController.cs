@@ -12,15 +12,15 @@ namespace gdsc_web_backend.Controllers.v1
     {
         public static readonly List<MemberModel> MockMembers = new();
 
-        
+
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MemberModel>), StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<MemberModel>> Get()
         {
             return Ok(MockMembers);
         }
-        
-        
+
+
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]

@@ -13,7 +13,6 @@ namespace gdsc_web_backend.Controllers.v1
     {
         private readonly IRepository<ContactModel> _repository;
 
-
         public ContactController(IRepository<ContactModel> repository)
         {
             _repository = repository;

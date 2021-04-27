@@ -23,26 +23,14 @@ namespace gdsc_web_backend.Database
             return entity;
         }
 
-
         public async Task<IEnumerable<T>> Get()
         {
-            return await GetAll();
-        }
-
-        public async Task<T> Get(string Id)
-        {
-            return await GetById(Id);
-        }
-
-        private async Task<T> GetById(string Id)
-        {
-            var result = _context.Set<T>().FirstOrDefaultAsync(e => e.Id == Id);
-            return await result;
-        }
-
-        private async Task<IEnumerable<T>> GetAll()
-        {
             return await _context.Set<T>().ToListAsync();
+        }
+
+        public async Task<T> Get(string id)
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
         }
     }
 }
