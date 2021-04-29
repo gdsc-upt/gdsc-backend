@@ -44,5 +44,38 @@ namespace gdsc_web_backend.Database
         {
             return await _context.Set<T>().ToListAsync();
         }
+        public async Task<T> Update(string Id, T entity)
+        {
+            var does_exists = _context.Set<T>().FirstOrDefaultAsync(item => item.Id == entity.Id);
+             
+            if (entity is null)
+            {
+                throw new ArgumentNullException("entity must not be null");
+            }
+            if (does_exists is null)
+            {
+                throw new ArgumentNullException("entity does not exists in database");
+            }
+
+            _context.Set<T>().Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+
+        }
+
+        public async Task<T> Delete(string Id)
+        {
+            var entity = _context.Set<T>().FirstOrDefaultAsync(item => item.Id == Id);
+            
+
+            if (entity is null)
+            {
+                throw new ArgumentNullException("entity does not exists in database");
+            }
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
+            return await  entity;
+
+        }
     }
 }
