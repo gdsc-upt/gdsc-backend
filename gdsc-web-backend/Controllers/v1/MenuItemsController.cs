@@ -1,16 +1,16 @@
 using System.Collections.Generic;
-using System.Xml.Linq;
 using gdsc_web_backend.Models;
 using gdsc_web_backend.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers
+namespace gdsc_web_backend.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")] 
+    [ApiVersion("1")]
+    [Route("api/v1/menu-items")]
     public class MenuItemsController : ControllerBase
     {
-        public List<MenuItemModel> MenuItems = new List<MenuItemModel>
+        public List<MenuItemModel> MenuItems = new()
         {
             new MenuItemModel
             {
@@ -27,13 +27,13 @@ namespace gdsc_web_backend.Controllers
                 Link = "www.linkedin.com"
             }
         };
-        
+
         [HttpGet]
         public List<MenuItemModel> Get()
         {
             return MenuItems;
         }
-    
+
         [HttpGet("{id}")]
         public MenuItemModel Get(string id)
         {
