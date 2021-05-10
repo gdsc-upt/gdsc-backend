@@ -9,5 +9,9 @@ namespace gdsc_web_backend.Database
         Task<T> Add(T entity);
         Task<T> Get(string id);
         Task<IEnumerable<T>> Get();
+
+        Task<T> Update(string Id, T entity);
+
+        Task<T> Delete(string Id);
     }
 }
