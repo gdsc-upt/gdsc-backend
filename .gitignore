@@ -7,6 +7,7 @@
 bin/
 obj/
 gdsc-web-backend.sln.DotSettings.user
+gdsc-web-backend/appsettings.Local.json
 
 # Common node modules locations
 /node_modules
