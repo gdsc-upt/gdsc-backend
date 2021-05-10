@@ -21,7 +21,7 @@ namespace gdsc_web_backend.tests
         public async Task Post_Object_Is_Null()
         {
             ContactModel example1 = null;
-            _repository.Setup(x => x.Add(example1)).ReturnsAsync(() => null);
+            _repository.Setup(x => x.AddAsync(example1)).ReturnsAsync(() => null);
             var sut = new ContactController(_repository.Object);
             var result = (await sut.Post(example1)).Result as BadRequestObjectResult;
             Assert.IsType<BadRequestObjectResult>(result);
@@ -38,7 +38,7 @@ namespace gdsc_web_backend.tests
                 Subject = "subject",
                 Text = "tralala"
             };
-            _repository.Setup(x => x.Add(example)).ReturnsAsync(() => example);
+            _repository.Setup(x => x.AddAsync(example)).ReturnsAsync(() => example);
             var sut = new ContactController(_repository.Object);
             var result = (await sut.Post(example)).Result as OkObjectResult;
             Assert.IsType<OkObjectResult>(result);

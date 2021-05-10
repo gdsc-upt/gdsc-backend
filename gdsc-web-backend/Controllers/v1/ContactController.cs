@@ -26,7 +26,7 @@ namespace gdsc_web_backend.Controllers.v1
                 return BadRequest(new ErrorViewModel {Message = "Request has no body"});
             }
 
-            await _repository.Add(entity);
+            await _repository.AddAsync(entity);
             return Ok(entity);
         }
     }

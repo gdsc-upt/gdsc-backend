@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using gdsc_web_backend.Models;
 
@@ -6,12 +7,11 @@ namespace gdsc_web_backend.Database
 {
     public interface IRepository<T> where T : Model
     {
-        Task<T> Add(T entity);
-        Task<T> Get(string id);
-        Task<IEnumerable<T>> Get();
-
-        Task<T> Update(string Id, T entity);
-
-        Task<T> Delete(string Id);
+        Task<T> AddAsync([NotNull] T entity);
+        Task<T> GetAsync([NotNull] string id);
+        Task<IEnumerable<T>> GetAsync();
+        Task<T> AddOrUpdateAsync([NotNull] T entity);
+        Task<T> UpdateAsync([NotNull] T entity);
+        Task<T> DeleteAsync([NotNull] string id);
     }
 }
