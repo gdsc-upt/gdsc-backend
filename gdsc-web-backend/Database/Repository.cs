@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gdsc_web_backend.Database
 {
-    public class Repository<T> : IRepository<T> where T : Model
+    public class Repository<T> : IRepository<T> where T : class, IModel
     {
         private readonly AppDbContext _context;
-        private DbSet<T> _dbSetCache;
+        private DbSet<T> _dbSet;
         private Task<int> Save => _context.SaveChangesAsync();
 
-        public DbSet<T> DbSet => _dbSetCache ??= _context.Set<T>();
+        public DbSet<T> DbSet => _dbSet ??= _context.Set<T>();
 
         public Repository(AppDbContext context)
         {
@@ -23,6 +23,7 @@ namespace gdsc_web_backend.Database
         public async Task<T> AddAsync([NotNull] T entity)
         {
             entity.Id = Guid.NewGuid().ToString();
+            entity.Created = entity.Updated = DateTime.Now;
 
             entity = (await DbSet.AddAsync(entity)).Entity;
             await Save;
@@ -53,6 +54,7 @@ namespace gdsc_web_backend.Database
         {
             if (entity?.Id == null) return null;
 
+            entity.Updated = DateTime.Now;
             entity = DbSet.Update(entity).Entity;
             await Save;
 

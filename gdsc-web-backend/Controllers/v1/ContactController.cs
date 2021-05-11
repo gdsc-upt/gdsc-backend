@@ -27,6 +27,7 @@ namespace gdsc_web_backend.Controllers.v1
             }
 
             await _repository.AddAsync(entity);
+
             return Ok(entity);
         }
     }

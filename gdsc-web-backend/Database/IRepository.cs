@@ -5,7 +5,7 @@ using gdsc_web_backend.Models;
 
 namespace gdsc_web_backend.Database
 {
-    public interface IRepository<T> where T : Model
+    public interface IRepository<T> where T : class, IModel
     {
         Task<T> AddAsync([NotNull] T entity);
         Task<T> GetAsync([NotNull] string id);
