@@ -1,4 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mime;
+using System.Threading.Tasks;
+using gdsc_web_backend.Database;
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,39 +12,33 @@ namespace gdsc_web_backend.Controllers.v1
     [ApiController]
     [ApiVersion("1")]
     [Route("api/v1/members")]
+    [Consumes(MediaTypeNames.Application.Json)] 
+    [Produces(MediaTypeNames.Application.Json)] 
     public class MembersController : ControllerBase
     {
-        public static readonly List<MemberModel> MockMembers = new();
+        private readonly IRepository<MemberModel> _repository;
 
+        public MembersController(IRepository<MemberModel> repository)
+        {
+            _repository = repository;
+        }
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MemberModel>), StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<MemberModel>> Get()
+        public async Task<ActionResult<IEnumerable<MemberModel>>> Get()
         {
-            return Ok(MockMembers);
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]
-        public ActionResult<MemberModel> Post([FromBody] MemberModel entity)
+        public async Task<ActionResult<MemberModel>> Post(MemberModel entity)
         {
-            if (entity is null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
-            }
+            entity = await _repository.AddAsync(entity);
 
-            var existing = MockMembers.Find(e => e.Id == entity.Id);
-            if (existing != null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "An object with the same ID already exists"});
-            }
-
-            MockMembers.Add(entity);
-            entity = MockMembers.Find(example => example == entity);
-
-            return Created("api/members/" + entity!.Id, entity);
+            return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
         }
     }
 }
