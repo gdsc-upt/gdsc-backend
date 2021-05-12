@@ -1,8 +1,7 @@
 ﻿namespace gdsc_web_backend.Models
 {
-    public class PageModel
+    public class PageModel : Model
     {
-        public string Id { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
         public bool isPublished { get; set; }

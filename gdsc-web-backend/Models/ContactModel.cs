@@ -1,8 +1,7 @@
 namespace gdsc_web_backend.Models
 {
-    public class  ContactModel
+    public class ContactModel : Model
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Subject { get; set; }

@@ -1,8 +1,7 @@
-﻿using gdsc_web_backend.Controllers;
+﻿using gdsc_web_backend.Controllers.v1;
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -49,14 +48,14 @@ namespace gdsc_web_backend.tests
         public void Post_ReturnsCreatedObject()
         {
             var controller = new FaqsController();
-            var example1 = new FaqModel()
+            var example1 = new FaqModel
             {
                 Id = "1",
                 Question = "Ce ai facut la examene?",
                 Answer = "Le-am luat, verisoru."
             };
 
-            var example2 = new FaqModel()
+            var example2 = new FaqModel
             {
                 Id = "2",
                 Question = "Apropo,tu ce ai facut?",
