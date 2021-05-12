@@ -1,11 +1,16 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using gdsc_web_backend.Models.Enums;
 
 namespace gdsc_web_backend.Models
 {
     public class ExampleModel : Model
     {
-        public string Title { get; set; }
+        [Required] public string Title { get; set; }
+
+        [DefaultValue(ExampleTypeEnum.EasyExample)]
         public ExampleTypeEnum Type { get; set; }
-        public int Number { get; set; }
+
+        [Required] public int Number { get; set; }
     }
 }

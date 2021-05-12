@@ -1,4 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mime;
+using System.Threading.Tasks;
+using gdsc_web_backend.Database;
 using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,51 +15,79 @@ namespace gdsc_web_backend.Controllers.v1
     // This sets the URL that we can enter to call the controller's methods
     // ex: https://localhost:5000/api/Example
     [Route("api/v1/examples")]
-    [Consumes("application/json")] // specifies which type of data this controller accepts
-    [Produces("application/json")] // specifies which type of data this conrtoller returns
+    [Consumes(MediaTypeNames.Application.Json)] // specifies which type of data this controller accepts
+    [Produces(MediaTypeNames.Application.Json)] // specifies which type of data this conrtoller returns
     public class ExamplesController : ControllerBase
     {
-        private readonly List<ExampleModel> _mockExamples = new();
+        private readonly IRepository<ExampleModel> _repository;
+
+        public ExamplesController(IRepository<ExampleModel> repository)
+        {
+            _repository = repository;
+        }
 
         /// <summary>
         ///     This method is called when someone makes a GET request
         /// </summary>
-        /// <example>GET http://localhost:5000/api/Example</example>
+        /// <example>GET http://localhost:5000/api/v1/examples</example>
         /// <returns>
-        ///     <code>List of ExampleModel</code>
+        ///     List of ExampleModel
         /// </returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ExampleModel>), StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ExampleModel>> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<ExampleModel>>> Get()
         {
-            return Ok(_mockExamples);
+            return Ok((await _repository.GetAsync()).ToList());
+        }
+
+        /// <summary>
+        ///     This method is called when someone makes a GET request with an Id
+        /// </summary>
+        /// <example>GET http://localhost:5000/api/v1/examples/1</example>
+        /// <returns>
+        ///     ExampleModel
+        /// </returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ExampleModel>> Get([FromRoute] string id)
+        {
+            var entity = await _repository.GetAsync(id);
+
+            return entity is null ? NotFound() : Ok(entity);
         }
 
         /// <summary>
         ///     This method is called when someone makes a POST request with a new ExampleModel in body
         /// </summary>
-        /// <example>POST http://localhost:5000/api/Example</example>
+        /// <example>POST http://localhost:5000/api/v1/examples</example>
         /// <returns>ExampleModel</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status201Created)]
-        public ActionResult<ExampleModel> Post([FromBody] ExampleModel entity)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ExampleModel>> Post(ExampleModel entity)
         {
-            if (entity is null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
-            }
+            entity = await _repository.AddAsync(entity);
 
-            var existing = _mockExamples.Find(e => e.Id == entity.Id);
-            if (existing != null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "An object with the same ID already exists"});
-            }
+            return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
+        }
 
-            _mockExamples.Add(entity);
-            entity = _mockExamples.Find(example => example == entity);
+        /// <summary>
+        ///     This method is called when someone makes a DELETE request
+        ///     with the Id of the entity that he wants to remove
+        /// </summary>
+        /// <example>DELETE http://localhost:5000/api/v1/examples/1</example>
+        /// <returns>ExampleModel</returns>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ExampleModel>> Delete([FromRoute] string id)
+        {
+            var entity = await _repository.DeleteAsync(id);
 
-            return Created("api/Examples/" + entity!.Id, entity);
+            return entity is null ? NotFound() : Ok(entity);
         }
     }
 }
