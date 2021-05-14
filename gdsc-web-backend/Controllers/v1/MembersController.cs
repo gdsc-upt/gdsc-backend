@@ -29,6 +29,17 @@ namespace gdsc_web_backend.Controllers.v1
         {
             return Ok((await _repository.GetAsync()).ToList());
         }
+        
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MemberModel>> Get([FromRoute] string id)
+        {
+            var entity = await _repository.GetAsync(id);
+
+            return entity is null ? NotFound() : Ok(entity);
+        }
 
 
         [HttpPost]
@@ -39,6 +50,17 @@ namespace gdsc_web_backend.Controllers.v1
             entity = await _repository.AddAsync(entity);
 
             return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
+        }
+        
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MemberModel>> Delete([FromRoute] string id)
+        {
+            var entity = await _repository.DeleteAsync(id);
+
+            return entity is null ? NotFound() : Ok(entity);
         }
     }
 }
