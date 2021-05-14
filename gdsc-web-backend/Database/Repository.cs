@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using gdsc_web_backend.Models;
 using Microsoft.EntityFrameworkCore;
-
 namespace gdsc_web_backend.Database
 {
     public class Repository<T> : IRepository<T> where T : class, IModel
@@ -71,6 +72,16 @@ namespace gdsc_web_backend.Database
             await Save;
 
             return entity;
+        }
+
+        public async Task<IEnumerable<T>> DeleteAsync([NotNull] IEnumerable<string> ids)
+        {
+            var entities = await DbSet.Where(e => ids.Contains(e.Id)).ToListAsync();
+            
+            DbSet.RemoveRange(entities);
+            await Save;
+
+            return entities;
         }
     }
 }
