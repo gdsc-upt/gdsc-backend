@@ -56,7 +56,7 @@ namespace gdsc_web_backend.Controllers.v1
         [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MemberModel>> Delete([FromRoute] string id)
+        public async Task<ActionResult<MemberModel>> Delete([FromBody] string id)
         {
             var entity = await _repository.DeleteAsync(id);
 
