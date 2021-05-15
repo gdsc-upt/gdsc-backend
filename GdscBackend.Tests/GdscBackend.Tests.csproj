@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\gdsc-web-backend\gdsc-web-backend.csproj" />
+      <ProjectReference Include="..\GdscBackend\GdscBackend.csproj" />
     </ItemGroup>
 
 </Project>
