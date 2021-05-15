@@ -45,7 +45,7 @@ namespace gdsc_web_backend.Controllers.v1
         }
 
         [HttpPost]
-        public List<SettingModel> Post(SettingModel setting)
+        public ActionResult<List<SettingModel>> Post(SettingModel setting)
         {
             if (setting is null)
             {
