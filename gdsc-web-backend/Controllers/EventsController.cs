@@ -9,24 +9,8 @@ namespace gdsc_web_backend.Controllers
     [Route("api/[controller]")]  
     public class EventsController : ControllerBase
     {
-        public List<EventModel> EventModels = new List<EventModel>
-        {
-            new EventModel
-            {
-                Id = "1",
-                Title = "example 1",
-                Description = "description 1",
-                Image = "image link 1"
-            },
-            new EventModel
-            {
-                Id = "2",
-                Title = "example 2",
-                Description = "description 2",
-                Image = "image link 2"
-            }
-        };
-        
+        public List<EventModel> EventModels = new();
+
         // HTTP Get method without any ID, returning the whole list of events
         [HttpGet]
         public ActionResult<List<EventModel>> Get()
