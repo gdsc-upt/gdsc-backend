@@ -3,29 +3,28 @@ using gdsc_web_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers.v1
+namespace gdsc_web_backend.Controllers
 {
     [ApiController]
-    [ApiVersion("1")]
-    [Route("api/v1/events")]
+    [Route("api/[controller]")]  
     public class EventsController : ControllerBase
     {
         public List<EventModel> EventModels = new();
 
-            // HTTP Get method without any ID, returning the whole list of events
+        // HTTP Get method without any ID, returning the whole list of events
         [HttpGet]
-        public List<EventModel> Get()
+        public ActionResult<List<EventModel>> Get()
         {
-            return EventModels;
+            return Ok(EventModels);
         }
-
+        
         // HTTP Get method with a specific ID, which will return the event having that ID
         [HttpGet("{id}")]
         public EventModel Get(string id)
         {
             return EventModels.Find(eventElement => eventElement.Id == id);
         }
-
+        
         // HTTP Post method
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
