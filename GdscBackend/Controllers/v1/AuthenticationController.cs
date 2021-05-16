@@ -17,10 +17,10 @@ namespace gdsc_web_backend.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<AppUser> userModel;
+        private readonly UserManager<User> userModel;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationController(UserManager<AppUser> userModel, IConfiguration configuration)
+        public AuthenticationController(UserManager<User> userModel, IConfiguration configuration)
         {
             this.userModel = userModel;
             _configuration = configuration;
@@ -73,7 +73,7 @@ namespace gdsc_web_backend.Controllers
             if (userExists != null)  
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });  
   
-            AppUser user = new AppUser()  
+            User user = new User()  
             {  
                 Email = model.Email,  
                 SecurityStamp = Guid.NewGuid().ToString(),  
