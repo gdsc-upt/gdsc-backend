@@ -4,6 +4,7 @@ namespace gdsc_web_backend.Migrations
 {
     public partial class FirstMigration : Migration
     {
+        
         protected override void Up(MigrationBuilder migrationBuilder)
         {
 

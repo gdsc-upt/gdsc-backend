@@ -34,10 +34,10 @@ namespace gdsc_web_backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnStr")));
+           // services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnStr")));
 
             // For Identity  
-            services.AddIdentity<User, IdentityRole>()  
+            services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<AppDbContext>()  
                 .AddDefaultTokenProviders();
             // Adding Authentication  

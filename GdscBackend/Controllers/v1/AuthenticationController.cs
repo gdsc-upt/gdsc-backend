@@ -69,21 +69,20 @@ namespace gdsc_web_backend.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)  
         {  
-            var userExists = await userModel.FindByNameAsync(model.Username);  
-            if (userExists != null)  
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });  
-  
+            var userExists = await userModel.FindByNameAsync(model.Username);
+            if (userExists != null)
+                return BadRequest("User already exists");
             User user = new User()  
             {  
                 Email = model.Email,  
                 SecurityStamp = Guid.NewGuid().ToString(),  
                 UserName = model.Username  
             };  
-            var result = await userModel.CreateAsync(user, model.Password);  
-            if (!result.Succeeded)  
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });  
-  
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });  
+            var result = await userModel.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return BadRequest("User creation failed! Please check user details and try again.");
+            user= await userModel.FindByNameAsync(model.Username);
+            return CreatedAtAction(nameof( Register),new {Id=user.Id},user);  
         }  
 }
 
