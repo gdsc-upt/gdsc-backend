@@ -66,5 +66,16 @@ namespace gdsc_web_backend.Controllers.v1
             
             return entity is null ? NotFound() : Ok(entity);
         }
+
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MenuItemModel>> Update(MenuItemModel entity)
+        {
+            entity = await _repository.UpdateAsync(entity);
+            
+            return CreatedAtAction(nameof(Update), new {entity.Id}, entity);
+        }
     }
 }
