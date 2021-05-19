@@ -21,7 +21,7 @@ namespace gdsc_web_backend.Controllers.v1
         {
             _repository = repository;
         }
-        
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<PageModel>>> Get()
@@ -29,17 +29,7 @@ namespace gdsc_web_backend.Controllers.v1
             return Ok((await _repository.GetAsync()).ToList());
         }
 
-        // [HttpGet("{slug}")]
-        // [ProducesResponseType(StatusCodes.Status200OK)]
-        // [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        // [ProducesResponseType(StatusCodes.Status404NotFound)]
-        // public async Task<ActionResult<PageModel>> Get([FromRoute] string slug)
-        // {
-        //     var entity = await _repository.GetAsync(slug);
-        //
-        //     return entity is null ? NotFound() : Ok(entity);
-        // }
-        
+
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(PageModel), StatusCodes.Status201Created)]
@@ -49,7 +39,7 @@ namespace gdsc_web_backend.Controllers.v1
 
             return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
         }
-        
+
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(PageModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
