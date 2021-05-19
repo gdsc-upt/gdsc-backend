@@ -43,5 +43,26 @@ namespace gdsc_web_backend.Controllers.v1
         {
             return Settings.Find(x => x.Id == id);
         }
+
+        [HttpPost]
+        public ActionResult<List<SettingModel>> Post(SettingModel setting)
+        {
+            if (setting is null)
+            {
+                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
+            }
+
+            var existing = Settings.Find(e => e.Id == setting.Id);
+
+            if (existing != null)
+            {
+                return BadRequest(new ErrorViewModel {Message = "An object with the same ID already exists"});
+            }
+
+            Settings.Add(setting);
+            setting = Settings.Find(example => example == setting);
+
+            return Created("api/Examples/" + setting!.Id, setting);
+        }
     }
 }
