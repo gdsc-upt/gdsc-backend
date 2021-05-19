@@ -16,3 +16,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 CMD ["dotnet", "gdsc-web-backend.dll"]
+
+# Link image with github repo
+LABEL org.opencontainers.image.source=https://github.com/dsc-upt/gdsc-backend
