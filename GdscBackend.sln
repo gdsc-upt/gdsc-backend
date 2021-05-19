@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gdsc-web-backend", "gdsc-web-backend\gdsc-web-backend.csproj", "{19C6B87F-1946-4A06-B436-3302BFDF48E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdscBackend", "GdscBackend\GdscBackend.csproj", "{19C6B87F-1946-4A06-B436-3302BFDF48E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gdsc-web-backend.tests", "gdsc-web-backend.tests\gdsc-web-backend.tests.csproj", "{981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdscBackend.Tests", "GdscBackend.Tests\GdscBackend.Tests.csproj", "{981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

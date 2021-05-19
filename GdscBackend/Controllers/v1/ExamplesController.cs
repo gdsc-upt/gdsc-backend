@@ -13,7 +13,7 @@ namespace gdsc_web_backend.Controllers.v1
     [ApiController]
     [ApiVersion("1")]
     // This sets the URL that we can enter to call the controller's methods
-    // ex: https://localhost:5000/api/Example
+    // ex: https://localhost:5000/api/v1/examples
     [Route("api/v1/examples")]
     [Consumes(MediaTypeNames.Application.Json)] // specifies which type of data this controller accepts
     [Produces(MediaTypeNames.Application.Json)] // specifies which type of data this conrtoller returns
@@ -64,7 +64,7 @@ namespace gdsc_web_backend.Controllers.v1
         /// <example>POST http://localhost:5000/api/v1/examples</example>
         /// <returns>ExampleModel</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ExampleModel>> Post(ExampleModel entity)
         {
@@ -80,7 +80,7 @@ namespace gdsc_web_backend.Controllers.v1
         /// <example>DELETE http://localhost:5000/api/v1/examples/1</example>
         /// <returns>ExampleModel</returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ExampleModel>> Delete([FromRoute] string id)
