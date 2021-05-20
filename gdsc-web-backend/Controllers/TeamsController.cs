@@ -7,31 +7,21 @@ namespace gdsc_web_backend.Controllers
 {
     [ApiController]  
     [Route("api/[controller]")]  
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public class TeamsController : ControllerBase
     {
-        private readonly List<TeamModel> _mockTeams = new List<TeamModel>
-        {
-            new()
-            {
-                Id = "1",
-                Name = "FCSB"
-            },
-            new()
-            {
-                Id = "2",
-                Name = "asfasf"
-            }
-        };
-        
+        private readonly List<TeamModel> _mockTeams = new();
+
         [HttpGet]
-        public ActionResult<TeamModel> Get()
+        public List<TeamModel> Get()
         {
-            return Ok(_mockTeams);
+            return _mockTeams;
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(TeamModel), StatusCodes.Status201Created)]
         public ActionResult<TeamModel> Post([FromBody] TeamModel entity)
         {
             if (entity is null)
@@ -46,9 +36,9 @@ namespace gdsc_web_backend.Controllers
             }
 
             _mockTeams.Add(entity);
-            entity = _mockTeams.Find(team => team == entity);
+            entity = _mockTeams.Find(example => example == entity);
 
-            return Created("api/Teams/" + entity!.Id, entity);
+            return Created("api/Examples/" + entity!.Id, entity);
         }
         
         [HttpGet("{teamId}/members")]
