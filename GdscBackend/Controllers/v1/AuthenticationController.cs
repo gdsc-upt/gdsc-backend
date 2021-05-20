@@ -36,7 +36,7 @@ namespace gdsc_web_backend.Controllers.v1
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
+                    new (ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -84,5 +84,4 @@ namespace gdsc_web_backend.Controllers.v1
             return CreatedAtAction(nameof( Register),new {Id=user.Id},user);
         }
 }
-
 }

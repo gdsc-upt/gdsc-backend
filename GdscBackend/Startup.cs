@@ -45,8 +45,8 @@ namespace gdsc_web_backend
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             // For Identity
             services.AddIdentity<User, Role>()
-               .AddEntityFrameworkStores<AppDbContext>()
-               .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
             // Adding Authentication
             services.AddAuthentication(options =>
                 {
@@ -55,7 +55,7 @@ namespace gdsc_web_backend
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 // Adding Jwt Bearer
-               .AddJwtBearer(options =>
+                .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;
