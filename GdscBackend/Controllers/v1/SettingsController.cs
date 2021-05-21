@@ -1,68 +1,93 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mime;
+using System.Threading.Tasks;
+using gdsc_web_backend.Database;
 using gdsc_web_backend.Models;
-using gdsc_web_backend.Models.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gdsc_web_backend.Controllers.v1
 {
+    // This marks this controller as a public one that can be called from the internet
     [ApiController]
     [ApiVersion("1")]
+    // This sets the URL that we can enter to call the controller's methods
+    // ex: https://localhost:5000/api/v1/examples
     [Route("api/v1/settings")]
+    [Consumes(MediaTypeNames.Application.Json)] // specifies which type of data this controller accepts
+    [Produces(MediaTypeNames.Application.Json)] // specifies which type of data this conrtoller returns
     public class SettingsController : ControllerBase
     {
-        public List<SettingModel> Settings = new()
-        {
-            new SettingModel
-            {
-                Id = "1",
-                Name = "some setting here",
-                Slug = "some-setting",
-                Type = SettingTypeEnum.Text,
-                Value = true,
-                Image = "probabil o sa vina o imagine aici :)"
-            },
-            new SettingModel
-            {
-                Id = "2",
-                Name = "second setting here",
-                Slug = "second-setting",
-                Type = SettingTypeEnum.Image,
-                Value = false,
-                Image = "probabil o sa vina o imagine disabled aici :)"
-            }
-        };
+        private readonly IRepository<SettingModel> _repository;
 
+        public SettingsController(IRepository<SettingModel> repository)
+        {
+            _repository = repository;
+        }
+
+        /// <summary>
+        ///     This method is called when someone makes a GET request
+        /// </summary>
+        /// <example>GET http://localhost:5000/api/v1/examples</example>
+        /// <returns>
+        ///     List of ExampleModel
+        /// </returns>
         [HttpGet]
-        public List<SettingModel> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<SettingModel>>> Get()
         {
-            return Settings;
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
+        /// <summary>
+        ///     This method is called when someone makes a GET request with an Id
+        /// </summary>
+        /// <example>GET http://localhost:5000/api/v1/examples/1</example>
+        /// <returns>
+        ///     ExampleModel
+        /// </returns>
         [HttpGet("{id}")]
-        public SettingModel Get(string id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<SettingModel>> Get([FromRoute] string id)
         {
-            return Settings.Find(x => x.Id == id);
+            var entity = await _repository.GetAsync(id);
+
+            return entity is null ? NotFound() : Ok(entity);
         }
 
+        /// <summary>
+        ///     This method is called when someone makes a POST request with a new ExampleModel in body
+        /// </summary>
+        /// <example>POST http://localhost:5000/api/v1/examples</example>
+        /// <returns>ExampleModel</returns>
         [HttpPost]
-        public ActionResult<List<SettingModel>> Post(SettingModel setting)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<SettingModel>> Post(SettingModel entity)
         {
-            if (setting is null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
-            }
+            entity = await _repository.AddAsync(entity);
 
-            var existing = Settings.Find(e => e.Id == setting.Id);
+            return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
+        }
 
-            if (existing != null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "An object with the same ID already exists"});
-            }
+        /// <summary>
+        ///     This method is called when someone makes a DELETE request
+        ///     with the Id of the entity that he wants to remove
+        /// </summary>
+        /// <example>DELETE http://localhost:5000/api/v1/examples/1</example>
+        /// <returns>ExampleModel</returns>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<SettingModel>> Delete([FromRoute] string id)
+        {
+            var entity = await _repository.DeleteAsync(id);
 
-            Settings.Add(setting);
-            setting = Settings.Find(example => example == setting);
-
-            return Created("api/Examples/" + setting!.Id, setting);
+            return entity is null ? NotFound() : Ok(entity);
         }
     }
 }
