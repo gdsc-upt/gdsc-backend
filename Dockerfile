@@ -1,14 +1,14 @@
-# syntax=docker/dockerfile:1
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY GdscBackend/GdscBackend.csproj .
 RUN dotnet restore
 
 # Copy everything else and build
-COPY . ./
-RUN dotnet build GdscBackend.csproj -c Release -o /app/build
+COPY GdscBackend/ .
+
+#RUN dotnet build GdscBackend.csproj -c Release -o /app/build
 RUN dotnet publish GdscBackend.csproj -c Release -o /app/out
 
 # Build runtime image

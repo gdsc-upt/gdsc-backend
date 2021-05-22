@@ -51,4 +51,4 @@ jobs:
           host: api.dscupt.tech
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: sudo /opt/deploy/_deploy.sh /home/docker/opportunity-backend-${{ env.BRANCH }}
+          script: sudo /opt/deploy/_deploy.sh /home/docker/gdsc/backend-${{ env.BRANCH }}
