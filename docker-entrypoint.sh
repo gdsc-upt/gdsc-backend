@@ -1,5 +1,5 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 dotnet ef database update
 
-dotnet GdscBackend.dll
+exec dotnet GdscBackend.dll
