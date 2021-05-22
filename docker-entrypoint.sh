@@ -2,4 +2,4 @@
 
 dotnet ef database update
 
-exec dotnet GdscBackend.dll
+exec dotnet GdscBackend.dll --migrate
