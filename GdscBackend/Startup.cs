@@ -50,6 +50,7 @@ namespace gdsc_web_backend
         {
             if (ShouldMigrate())
             {
+                Console.WriteLine(Configuration.GetConnectionString("default"));
                 Console.WriteLine("Applying migrations...");
                 using var scope = app.ApplicationServices.CreateScope();
                 var dbContext = scope.ServiceProvider.GetService<AppDbContext>();
