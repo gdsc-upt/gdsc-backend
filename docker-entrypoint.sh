@@ -1,3 +1,5 @@
 #!/bin/sh
 
-exec dotnet GdscBackend.dll --migrate
+dotnet dotnet-ef.dll database update
+
+exec dotnet GdscBackend.dll

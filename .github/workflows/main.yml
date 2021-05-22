@@ -35,6 +35,7 @@ jobs:
         env:
           BRANCH: ${{ steps.extract_branch.outputs.branch }}
         with:
+          context: .
           secrets: GIT_AUTH_TOKEN=${{ secrets.CR_PAT }}
           push: true
           tags: ghcr.io/dsc-upt/gdsc-backend-${{ env.BRANCH }}:latest

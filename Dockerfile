@@ -6,9 +6,8 @@ COPY GdscBackend/GdscBackend.csproj .
 RUN dotnet restore
 
 # Copy everything else and build
-COPY GdscBackend/ .
+COPY GdscBackend ./
 
-#RUN dotnet build GdscBackend.csproj -c Release -o /app/build
 RUN dotnet publish GdscBackend.csproj -c Release -o /app/out
 
 # Build runtime image
