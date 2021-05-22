@@ -1,11 +1,12 @@
-.github
-.git
-.idea
+.github/
+.git/
+.idea/
 .gitignore
-GdscBackend.Tests
+GdscBackend.Tests/
 GdscBackend/appsettings.Development.json
 GdscBackend/appsettings.Local.json
 GdscBackend/appsettings.json
 GdscBackend/bin
 GdscBackend/obj
 GdscBackend/README.md
+GdscBackend/Properties/

@@ -4,3 +4,5 @@ services:
         build: .
         ports:
             - "8000:80"
+        volumes:
+            - ./GdscBackend/appsettings.Local.json:/app/appsettings.json

@@ -46,15 +46,14 @@ namespace gdsc_web_backend
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (ShouldMigrate())
             {
-                Console.WriteLine(Configuration.GetConnectionString("default"));
                 Console.WriteLine("Applying migrations...");
                 using var scope = app.ApplicationServices.CreateScope();
                 var dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-                await dbContext?.Database.MigrateAsync();
+                dbContext?.Database.MigrateAsync().Wait();
                 Console.WriteLine("Done!");
             };
 
@@ -72,7 +71,7 @@ namespace gdsc_web_backend
                         description.GroupName.ToUpperInvariant());
             });
 
-            if(!env.IsDevelopment()) app.UseHttpsRedirection();
+            // if(!env.IsDevelopment()) app.UseHttpsRedirection();
 
             app.UseRouting();
 
