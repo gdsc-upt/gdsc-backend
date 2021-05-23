@@ -44,6 +44,7 @@ namespace gdsc_web_backend
             var connectionString = Configuration.GetConnectionString("Default");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
+            Console.WriteLine(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
             {
                 services.AddLettuceEncrypt();
