@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using gdsc_web_backend.Database;
 using gdsc_web_backend.Models;
@@ -8,6 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace gdsc_web_backend.Controllers.v1
 {
+    [ApiController]
+    [ApiVersion("1")]
+    [Route("api/v1/technologies")]
+    [Consumes(MediaTypeNames.Application.Json)] 
+    [Produces(MediaTypeNames.Application.Json)] 
     public class TechnologyController : ControllerBase
     {
         private readonly IRepository<TechnologyModel> _repository;
