@@ -43,6 +43,11 @@ namespace gdsc_web_backend
 
             var connectionString = Configuration.GetConnectionString("Default");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                services.AddLettuceEncrypt();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
