@@ -2,7 +2,7 @@ name: GDSC Website Backend
 
 on:
   push:
-    branches: [ main, dev, docker ]
+    branches: [ main, dev ]
 
 jobs:
   build:
