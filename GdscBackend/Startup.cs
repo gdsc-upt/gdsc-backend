@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace gdsc_web_backend
@@ -45,15 +46,22 @@ namespace gdsc_web_backend
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
             Console.WriteLine(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
-            {
-                services.AddLettuceEncrypt();
-            }
+            // if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            // {
+            //     services.AddLettuceEncrypt();
+            // }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
+            app.Use(async (req, next) =>
+            {
+                Console.WriteLine($"{req.Request.Scheme} {req.Request.Host}");
+
+                await next();
+            });
+
             if (ShouldMigrate())
             {
                 Console.WriteLine("Applying migrations...");
