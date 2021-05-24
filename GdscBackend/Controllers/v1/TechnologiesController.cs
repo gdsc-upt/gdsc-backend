@@ -14,17 +14,17 @@ namespace gdsc_web_backend.Controllers.v1
     [Route("api/v1/technologies")]
     [Consumes(MediaTypeNames.Application.Json)] 
     [Produces(MediaTypeNames.Application.Json)] 
-    public class TechnologyController : ControllerBase
+    public class TechnologiesController : ControllerBase
     {
         private readonly IRepository<TechnologyModel> _repository;
-        public TechnologyController(IRepository<TechnologyModel> repository)
+        public TechnologiesController(IRepository<TechnologyModel> repository)
         {
             _repository = repository;
         }
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<TechnologyModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<TechnologyModel>>> Get()
         {
             return Ok((await _repository.GetAsync()).ToList());
         }
