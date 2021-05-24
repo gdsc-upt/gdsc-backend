@@ -19,7 +19,7 @@ namespace gdsc_web_backend.tests
 {
     public class PagesControllerTests : TestingBase
     {
-        private readonly IEnumerable<PageModel> _testData = (IEnumerable<PageModel>) _getTestData();
+        private readonly IEnumerable<PageModel> _testData = _getTestData();
 
         public PagesControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
