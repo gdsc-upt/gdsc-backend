@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Xunit.Abstractions;
 
-namespace gdsc_web_backend.tests
+namespace GdscBackend.Tests
 {
     public class TestingBase : IDisposable
     {

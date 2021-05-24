@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using gdsc_web_backend.Database;
-using gdsc_web_backend.Models;
+using GdscBackend.Database;
+using GdscBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace gdsc_web_backend.tests
+namespace GdscBackend.Tests
 {
     public class TestDbContext<T> where T : class, IModel
     {

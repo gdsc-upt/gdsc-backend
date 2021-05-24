@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using gdsc_web_backend.Models;
+using GdscBackend.Models;
 
-namespace gdsc_web_backend.Database
+namespace GdscBackend.Database
 {
     public interface IRepository<T> where T : class, IModel
     {

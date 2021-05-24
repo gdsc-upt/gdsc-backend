@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using gdsc_web_backend.Models;
+using GdscBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace gdsc_web_backend.Database
+namespace GdscBackend.Database
 {
     public class Repository<T> : IRepository<T> where T : class, IModel
     {

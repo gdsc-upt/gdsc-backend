@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Text;
-using gdsc_web_backend.Authentication;
-using gdsc_web_backend.Database;
-using gdsc_web_backend.Utils;
+using GdscBackend.Authentication;
+using GdscBackend.Database;
+using GdscBackend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,7 +19,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace gdsc_web_backend
+namespace GdscBackend
 {
     public class Startup
     {
@@ -78,11 +78,13 @@ namespace gdsc_web_backend
             if (ShouldMigrate())
             {
                 Console.WriteLine("Applying migrations...");
+
                 using var scope = app.ApplicationServices.CreateScope();
                 var dbContext = scope.ServiceProvider.GetService<AppDbContext>();
                 dbContext?.Database.MigrateAsync().Wait();
+
                 Console.WriteLine("Done!");
-            };
+            }
 
             if (env.IsDevelopment())
             {

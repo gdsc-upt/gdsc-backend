@@ -1,4 +1,4 @@
-namespace gdsc_web_backend.Models.Enums
+namespace GdscBackend.Models.Enums
 {
     public enum ExampleTypeEnum
     {

@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using gdsc_web_backend.Database;
-using gdsc_web_backend.Models;
+using GdscBackend.Database;
+using GdscBackend.Models;
+using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers.v1
+namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]

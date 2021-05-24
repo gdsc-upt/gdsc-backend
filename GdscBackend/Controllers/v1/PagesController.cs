@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using gdsc_web_backend.Database;
-using gdsc_web_backend.Models;
+using GdscBackend.Database;
+using GdscBackend.Models;
+using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PageModel = gdsc_web_backend.Models.PageModel;
+using PageModel = GdscBackend.Models.PageModel;
 
-namespace gdsc_web_backend.Controllers.v1
+namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]

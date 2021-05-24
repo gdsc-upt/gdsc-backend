@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using gdsc_web_backend.Database;
-using gdsc_web_backend.Models;
+using GdscBackend.Database;
+using GdscBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.Controllers.v1
+namespace GdscBackend.Controllers.v1
 {
     // This marks this controller as a public one that can be called from the internet
     [ApiController]
