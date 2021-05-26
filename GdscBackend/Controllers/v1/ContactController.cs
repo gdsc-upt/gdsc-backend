@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using gdsc_web_backend.Database;
 using GdscBackend.Models;
 using GdscBackend.Database;
-using GdscBackend.Models;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +35,7 @@ namespace GdscBackend.Controllers.v1
 
             return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
         }
-        
+
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ContactModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,7 +46,7 @@ namespace GdscBackend.Controllers.v1
 
             return entity is null ? NotFound() : Ok(entity);
         }
-        
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ContactModel>>> Get()
@@ -62,6 +60,6 @@ namespace GdscBackend.Controllers.v1
             var entity = await _repository.DeleteAsync(ids);
             return entity is null ? NotFound() : Ok(entity);
         }
-        
+
     }
 }

@@ -4,7 +4,6 @@ using FactoryBot;
 using gdsc_web_backend.Database;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Models;
-using GdscBackend.Models.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -27,7 +26,7 @@ namespace GdscBackend.Tests
         [Fact]
         public async void Get_Should_Return_All_Contacts()
         {
-            
+
             _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(_testData).Object);
             _controller = new ContactController(_repository);
 
@@ -91,11 +90,11 @@ namespace GdscBackend.Tests
             //
             _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(_testData).Object);
             _controller = new ContactController(_repository);
-            
+
             // Act
             var deleted = await _controller.Delete(_testData.First().Id);
             var result = deleted.Result as OkObjectResult;
-            
+
             // Assert
             var entity = result.Value as ContactModel;
             Assert.NotNull(result);
@@ -110,13 +109,13 @@ namespace GdscBackend.Tests
             //
             _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(_testData).Object);
             _controller = new ContactController(_repository);
-            
+
             // Act
             string[] listOfIds = {_testData.First().Id, _testData.ElementAt(1).Id};
-            List<ContactModel> listOfContacts = new() {_testData.First(), _testData.ElementAt(1)}; 
+            List<ContactModel> listOfContacts = new() {_testData.First(), _testData.ElementAt(1)};
             var deleted = await _controller.Delete(listOfIds);
             var result = deleted.Result as OkObjectResult;
-            
+
             // Assert
             var entity = result.Value as IEnumerable<ContactModel>;
             Assert.NotNull(result);
@@ -129,7 +128,7 @@ namespace GdscBackend.Tests
             _controller = null;
             _repository = null;
         }
-        
+
         private static IEnumerable<ContactModel> _getTestData()
         {
             Bot.Define(x => new ContactModel

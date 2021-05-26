@@ -4,7 +4,6 @@ using FactoryBot;
 using gdsc_web_backend.Database;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Models;
-using GdscBackend.Models.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -27,7 +26,7 @@ namespace GdscBackend.Tests
         [Fact]
         public async void Get_Should_Return_All_Members()
         {
-            
+
             _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(_testData).Object);
             _controller = new MembersController(_repository);
 
@@ -90,15 +89,15 @@ namespace GdscBackend.Tests
             // Arrange
             _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(_testData).Object);
             _controller = new MembersController(_repository);
-            
+
             //Act
 
             var anElementById = _testData.First();
             var actionResult = await _controller.Get(anElementById.Id);
             var result = actionResult.Result as OkObjectResult;
-            
+
             //Assert
-            
+
             Assert.NotNull(result);
             var entity = result.Value as MemberModel;
             Assert.Equal(anElementById, entity);
@@ -110,11 +109,11 @@ namespace GdscBackend.Tests
             //
             _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(_testData).Object);
             _controller = new MembersController(_repository);
-            
+
             // Act
             var deleted = await _controller.Delete(_testData.First().Id);
             var result = deleted.Result as OkObjectResult;
-            
+
             // Assert
             var entity = result.Value as MemberModel;
             Assert.NotNull(result);
@@ -128,7 +127,7 @@ namespace GdscBackend.Tests
             _controller = null;
             _repository = null;
         }
-        
+
         private static IEnumerable<MemberModel> _getTestData()
         {
             Bot.Define(x => new MemberModel

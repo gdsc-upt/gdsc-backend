@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using gdsc_web_backend.Database;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.ViewModels;
@@ -14,8 +13,8 @@ namespace GdscBackend.Controllers.v1
     [ApiController]
     [ApiVersion("1")]
     [Route("api/v1/members")]
-    [Consumes(MediaTypeNames.Application.Json)] 
-    [Produces(MediaTypeNames.Application.Json)] 
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     public class MembersController : ControllerBase
     {
         private readonly IRepository<MemberModel> _repository;
@@ -31,7 +30,7 @@ namespace GdscBackend.Controllers.v1
         {
             return Ok((await _repository.GetAsync()).ToList());
         }
-        
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,7 +52,7 @@ namespace GdscBackend.Controllers.v1
 
             return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
         }
-        
+
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
