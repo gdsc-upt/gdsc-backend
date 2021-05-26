@@ -28,7 +28,6 @@ namespace GdscBackend.Tests
             var actionResult = await controller.Delete(_testData.First().Id);
 
             Assert.Equal(9,repos.DbSet.Count());
-
         }
         
         [Fact]
