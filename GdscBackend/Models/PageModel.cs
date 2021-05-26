@@ -1,4 +1,4 @@
-﻿namespace gdsc_web_backend.Models
+﻿namespace GdscBackend.Models
 {
     public class PageModel : Model
     {

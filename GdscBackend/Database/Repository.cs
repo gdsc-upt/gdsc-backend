@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using gdsc_web_backend.Models;
+using GdscBackend.Database;
+using GdscBackend.Models;
 using Microsoft.EntityFrameworkCore;
 namespace gdsc_web_backend.Database
 {

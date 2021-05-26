@@ -1,11 +1,13 @@
-using gdsc_web_backend.Models;
+using GdscBackend.Authentication;
+using GdscBackend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace gdsc_web_backend.Database
+namespace GdscBackend.Database
 {
-    public class AppDbContext : DbContext
-    {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public class AppDbContext: IdentityDbContext<User, Role, string>{
+
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 

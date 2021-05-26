@@ -1,6 +1,6 @@
-﻿using gdsc_web_backend.Models.Enums;
+﻿using GdscBackend.Models.Enums;
 
-namespace gdsc_web_backend.Models
+namespace GdscBackend.Models
 {
     public class SettingModel : Model
     {

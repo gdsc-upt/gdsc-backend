@@ -2,14 +2,14 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>gdsc_web_backend.tests</RootNamespace>
+        <RootNamespace>GdscBackend.Tests</RootNamespace>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FactoryBot" Version="1.5.1" />
-        <PackageReference Include="Faker.Net" Version="1.5.136" />
+        <PackageReference Include="Faker.Net" Version="1.5.138" />
         <PackageReference Include="LiquidTestReports.Markdown" Version="1.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.6" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />

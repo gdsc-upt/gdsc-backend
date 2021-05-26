@@ -1,6 +1,6 @@
 using System;
 
-namespace gdsc_web_backend.Models
+namespace GdscBackend.Models
 {
     public interface IModel
     {
