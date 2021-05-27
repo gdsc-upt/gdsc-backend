@@ -13,7 +13,7 @@ namespace GdscBackend.Tests
 {
     public class ContactsControllerTests : TestingBase
     {
-        private readonly IEnumerable<ContactModel> _testData = _getTestData();
+        private static readonly IEnumerable<ContactModel> TestData = _getTestData();
         private ContactController _controller;
         private Repository<ContactModel> _repository;
 
@@ -27,7 +27,7 @@ namespace GdscBackend.Tests
         public async void Get_Should_Return_All_Contacts()
         {
 
-            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(_testData).Object);
+            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
             _controller = new ContactController(_repository);
 
             // Act
@@ -38,7 +38,7 @@ namespace GdscBackend.Tests
             Assert.NotNull(result);
             var items = Assert.IsAssignableFrom<IEnumerable<ContactModel>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
-            Assert.Equal(_testData, items);
+            Assert.Equal(TestData, items);
         }
 
         [Fact]
@@ -88,17 +88,17 @@ namespace GdscBackend.Tests
         public async void Delete_Should_Delete_Contact_By_ID()
         {
             //
-            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(_testData).Object);
+            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
             _controller = new ContactController(_repository);
 
             // Act
-            var deleted = await _controller.Delete(_testData.First().Id);
+            var deleted = await _controller.Delete(TestData.First().Id);
             var result = deleted.Result as OkObjectResult;
 
             // Assert
             var entity = result.Value as ContactModel;
             Assert.NotNull(result);
-            Assert.Equal(_testData.First(), entity);
+            Assert.Equal(TestData.First(), entity);
 
         }
 
@@ -107,12 +107,12 @@ namespace GdscBackend.Tests
         public async void Delete_Multiple_Contacts()
         {
             //
-            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(_testData).Object);
+            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
             _controller = new ContactController(_repository);
 
             // Act
-            string[] listOfIds = {_testData.First().Id, _testData.ElementAt(1).Id};
-            List<ContactModel> listOfContacts = new() {_testData.First(), _testData.ElementAt(1)};
+            string[] listOfIds = {TestData.First().Id, TestData.ElementAt(1).Id};
+            List<ContactModel> listOfContacts = new() {TestData.First(), TestData.ElementAt(1)};
             var deleted = await _controller.Delete(listOfIds);
             var result = deleted.Result as OkObjectResult;
 

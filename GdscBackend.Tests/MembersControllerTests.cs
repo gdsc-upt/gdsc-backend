@@ -13,7 +13,7 @@ namespace GdscBackend.Tests
 {
     public class MembersControllerTests : TestingBase
     {
-        private readonly IEnumerable<MemberModel> _testData = _getTestData();
+        private static readonly IEnumerable<MemberModel> TestData = _getTestData();
         private MembersController _controller;
         private Repository<MemberModel> _repository;
 
@@ -27,7 +27,7 @@ namespace GdscBackend.Tests
         public async void Get_Should_Return_All_Members()
         {
 
-            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(_testData).Object);
+            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
             _controller = new MembersController(_repository);
 
             // Act
@@ -38,7 +38,7 @@ namespace GdscBackend.Tests
             Assert.NotNull(result);
             var items = Assert.IsAssignableFrom<IEnumerable<MemberModel>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
-            Assert.Equal(_testData, items);
+            Assert.Equal(TestData, items);
         }
 
         [Fact]
@@ -87,12 +87,12 @@ namespace GdscBackend.Tests
         public async void Get_Returns_Member_by_ID()
         {
             // Arrange
-            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(_testData).Object);
+            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
             _controller = new MembersController(_repository);
 
             //Act
 
-            var anElementById = _testData.First();
+            var anElementById = TestData.First();
             var actionResult = await _controller.Get(anElementById.Id);
             var result = actionResult.Result as OkObjectResult;
 
@@ -107,17 +107,17 @@ namespace GdscBackend.Tests
         public async void Delete_Should_Delete_Member_By_ID()
         {
             //
-            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(_testData).Object);
+            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
             _controller = new MembersController(_repository);
 
             // Act
-            var deleted = await _controller.Delete(_testData.First().Id);
+            var deleted = await _controller.Delete(TestData.First().Id);
             var result = deleted.Result as OkObjectResult;
 
             // Assert
             var entity = result.Value as MemberModel;
             Assert.NotNull(result);
-            Assert.Equal(_testData.First(), entity);
+            Assert.Equal(TestData.First(), entity);
 
         }
 

@@ -14,7 +14,7 @@ namespace GdscBackend.Tests
 {
     public class SettingsControllerTests : TestingBase
     {
-        private readonly IEnumerable<SettingModel> _testData = _getTestData();
+        private static readonly IEnumerable<SettingModel> TestData = _getTestData();
 
         public SettingsControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
@@ -71,7 +71,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllExamples()
         {
             // Arrange
-            var repostitory = new Repository<SettingModel>(new TestDbContext<SettingModel>(_testData).Object);
+            var repostitory = new Repository<SettingModel>(new TestDbContext<SettingModel>(TestData).Object);
             var controller = new SettingsController(repostitory);
 
             // Act
@@ -82,12 +82,12 @@ namespace GdscBackend.Tests
             Assert.NotNull(result);
             var items = Assert.IsAssignableFrom<IEnumerable<SettingModel>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
-            Assert.Equal(_testData, items);
+            Assert.Equal(TestData, items);
         }
 
         private static IEnumerable<SettingModel> _getTestData()
         {
-            Bot.Define(x => new SettingModel()
+            Bot.Define(x => new SettingModel
             {
                 Id = x.Strings.Guid(),
                 Name = x.Strings.Any(),
