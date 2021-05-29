@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FactoryBot;
-using gdsc_web_backend.Database;
+using Faker;
 using GdscBackend.Controllers.v1;
+using GdscBackend.Database;
 using GdscBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,6 @@ namespace GdscBackend.Tests
         [Fact]
         public async void Get_Should_Return_All_Members()
         {
-
             _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
             _controller = new MembersController(_repository);
 
@@ -47,15 +47,15 @@ namespace GdscBackend.Tests
             // Arrange
             var member1 = new MemberModel
             {
-                Name = Faker.Name.FullName(),
-                Email = Faker.Lorem.Words(3).ToString(),
-                TeamId = Faker.Lorem.Words(1).ToString()
+                Name = Name.FullName(),
+                Email = Lorem.Words(3).ToString(),
+                TeamId = Lorem.Words(1).ToString()
             };
             var member2 = new MemberModel
             {
-                Name = Faker.Name.FullName(),
-                Email = Faker.Lorem.Words(3).ToString(),
-                TeamId = Faker.Lorem.Words(1).ToString()
+                Name = Name.FullName(),
+                Email = Lorem.Words(3).ToString(),
+                TeamId = Lorem.Words(1).ToString()
             };
 
             // Act
@@ -83,7 +83,6 @@ namespace GdscBackend.Tests
         }
 
         [Fact]
-
         public async void Get_Returns_Member_by_ID()
         {
             // Arrange
@@ -118,7 +117,6 @@ namespace GdscBackend.Tests
             var entity = result.Value as MemberModel;
             Assert.NotNull(result);
             Assert.Equal(TestData.First(), entity);
-
         }
 
         public override void Dispose()

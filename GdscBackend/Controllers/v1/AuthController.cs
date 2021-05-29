@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using GdscBackend.Authentication;
+using GdscBackend.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +18,9 @@ namespace GdscBackend.Controllers.v1
     [Route("v1/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userModel;
-        private readonly RoleManager<Role> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly RoleManager<Role> _roleManager;
+        private readonly UserManager<User> _userModel;
 
         public AuthController(UserManager<User> userModel, RoleManager<Role> roleManager,
             IConfiguration configuration)
@@ -47,7 +47,7 @@ namespace GdscBackend.Controllers.v1
             var authClaims = new List<Claim>
             {
                 new(ClaimTypes.Name, user.UserName),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
@@ -71,41 +71,56 @@ namespace GdscBackend.Controllers.v1
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult<UserViewModel>> Register(RegisterViewModel model)
         {
             var rolesDoesNotExist = !await _roleManager.RoleExistsAsync("admin");
+            var admins = await _userModel.GetUsersInRoleAsync("admin");
 
-            if (rolesDoesNotExist)
+            if (rolesDoesNotExist || admins.Count == 0)
             {
                 await AddRoles();
-                await AddUser(model, true);
+                return await AddUser(model, true);
             }
-            else
+
+            var userWithSameName = await _userModel.FindByNameAsync(model.Username);
+            var userWithSameEmail = await _userModel.FindByEmailAsync(model.Email);
+            var userExists = userWithSameEmail is not null || userWithSameName is not null;
+            if (userExists)
             {
-                var userExists = await _userModel.FindByNameAsync(model.Username);
-                if (userExists != null)
-                    return BadRequest("User already exists");
-
-                await AddUser(model, false);
+                return BadRequest("User already exists, please login");
             }
 
-            return Ok();
+            return await AddUser(model, false);
         }
 
         private async Task AddRoles()
         {
             var role = new Role {Id = Guid.NewGuid().ToString(), Name = "admin"};
             var result = await _roleManager.CreateAsync(role);
-            if (!result.Succeeded) Console.WriteLine(result.Errors);
+            if (!result.Succeeded)
+            {
+                Console.WriteLine(result.Errors);
+            }
         }
 
-        private async Task AddUser(RegisterViewModel model, bool makeAdmin)
+        private async Task<UserViewModel> AddUser(RegisterViewModel model, bool makeAdmin)
         {
             var puser = new User {UserName = model.Username, Email = model.Email};
 
-            await _userModel.CreateAsync(puser, model.Password);
+            var result = await _userModel.CreateAsync(puser, model.Password);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(error => error.Description);
+                return new UserViewModel {Errors = errors};
+            }
+
             var user = await _userModel.FindByNameAsync(puser.UserName);
-            if (makeAdmin) await _userModel.AddToRoleAsync(user, "admin");
+            if (makeAdmin)
+            {
+                await _userModel.AddToRoleAsync(user, "admin");
+            }
+
+            return new UserViewModel {Id = user.Id, Email = user.Email, UserName = user.UserName};
         }
     }
 }

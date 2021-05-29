@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FactoryBot;
-using gdsc_web_backend.Database;
+using Faker;
 using GdscBackend.Controllers.v1;
+using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.Models.Enums;
 using Microsoft.AspNetCore.Http;
@@ -28,19 +29,19 @@ namespace GdscBackend.Tests
             var controller = new SettingsController(repository);
             var example1 = new SettingModel
             {
-                Name = Faker.Lorem.Words(1).ToString(),
-                Slug = Faker.Lorem.Words(1).ToString(),
-                Type = Faker.Enum.Random<SettingTypeEnum>(),
-                Value = Faker.Boolean.Random(),
-                Image = Faker.Lorem.Words(1).ToString()
+                Name = Lorem.Words(1).ToString(),
+                Slug = Lorem.Words(1).ToString(),
+                Type = Enum.Random<SettingTypeEnum>(),
+                Value = Boolean.Random(),
+                Image = Lorem.Words(1).ToString()
             };
             var example2 = new SettingModel
             {
-                Name = Faker.Lorem.Words(1).ToString(),
-                Slug = Faker.Lorem.Words(1).ToString(),
-                Type = Faker.Enum.Random<SettingTypeEnum>(),
-                Value = Faker.Boolean.Random(),
-                Image = Faker.Lorem.Words(1).ToString()
+                Name = Lorem.Words(1).ToString(),
+                Slug = Lorem.Words(1).ToString(),
+                Type = Enum.Random<SettingTypeEnum>(),
+                Value = Boolean.Random(),
+                Image = Lorem.Words(1).ToString()
             };
 
             // Act

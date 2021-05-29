@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using FactoryBot;
-using gdsc_web_backend.Database;
+using Faker;
 using GdscBackend.Controllers.v1;
+using GdscBackend.Database;
 using GdscBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,6 @@ namespace GdscBackend.Tests
         [Fact]
         public async void Get_Should_Return_All_Contacts()
         {
-
             _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
             _controller = new ContactController(_repository);
 
@@ -47,17 +47,17 @@ namespace GdscBackend.Tests
             // Arrange
             var contact1 = new ContactModel
             {
-                Name = Faker.Name.FullName(),
-                Email = Faker.Lorem.Words(3).ToString(),
-                Subject = Faker.Lorem.Words(1).ToString(),
-                Text = Faker.Lorem.Words(3).ToString()
+                Name = Name.FullName(),
+                Email = Lorem.Words(3).ToString(),
+                Subject = Lorem.Words(1).ToString(),
+                Text = Lorem.Words(3).ToString()
             };
             var contact2 = new ContactModel
             {
-                Name = Faker.Name.FullName(),
-                Email = Faker.Lorem.Words(3).ToString(),
-                Subject = Faker.Lorem.Words(1).ToString(),
-                Text = Faker.Lorem.Words(3).ToString()
+                Name = Name.FullName(),
+                Email = Lorem.Words(3).ToString(),
+                Subject = Lorem.Words(1).ToString(),
+                Text = Lorem.Words(3).ToString()
             };
 
             // Act
@@ -99,11 +99,9 @@ namespace GdscBackend.Tests
             var entity = result.Value as ContactModel;
             Assert.NotNull(result);
             Assert.Equal(TestData.First(), entity);
-
         }
 
         [Fact]
-
         public async void Delete_Multiple_Contacts()
         {
             //
@@ -136,7 +134,7 @@ namespace GdscBackend.Tests
                 Id = x.Strings.Guid(),
                 Name = x.Names.FullName(),
                 Email = x.Strings.Any(),
-                Subject= x.Strings.Any(),
+                Subject = x.Strings.Any(),
                 Text = x.Strings.Any(),
                 Created = x.Dates.Any(),
                 Updated = x.Dates.Any()

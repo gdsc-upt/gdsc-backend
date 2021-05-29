@@ -8,8 +8,6 @@ namespace GdscBackend.Tests
 {
     public class TestDbContext<T> where T : class, IModel
     {
-        public AppDbContext Object { get; }
-
         public TestDbContext(IEnumerable<T> testData = null)
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -28,5 +26,7 @@ namespace GdscBackend.Tests
             Object.Set<T>().AddRange(testData);
             Object.SaveChanges();
         }
+
+        public AppDbContext Object { get; }
     }
 }

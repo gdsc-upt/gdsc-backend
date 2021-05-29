@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -15,6 +14,5 @@ namespace GdscBackend.Database
         Task<T> UpdateAsync([NotNull] T entity);
         Task<T> DeleteAsync([NotNull] string id);
         Task<IEnumerable<T>> DeleteAsync([NotNull] IEnumerable<string> ids);
-
     }
 }

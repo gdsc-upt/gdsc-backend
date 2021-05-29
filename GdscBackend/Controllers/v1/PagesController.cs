@@ -7,7 +7,6 @@ using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PageModel = GdscBackend.Models.PageModel;
 
 namespace GdscBackend.Controllers.v1
 {

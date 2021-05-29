@@ -1,17 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using System.Xml.XPath;
-using GdscBackend.Authentication;
-using GdscBackend.Database;
-using GdscBackend.Models;
+using GdscBackend.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GdscBackend.Controllers.v1
 {
@@ -38,7 +32,7 @@ namespace GdscBackend.Controllers.v1
         public async Task<ActionResult<IEnumerable<Role>>> GetByRole(string roleName)
         {
             //return Ok((await _repository.GetAsync()).ToList());
-            return Ok((await _userManager.GetUsersInRoleAsync(roleName)));
+            return Ok(await _userManager.GetUsersInRoleAsync(roleName));
         }
 
         [HttpGet("{id}")]
@@ -61,7 +55,10 @@ namespace GdscBackend.Controllers.v1
             //entity = await _userManager.CreateAsync(entity);
 
             if (result.Succeeded)
+            {
                 return await _userManager.FindByNameAsync(entity.UserName);
+            }
+
             return BadRequest(result.Errors);
 
             //return CreatedAtAction(nameof(Post), new {result.Id}, result);

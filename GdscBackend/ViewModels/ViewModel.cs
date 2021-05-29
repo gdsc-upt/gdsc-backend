@@ -1,7 +1,6 @@
 using System;
-using Microsoft.AspNetCore.Mvc;
 
-namespace gdsc_web_backend.ViewModels
+namespace GdscBackend.ViewModels
 {
     public abstract class ViewModel
     {

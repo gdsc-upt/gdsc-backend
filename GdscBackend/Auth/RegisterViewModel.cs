@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace GdscBackend.Authentication
+namespace GdscBackend.Auth
 {
     public class RegisterViewModel
     {
