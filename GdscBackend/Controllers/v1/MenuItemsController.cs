@@ -11,7 +11,7 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/menu-items")]
+    [Route("v1/menu-items")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     public class MenuItemsController : ControllerBase
@@ -30,12 +30,12 @@ namespace GdscBackend.Controllers.v1
         {
             return Ok((await _repository.GetAsync()).ToList());
         }
-        
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        
+
         public async Task<ActionResult<MenuItemModel>> Get([FromRoute] string id)
         {
             var entity = await _repository.GetAsync(id);
@@ -62,7 +62,7 @@ namespace GdscBackend.Controllers.v1
         public async Task<ActionResult<MenuItemModel>> Delete([FromRoute] string id)
         {
             var entity = await _repository.DeleteAsync(id);
-            
+
             return entity is null ? NotFound() : Ok(entity);
         }
 
@@ -73,7 +73,7 @@ namespace GdscBackend.Controllers.v1
         public async Task<ActionResult<MenuItemModel>> Update(MenuItemModel entity)
         {
             entity = await _repository.UpdateAsync(entity);
-            
+
             return CreatedAtAction(nameof(Update), new {entity.Id}, entity);
         }
     }

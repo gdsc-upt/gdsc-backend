@@ -11,7 +11,7 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/contact")]
+    [Route("v1/contact")]
     public class ContactController : ControllerBase
     {
         private readonly IRepository<ContactModel> _repository;

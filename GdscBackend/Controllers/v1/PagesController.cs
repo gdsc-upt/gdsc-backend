@@ -12,7 +12,7 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/pages")]
+    [Route("v1/pages")]
     public class PagesController : ControllerBase
     {
         private readonly IRepository<PageModel> _repository;

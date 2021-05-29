@@ -17,7 +17,7 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/roles")]
+    [Route("v1/roles")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [Authorize(Roles="admin")]
@@ -39,7 +39,7 @@ namespace GdscBackend.Controllers.v1
             //return Ok((await _repository.GetAsync()).ToList());
             return Ok((await _userManager.GetUsersInRoleAsync(roleName)));
         }
-        
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,24 +50,24 @@ namespace GdscBackend.Controllers.v1
 
             return entity is null ? NotFound() : Ok(entity);
         }
-        
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        
+
         public async Task<ActionResult<User>> Post(User entity)
         {
 
             var result = await _userManager.CreateAsync(entity);
             //entity = await _userManager.CreateAsync(entity);
-            
+
             if (result.Succeeded)
                 return await _userManager.FindByNameAsync(entity.UserName);
             return BadRequest(result.Errors);
-            
+
             //return CreatedAtAction(nameof(Post), new {result.Id}, result);
         }
-        
+
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

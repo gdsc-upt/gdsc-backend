@@ -16,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace GdscBackend.Controllers.v1
 {
-    [Route("api/v1/auth")]
+    [Route("v1/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -78,7 +78,7 @@ namespace GdscBackend.Controllers.v1
             var roleExists = await _roleManager.RoleExistsAsync("admin");
 
 
-            
+
             if (!roleExists)
             {
                 addRoles();
@@ -89,31 +89,31 @@ namespace GdscBackend.Controllers.v1
                 var userExists = await _userModel.FindByNameAsync(model.Username);
                 if (userExists != null)
                     return BadRequest("User already exists");
-                
+
                 await addUser(model, false);
             }
-            
+
 
             /*var user = new User();
             user.Email = model.Email;
             user.SecurityStamp = Guid.NewGuid().ToString();
             user.UserName = model.Username;
             user.Id = Guid.NewGuid().ToString();
-            
+
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };*/
-            
+
 
             /*var result = await _userModel.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 return BadRequest("User creation failed! Please check user details and try again.");*/
-            
+
             //user = await _userModel.FindByNameAsync(model.Username);
             //return CreatedAtAction(nameof(Register), new {user.Id}, model);
-            
+
             return Ok();
         }
 
@@ -124,7 +124,7 @@ namespace GdscBackend.Controllers.v1
             role.Name = "admin";
             _roleManager.CreateAsync(role);
         }
-        
+
         private async Task<ActionResult<User>> addUser(RegisterViewModel registerViewModel, bool isAdmin)
         {
             var puser = new User {UserName = registerViewModel.Username, Email = registerViewModel.Email};
