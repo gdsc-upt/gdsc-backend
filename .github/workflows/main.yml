@@ -49,7 +49,7 @@ jobs:
         env:
           BRANCH: ${{ needs.build.outputs.BRANCH }}
         with:
-          host: api.dscupt.tech
+          host: gdscupt.tech
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: sudo /opt/deploy/_deploy.sh /home/docker/gdsc/backend-${{ env.BRANCH }}
+          script: sudo /home/docker/deploy/deploy.sh /home/docker/gdsc/backend-${{ env.BRANCH }}
