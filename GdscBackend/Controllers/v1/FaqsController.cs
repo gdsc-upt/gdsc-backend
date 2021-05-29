@@ -4,7 +4,6 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using GdscBackend.Database;
 using GdscBackend.Models;
-using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -47,8 +46,9 @@ namespace GdscBackend.Controllers.v1
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(FaqModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType( StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<FaqModel>> Post(FaqModel entity)
         {
             entity = await _repository.AddAsync(entity);
@@ -57,9 +57,10 @@ namespace GdscBackend.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType( StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<FaqModel>> Delete([FromRoute] string id)
         {
             var entity = await _repository.DeleteAsync(id);
