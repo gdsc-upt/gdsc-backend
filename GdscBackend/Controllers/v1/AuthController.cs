@@ -46,11 +46,11 @@ namespace GdscBackend.Controllers.v1
 
             var authClaims = new List<Claim>
             {
-                new(ClaimTypes.Name, user.UserName),
+                new("name", user.UserName),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
+            authClaims.AddRange(userRoles.Select(userRole => new Claim("roles", userRole)));
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
