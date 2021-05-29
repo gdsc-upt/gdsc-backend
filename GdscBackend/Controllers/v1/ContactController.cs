@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using GdscBackend.Models;
 using GdscBackend.Database;
 using GdscBackend.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GdscBackend.Controllers.v1
 {
     [ApiController]
+    [Authorize(Roles = "admin")]
     [ApiVersion("1")]
     [Route("v1/contact")]
     public class ContactController : ControllerBase
@@ -47,7 +49,9 @@ namespace GdscBackend.Controllers.v1
             return entity is null ? NotFound() : Ok(entity);
         }
 
+
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ContactModel>>> Get()
         {
@@ -60,6 +64,5 @@ namespace GdscBackend.Controllers.v1
             var entity = await _repository.DeleteAsync(ids);
             return entity is null ? NotFound() : Ok(entity);
         }
-
     }
 }

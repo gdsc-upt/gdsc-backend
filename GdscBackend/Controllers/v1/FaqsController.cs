@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
+    [Authorize(Roles = "admin")]
     [Route("v1/faqs")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
@@ -25,6 +27,7 @@ namespace GdscBackend.Controllers.v1
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FaqModel>>> Get()
         {
@@ -32,6 +35,7 @@ namespace GdscBackend.Controllers.v1
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

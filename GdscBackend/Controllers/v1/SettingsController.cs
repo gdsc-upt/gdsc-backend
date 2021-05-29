@@ -4,6 +4,7 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace GdscBackend.Controllers.v1
     // This marks this controller as a public one that can be called from the internet
     [ApiController]
     [ApiVersion("1")]
+    [Authorize(Roles = "admin")]
     // This sets the URL that we can enter to call the controller's methods
     // ex: https://localhost:5000/v1/examples
     [Route("v1/settings")]
@@ -34,6 +36,7 @@ namespace GdscBackend.Controllers.v1
         ///     List of ExampleModel
         /// </returns>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<SettingModel>>> Get()
         {
@@ -48,6 +51,7 @@ namespace GdscBackend.Controllers.v1
         ///     ExampleModel
         /// </returns>
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

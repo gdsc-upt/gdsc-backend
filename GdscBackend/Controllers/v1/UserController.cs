@@ -18,9 +18,10 @@ namespace GdscBackend.Controllers.v1
     [ApiController]
     [ApiVersion("1")]
     [Route("v1/roles")]
+    [Authorize(Roles = "admin")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
-    [Authorize(Roles="admin")]
+    [Authorize(Roles = "admin")]
     public class UserController : ControllerBase
     {
         private readonly RoleManager<Role> _roleManager;
@@ -54,10 +55,8 @@ namespace GdscBackend.Controllers.v1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
         public async Task<ActionResult<User>> Post(User entity)
         {
-
             var result = await _userManager.CreateAsync(entity);
             //entity = await _userManager.CreateAsync(entity);
 
