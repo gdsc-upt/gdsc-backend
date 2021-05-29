@@ -6,25 +6,23 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using GdscBackend.Authentication;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GdscBackend.Controllers.v1
 {
-    [Route("v1/auth")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    [Route("v1/auth")]
+    public class AuthController : ControllerBase
     {
         private readonly UserManager<User> _userModel;
         private readonly RoleManager<Role> _roleManager;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationController(UserManager<User> userModel, RoleManager<Role> roleManager,
+        public AuthController(UserManager<User> userModel, RoleManager<Role> roleManager,
             IConfiguration configuration)
         {
             _userModel = userModel;
@@ -38,7 +36,8 @@ namespace GdscBackend.Controllers.v1
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             var user = await _userModel.FindByNameAsync(model.Username);
-            if (user == null || !await _userModel.CheckPasswordAsync(user, model.Password))
+            var wrongPassword = !await _userModel.CheckPasswordAsync(user, model.Password);
+            if (user == null || wrongPassword)
             {
                 return Unauthorized();
             }
@@ -50,6 +49,7 @@ namespace GdscBackend.Controllers.v1
                 new(ClaimTypes.Name, user.UserName),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
+
             authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
@@ -73,16 +73,12 @@ namespace GdscBackend.Controllers.v1
         [Route("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            // check if there is at least one user, if not create one
+            var rolesDoesNotExist = !await _roleManager.RoleExistsAsync("admin");
 
-            var roleExists = await _roleManager.RoleExistsAsync("admin");
-
-
-
-            if (!roleExists)
+            if (rolesDoesNotExist)
             {
-                addRoles();
-                await addUser(model, true);
+                await AddRoles();
+                await AddUser(model, true);
             }
             else
             {
@@ -90,53 +86,26 @@ namespace GdscBackend.Controllers.v1
                 if (userExists != null)
                     return BadRequest("User already exists");
 
-                await addUser(model, false);
+                await AddUser(model, false);
             }
-
-
-            /*var user = new User();
-            user.Email = model.Email;
-            user.SecurityStamp = Guid.NewGuid().ToString();
-            user.UserName = model.Username;
-            user.Id = Guid.NewGuid().ToString();
-
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
-            };*/
-
-
-            /*var result = await _userModel.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-                return BadRequest("User creation failed! Please check user details and try again.");*/
-
-            //user = await _userModel.FindByNameAsync(model.Username);
-            //return CreatedAtAction(nameof(Register), new {user.Id}, model);
 
             return Ok();
         }
 
-        private void addRoles()
+        private async Task AddRoles()
         {
-            //var role = new IdentityRole();
-            var role = new Role();
-            role.Name = "admin";
-            _roleManager.CreateAsync(role);
+            var role = new Role {Id = Guid.NewGuid().ToString(), Name = "admin"};
+            var result = await _roleManager.CreateAsync(role);
+            if (!result.Succeeded) Console.WriteLine(result.Errors);
         }
 
-        private async Task<ActionResult<User>> addUser(RegisterViewModel registerViewModel, bool isAdmin)
+        private async Task AddUser(RegisterViewModel model, bool makeAdmin)
         {
-            var puser = new User {UserName = registerViewModel.Username, Email = registerViewModel.Email};
+            var puser = new User {UserName = model.Username, Email = model.Email};
 
-            var powerUser = await _userModel.CreateAsync(puser, registerViewModel.Password);
-            if (!powerUser.Succeeded) return BadRequest(powerUser.Errors);
+            await _userModel.CreateAsync(puser, model.Password);
             var user = await _userModel.FindByNameAsync(puser.UserName);
-            if (isAdmin)
-                await _userModel.AddToRoleAsync(user, "admin");
-            return user;
-
+            if (makeAdmin) await _userModel.AddToRoleAsync(user, "admin");
         }
     }
-
 }

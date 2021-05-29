@@ -45,7 +45,7 @@ namespace GdscBackend.Controllers.v1
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(EventModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<EventModel>> Post(EventModel entity)
         {
@@ -54,7 +54,7 @@ namespace GdscBackend.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(EventModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EventModel>> Delete([FromRoute] string id)
@@ -70,7 +70,7 @@ namespace GdscBackend.Controllers.v1
         public async Task<ActionResult<EventModel>> Update(EventModel entity)
         {
             entity = await _repository.UpdateAsync(entity);
-            return CreatedAtAction(nameof(Update), new {entity.Id}, entity);
+            return entity is null ? BadRequest() : Ok(entity);
         }
     }
 }

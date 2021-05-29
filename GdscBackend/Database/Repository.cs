@@ -54,7 +54,7 @@ namespace gdsc_web_backend.Database
 
         public async Task<T> UpdateAsync([NotNull] T entity)
         {
-            if (entity?.Id == null) return null;
+            if (entity?.Id is null || await GetAsync(entity.Id) is null) return null;
 
             entity.Updated = DateTime.Now;
             entity = DbSet.Update(entity).Entity;
@@ -78,7 +78,7 @@ namespace gdsc_web_backend.Database
         public async Task<IEnumerable<T>> DeleteAsync([NotNull] IEnumerable<string> ids)
         {
             var entities = await DbSet.Where(e => ids.Contains(e.Id)).ToListAsync();
-            
+
             DbSet.RemoveRange(entities);
             await Save;
 
