@@ -24,6 +24,7 @@ namespace GdscBackend.Controllers.v1
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ContactModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ContactModel>>> Post(ContactModel entity)
@@ -51,7 +52,6 @@ namespace GdscBackend.Controllers.v1
 
 
         [HttpGet]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ContactModel>>> Get()
         {
