@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FactoryBot;
-using gdsc_web_backend.Controllers.v1;
-using gdsc_web_backend.Database;
-using gdsc_web_backend.Models;
+using GdscBackend.Controllers.v1;
+using GdscBackend.Database;
+using GdscBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace gdsc_web_backend.tests
+namespace GdscBackend.Tests
 {
     public class TechnologiesControllerTests : TestingBase
     {
