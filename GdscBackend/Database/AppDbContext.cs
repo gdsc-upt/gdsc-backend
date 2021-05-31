@@ -20,5 +20,6 @@ namespace GdscBackend.Database
         public DbSet<PageModel> Pages { get; set; }
         public DbSet<SettingModel> Settings { get; set; }
         public DbSet<TeamModel> Teams { get; set; }
+        public DbSet<TechnologyModel> Technologies { get; set; }
     }
 }
