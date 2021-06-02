@@ -36,7 +36,6 @@ namespace GdscBackend.Tests
             // Act
             var added1 = controller.Post(example1).Result as CreatedResult;
             var added2 = controller.Post(example2).Result as CreatedResult;
-
             // Verify if the added values are not null and if they were transmitted well
             Assert.NotNull(added1);
             Assert.Equal(StatusCodes.Status201Created, added1.StatusCode);
