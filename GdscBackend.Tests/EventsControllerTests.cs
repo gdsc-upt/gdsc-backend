@@ -46,7 +46,7 @@ namespace GdscBackend.Tests
             Assert.Equal(StatusCodes.Status201Created, added2.StatusCode);
             Assert.Equal(example2, added2.Value as EventModel);
         }
-
+        
         [Fact]
         public void Post_ReturnsError_WhenIdNotUnique()
         {
