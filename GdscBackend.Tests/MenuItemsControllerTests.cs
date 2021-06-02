@@ -34,6 +34,13 @@ namespace GdscBackend.Tests
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
             var controller = new MenuItemsController(repository);
+            var firstObj = repository.DbSet.First();
+            var actionResult = await controller.Get(firstObj.Id);
+            var returnedResult = actionResult.Result as OkObjectResult;
+            
+           Assert.NotNull(returnedResult);
+            Assert.Equal(StatusCodes.Status200OK,returnedResult.StatusCode);
+            Assert.Equal(firstObj,returnedResult.Value);
         }
 
         [Fact]
@@ -56,6 +63,16 @@ namespace GdscBackend.Tests
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
             var controller = new MenuItemsController(repository);
+            var deletedobj = repository.DbSet.First();
+
+            var actionResult = await controller.Delete(deletedobj.Id);
+            var resultResult = actionResult.Result as OkObjectResult;
+            var actionResult1 = await controller.Get(deletedobj.Id);
+            var result1Result = actionResult1.Result as NotFoundResult;
+            
+            Assert.NotNull(result1Result);
+            Assert.Equal(StatusCodes.Status404NotFound,result1Result.StatusCode);
+            Assert.Equal(deletedobj,resultResult.Value);
         }
 
         [Fact]
