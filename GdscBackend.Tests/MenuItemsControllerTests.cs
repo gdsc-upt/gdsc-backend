@@ -1,6 +1,6 @@
 namespace GdscBackend.Tests
 {
-    public class AuthenticationController
+    public class MenuItemsControllerTests
     {
         
     }
