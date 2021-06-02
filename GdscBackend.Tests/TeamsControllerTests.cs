@@ -19,11 +19,9 @@ namespace GdscBackend.Tests
     public class TeamsControllerTests : TestingBase
     {
         private readonly IEnumerable<TeamModel> _testData = _getTestData();
-
         public TeamsControllerTests(ITestOutputHelper helper) : base(helper)
         {
         }
-
         [Fact]
         public async void Delete_Returns_OkResult()
         {
@@ -37,16 +35,13 @@ namespace GdscBackend.Tests
             var expectedResult = await controller.Get(deletedVar.Id);
             var badRequestVal = expectedResult.Result as NotFoundResult;
             
-
             Assert.NotNull(actionResult);
             Assert.Equal(deletedVar, actionResultVal.Value);
             Assert.Null(expectedResult.Value);
             Assert.Equal(StatusCodes.Status200OK, actionResultVal.StatusCode);
             Assert.NotNull(badRequestVal);
             Assert.Equal(StatusCodes.Status404NotFound,badRequestVal.StatusCode);
-            
         }
-
         [Fact]
         public async void Post_ReturnsCreatedObject()
         {
@@ -82,7 +77,6 @@ namespace GdscBackend.Tests
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
             Assert.Equal(team2, entity2);
         }
-
         [Fact]
         public async void Get_ReturnsAllExamples()
         {
@@ -97,7 +91,6 @@ namespace GdscBackend.Tests
             WriteLine(items);
             Assert.Equal(_testData, items);
         }
-
         [Fact]
         public async void Get_ReturnsAllExamplesById()
         {
@@ -110,7 +103,6 @@ namespace GdscBackend.Tests
             WriteLine(result.Value);
             WriteLine(_testData.First());
         }
-
         private static IEnumerable<TeamModel> _getTestData()
         {
             Bot.Define(x => new TeamModel
