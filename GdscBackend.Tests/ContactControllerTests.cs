@@ -109,8 +109,8 @@ namespace GdscBackend.Tests
             _controller = new ContactController(_repository);
 
             // Act
-            string[] listOfIds = {TestData.First().Id, TestData.ElementAt(1).Id};
-            List<ContactModel> listOfContacts = new() {TestData.First(), TestData.ElementAt(1)};
+            string[] listOfIds = { TestData.First().Id, TestData.ElementAt(1).Id };
+            List<ContactModel> listOfContacts = new() { TestData.First(), TestData.ElementAt(1) };
             var deleted = await _controller.Delete(listOfIds);
             var result = deleted.Result as OkObjectResult;
 

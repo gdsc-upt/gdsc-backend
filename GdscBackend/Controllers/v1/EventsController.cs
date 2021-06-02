@@ -50,7 +50,7 @@ namespace GdscBackend.Controllers.v1
         public async Task<ActionResult<EventModel>> Post(EventModel entity)
         {
             entity = await _repository.AddAsync(entity);
-            return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
+            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
         }
 
         [HttpDelete("{id}")]

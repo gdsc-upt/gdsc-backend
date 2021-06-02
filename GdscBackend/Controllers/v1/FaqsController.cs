@@ -48,19 +48,19 @@ namespace GdscBackend.Controllers.v1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType( StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<FaqModel>> Post(FaqModel entity)
         {
             entity = await _repository.AddAsync(entity);
 
-            return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
+            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType( StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<FaqModel>> Delete([FromRoute] string id)
         {
             var entity = await _repository.DeleteAsync(id);

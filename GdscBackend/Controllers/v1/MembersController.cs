@@ -54,7 +54,7 @@ namespace GdscBackend.Controllers.v1
         {
             entity = await _repository.AddAsync(entity);
 
-            return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
+            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
         }
 
         [HttpDelete("{id}")]

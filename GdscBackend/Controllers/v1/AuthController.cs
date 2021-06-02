@@ -95,7 +95,7 @@ namespace GdscBackend.Controllers.v1
 
         private async Task AddRoles()
         {
-            var role = new Role {Id = Guid.NewGuid().ToString(), Name = "admin"};
+            var role = new Role { Id = Guid.NewGuid().ToString(), Name = "admin" };
             var result = await _roleManager.CreateAsync(role);
             if (!result.Succeeded)
             {
@@ -105,13 +105,13 @@ namespace GdscBackend.Controllers.v1
 
         private async Task<UserViewModel> AddUser(RegisterViewModel model, bool makeAdmin)
         {
-            var puser = new User {UserName = model.Username, Email = model.Email};
+            var puser = new User { UserName = model.Username, Email = model.Email };
 
             var result = await _userModel.CreateAsync(puser, model.Password);
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(error => error.Description);
-                return new UserViewModel {Errors = errors};
+                return new UserViewModel { Errors = errors };
             }
 
             var user = await _userModel.FindByNameAsync(puser.UserName);
@@ -120,7 +120,7 @@ namespace GdscBackend.Controllers.v1
                 await _userModel.AddToRoleAsync(user, "admin");
             }
 
-            return new UserViewModel {Id = user.Id, Email = user.Email, UserName = user.UserName};
+            return new UserViewModel { Id = user.Id, Email = user.Email, UserName = user.UserName };
         }
     }
 }

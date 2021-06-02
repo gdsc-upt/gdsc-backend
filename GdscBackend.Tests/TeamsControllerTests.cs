@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FactoryBot;
+using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
@@ -48,11 +49,11 @@ namespace GdscBackend.Tests
             var controller = new TeamsController(repos);
             var team1 = new TeamModel
             {
-                Name = Faker.Lorem.Words(3).ToString()
+                Name = Lorem.Words(3).ToString()
             };
             var team2 = new TeamModel
             {
-                Name = Faker.Lorem.Words(3).ToString()
+                Name = Lorem.Words(3).ToString()
             };
 
             var added1 = await controller.Post(team1);

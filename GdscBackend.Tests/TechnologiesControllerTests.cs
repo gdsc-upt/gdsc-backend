@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FactoryBot;
+using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
@@ -14,7 +15,7 @@ namespace GdscBackend.Tests
     public class TechnologiesControllerTests : TestingBase
     {
         private readonly IEnumerable<TechnologyModel> _testData = _getTestData();
-        
+
         public TechnologiesControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
         }
@@ -26,15 +27,15 @@ namespace GdscBackend.Tests
             var controller = new TechnologiesController(repository);
             var example1 = new TechnologyModel
             {
-                Name = Faker.Lorem.Words(3).ToString(),
-                Description = Faker.Lorem.Sentence(7),
-                Icon = Faker.Lorem.Words(1).ToString()
+                Name = Lorem.Words(3).ToString(),
+                Description = Lorem.Sentence(7),
+                Icon = Lorem.Words(1).ToString()
             };
             var example2 = new TechnologyModel
             {
-                Name = Faker.Lorem.Words(3).ToString(),
-                Description = Faker.Lorem.Sentence(7),
-                Icon = Faker.Lorem.Words(1).ToString()
+                Name = Lorem.Words(3).ToString(),
+                Description = Lorem.Sentence(7),
+                Icon = Lorem.Words(1).ToString()
             };
 
             var added1 = await controller.Post(example1);
@@ -42,21 +43,21 @@ namespace GdscBackend.Tests
 
             var result1 = added1.Result as CreatedAtActionResult;
             var result2 = added2.Result as CreatedAtActionResult;
-            
+
             Assert.NotNull(result1);
             Assert.NotNull(result2);
             var entity1 = result1.Value as TechnologyModel;
             var entity2 = result2.Value as TechnologyModel;
-            
+
             Assert.NotNull(entity1);
             Assert.NotNull(entity1.Id);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
-            Assert.Equal(example1, entity1);   
-            
+            Assert.Equal(example1, entity1);
+
             Assert.NotNull(entity2);
             Assert.NotNull(entity2.Id);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
-            Assert.Equal(example2, entity2);   
+            Assert.Equal(example2, entity2);
         }
 
         [Fact]
@@ -67,7 +68,7 @@ namespace GdscBackend.Tests
 
             var actionResult = await controller.Get();
             var result = actionResult.Result as OkObjectResult;
-            
+
             Assert.NotNull(result);
             var items = Assert.IsAssignableFrom<IEnumerable<TechnologyModel>>(result.Value);
             WriteLine(items);

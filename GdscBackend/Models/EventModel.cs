@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace GdscBackend.Models
+﻿namespace GdscBackend.Models
 {
     public class EventModel : Model
     {

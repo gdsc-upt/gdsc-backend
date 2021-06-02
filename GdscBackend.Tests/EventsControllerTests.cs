@@ -84,7 +84,6 @@ namespace GdscBackend.Tests
         {
             var models = new List<EventModel>();
             for (var _ = 0; _ < 10; _++)
-            {
                 models.Add(new EventModel
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -92,7 +91,6 @@ namespace GdscBackend.Tests
                     Description = Lorem.Words(5).ToString(),
                     Image = Lorem.Words(1).ToString()
                 });
-            }
 
             return models;
         }
