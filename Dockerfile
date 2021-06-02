@@ -15,10 +15,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-#EXPOSE 443
-
-#ENV ASPNETCORE_URLS=https://*:443
-#ENV ASPNETCORE_ENVIRONMENT=Production
 
 COPY docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 RUN chmod +x /usr/bin/docker-entrypoint.sh

@@ -13,5 +13,6 @@ namespace GdscBackend.Database
         Task<T> AddOrUpdateAsync([NotNull] T entity);
         Task<T> UpdateAsync([NotNull] T entity);
         Task<T> DeleteAsync([NotNull] string id);
+        Task<IEnumerable<T>> DeleteAsync([NotNull] IEnumerable<string> ids);
     }
 }

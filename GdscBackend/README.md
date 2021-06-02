@@ -6,7 +6,7 @@
 
 ### Setup
 
-* Open [pga.dscupt.tech] and log in with `root` and `parola01`
+* Open [pga.gdscupt.tech] and log in with `admin@example.com` and `parola01`
   > This is our development database. You should create your own database here
 
 * Now open `Servers` > `Remote` > `Databases`
@@ -28,6 +28,9 @@
 
 * We're good to run our application! Type the following command: `dotnet watch run`
 
-[pga.dscupt.tech]: https://pga.dscupt.tech
+# Important notes!
+* After you modify a model class (ExampleModel, ContactModel, etc) you must run `dotnet ef migrations add <insert some  name here>` and then `dotnet ef database update`
+
+[pga.gdscupt.tech]: https://pga.gdscupt.tech
 
 [appsettings.Local.json]: appsettings.Local.json

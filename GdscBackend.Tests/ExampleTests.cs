@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FactoryBot;
+using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
@@ -14,7 +15,7 @@ namespace GdscBackend.Tests
 {
     public class ExampleTests : TestingBase
     {
-        private readonly IEnumerable<ExampleModel> _testData = _getTestData();
+        private static readonly IEnumerable<ExampleModel> TestData = _getTestData();
 
         public ExampleTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
@@ -28,14 +29,14 @@ namespace GdscBackend.Tests
             var controller = new ExamplesController(repository);
             var example1 = new ExampleModel
             {
-                Number = Faker.RandomNumber.Next(),
-                Title = Faker.Lorem.Words(3).ToString(),
+                Number = RandomNumber.Next(),
+                Title = Lorem.Words(3).ToString(),
                 Type = ExampleTypeEnum.EasyExample
             };
             var example2 = new ExampleModel
             {
-                Number = Faker.RandomNumber.Next(),
-                Title = Faker.Lorem.Words(3).ToString(),
+                Number = RandomNumber.Next(),
+                Title = Lorem.Words(3).ToString(),
                 Type = ExampleTypeEnum.WtfExample
             };
 
@@ -67,7 +68,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllExamples()
         {
             // Arrange
-            var repostitory = new Repository<ExampleModel>(new TestDbContext<ExampleModel>(_testData).Object);
+            var repostitory = new Repository<ExampleModel>(new TestDbContext<ExampleModel>(TestData).Object);
             var controller = new ExamplesController(repostitory);
 
             // Act
@@ -78,7 +79,7 @@ namespace GdscBackend.Tests
             Assert.NotNull(result);
             var items = Assert.IsAssignableFrom<IEnumerable<ExampleModel>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
-            Assert.Equal(_testData, items);
+            Assert.Equal(TestData, items);
         }
 
         private static IEnumerable<ExampleModel> _getTestData()

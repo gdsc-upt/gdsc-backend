@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mime;
+using System.Threading.Tasks;
+using GdscBackend.Database;
 using GdscBackend.Models;
-using GdscBackend.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,47 +12,65 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/events")]
+    [Authorize(Roles = "admin")]
+    [Route("v1/events")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     public class EventsController : ControllerBase
     {
-        public List<EventModel> EventModels = new();
+        private readonly IRepository<EventModel> _repository;
 
-            // HTTP Get method without any ID, returning the whole list of events
+        public EventsController(IRepository<EventModel> repository)
+        {
+            _repository = repository;
+        }
+
         [HttpGet]
-        public List<EventModel> Get()
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<EventModel>>> Get()
         {
-            return EventModels;
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
-        // HTTP Get method with a specific ID, which will return the event having that ID
         [HttpGet("{id}")]
-        public EventModel Get(string id)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<EventModel>> Get([FromRoute] string id)
         {
-            return EventModels.Find(eventElement => eventElement.Id == id);
+            var entity = await _repository.GetAsync(id);
+            return entity is null ? NotFound() : Ok(entity);
         }
 
-        // HTTP Post method
         [HttpPost]
-        [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(EventModel), StatusCodes.Status201Created)]
-        public ActionResult<ContactModel> Post([FromBody] EventModel entity)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<EventModel>> Post(EventModel entity)
         {
-            if (entity is null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
-            }
+            entity = await _repository.AddAsync(entity);
+            return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
+        }
 
-            // See if the entity given does already exist
-            var doesExist = EventModels.Find(element => element.Id == entity.Id);
-            if (doesExist != null)
-            {
-                return BadRequest(new ErrorViewModel {Message = $"{entity} already exists"});
-            }
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<EventModel>> Delete([FromRoute] string id)
+        {
+            var entity = await _repository.DeleteAsync(id);
+            return entity is null ? NotFound() : Ok(entity);
+        }
 
-            EventModels.Add(entity);
-
-            entity = EventModels.Find(e => e == entity);
-            return Created("api/Event/" + entity!.Id, entity);
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<EventModel>> Update(EventModel entity)
+        {
+            entity = await _repository.UpdateAsync(entity);
+            return entity is null ? BadRequest() : Ok(entity);
         }
     }
 }

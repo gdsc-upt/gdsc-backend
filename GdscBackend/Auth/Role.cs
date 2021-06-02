@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace GdscBackend.Authentication
+namespace GdscBackend.Auth
 {
     public class Role : IdentityRole<string>
     {
