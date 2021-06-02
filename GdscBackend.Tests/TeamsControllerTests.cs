@@ -1,16 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using DotLiquid;
-using DotLiquid.Util;
 using FactoryBot;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -19,9 +14,11 @@ namespace GdscBackend.Tests
     public class TeamsControllerTests : TestingBase
     {
         private readonly IEnumerable<TeamModel> _testData = _getTestData();
+
         public TeamsControllerTests(ITestOutputHelper helper) : base(helper)
         {
         }
+
         [Fact]
         public async void Delete_Returns_OkResult()
         {
@@ -31,17 +28,19 @@ namespace GdscBackend.Tests
 
             var actionResult = await controller.Delete(deletedVar.Id);
             var actionResultVal = actionResult.Result as OkObjectResult;
-            
+
             var expectedResult = await controller.Get(deletedVar.Id);
             var badRequestVal = expectedResult.Result as NotFoundResult;
-            
+
             Assert.NotNull(actionResult);
+            Assert.NotNull(actionResultVal);
             Assert.Equal(deletedVar, actionResultVal.Value);
             Assert.Null(expectedResult.Value);
             Assert.Equal(StatusCodes.Status200OK, actionResultVal.StatusCode);
             Assert.NotNull(badRequestVal);
-            Assert.Equal(StatusCodes.Status404NotFound,badRequestVal.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, badRequestVal.StatusCode);
         }
+
         [Fact]
         public async void Post_ReturnsCreatedObject()
         {
@@ -77,6 +76,7 @@ namespace GdscBackend.Tests
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
             Assert.Equal(team2, entity2);
         }
+
         [Fact]
         public async void Get_ReturnsAllExamples()
         {
@@ -88,9 +88,9 @@ namespace GdscBackend.Tests
 
             Assert.NotNull(result);
             var items = Assert.IsAssignableFrom<IEnumerable<TeamModel>>(result.Value);
-            WriteLine(items);
             Assert.Equal(_testData, items);
         }
+
         [Fact]
         public async void Get_ReturnsAllExamplesById()
         {
@@ -99,10 +99,11 @@ namespace GdscBackend.Tests
 
             var actionResult = await controller.Get(_testData.First().Id);
             var result = actionResult.Result as OkObjectResult;
+
+            Assert.NotNull(result);
             Assert.Equal(result.Value, _testData.First());
-            WriteLine(result.Value);
-            WriteLine(_testData.First());
         }
+
         private static IEnumerable<TeamModel> _getTestData()
         {
             Bot.Define(x => new TeamModel
