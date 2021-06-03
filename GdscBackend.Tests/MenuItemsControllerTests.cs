@@ -27,6 +27,41 @@ namespace GdscBackend.Tests
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
             var controller = new MenuItemsController(repository);
+            var model1 = new MenuItemModel
+            {
+                Name=Faker.Name.First(),
+                Type=MenuItemTypeEnum.ExternalLink,
+                Link=Faker.Lorem.Words(3).ToString()
+            };
+            var model2 = new MenuItemModel
+            {
+                Name=Faker.Name.First(),
+                Type=MenuItemTypeEnum.InternalLink,
+                Link=Faker.Lorem.Words(3).ToString()
+            };
+            var added1 = await controller.Post(model1);
+            var added2 = await controller.Post(model2);
+            
+            var result1 = added1.Result as CreatedAtActionResult;
+            var result2 = added2.Result as CreatedAtActionResult;
+            
+            Assert.NotNull(result1);
+            Assert.NotNull(result2);
+            
+            var entity1 = result1.Value as MenuItemModel;
+            var entity2 = result2.Value as MenuItemModel;
+            
+            Assert.NotNull(entity1);
+            Assert.NotNull(entity1.Id);
+            Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
+            Assert.Equal(model1, entity1);
+            
+            Assert.NotNull(entity2);
+            Assert.NotNull(entity2.Id);
+            Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
+            Assert.Equal(model2, entity2);
+
+            
         }
 
         [Fact]
@@ -80,6 +115,19 @@ namespace GdscBackend.Tests
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
             var controller = new MenuItemsController(repository);
+            var model1 = new MenuItemModel
+            {
+                Name=Faker.Name.First(),
+                Type=MenuItemTypeEnum.ExternalLink,
+                Link=Faker.Lorem.Words(3).ToString()
+            };
+            var model2 = new MenuItemModel
+            {
+                Name=Faker.Name.First(),
+                Type=MenuItemTypeEnum.InternalLink,
+                Link=Faker.Lorem.Words(3).ToString()
+            };
+            
         }
 
         private static IEnumerable<MenuItemModel> _getTestData()
