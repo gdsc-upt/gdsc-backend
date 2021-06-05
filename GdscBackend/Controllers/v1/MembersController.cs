@@ -1,6 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mime;
+using System.Threading.Tasks;
+using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,40 +13,59 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/members")]
+    [Authorize(Roles = "admin")]
+    [Route("v1/members")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     public class MembersController : ControllerBase
     {
-        public static readonly List<MemberModel> MockMembers = new();
+        private readonly IRepository<MemberModel> _repository;
 
+        public MembersController(IRepository<MemberModel> repository)
+        {
+            _repository = repository;
+        }
 
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<MemberModel>), StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<MemberModel>> Get()
+        public async Task<ActionResult<IEnumerable<MemberModel>>> Get()
         {
-            return Ok(MockMembers);
+            return Ok((await _repository.GetAsync()).ToList());
+        }
+
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MemberModel>> Get([FromRoute] string id)
+        {
+            var entity = await _repository.GetAsync(id);
+
+            return entity is null ? NotFound() : Ok(entity);
         }
 
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]
-        public ActionResult<MemberModel> Post([FromBody] MemberModel entity)
+        public async Task<ActionResult<MemberModel>> Post(MemberModel entity)
         {
-            if (entity is null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
-            }
+            entity = await _repository.AddAsync(entity);
 
-            var existing = MockMembers.Find(e => e.Id == entity.Id);
-            if (existing != null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "An object with the same ID already exists"});
-            }
+            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
+        }
 
-            MockMembers.Add(entity);
-            entity = MockMembers.Find(example => example == entity);
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MemberModel>> Delete([FromBody] string id)
+        {
+            var entity = await _repository.DeleteAsync(id);
 
-            return Created("api/members/" + entity!.Id, entity);
+            return entity is null ? NotFound() : Ok(entity);
         }
     }
 }

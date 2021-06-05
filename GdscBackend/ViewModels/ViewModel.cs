@@ -1,8 +1,8 @@
 using System;
 
-namespace GdscBackend.Models
+namespace GdscBackend.ViewModels
 {
-    public abstract class Model : IModel
+    public abstract class ViewModel
     {
         public string Id { get; set; }
         public DateTime Created { get; set; }

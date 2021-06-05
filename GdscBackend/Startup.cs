@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
-using GdscBackend.Authentication;
+using GdscBackend.Auth;
 using GdscBackend.Database;
 using GdscBackend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,20 +44,26 @@ namespace GdscBackend
             });
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'V");
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            services.AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<User, Role>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
+               .AddEntityFrameworkStores<AppDbContext>()
+               .AddDefaultTokenProviders();
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(options =>
+               .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters()
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
@@ -102,6 +108,7 @@ namespace GdscBackend
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

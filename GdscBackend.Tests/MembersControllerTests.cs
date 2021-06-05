@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using FactoryBot;
+using Faker;
 using GdscBackend.Controllers.v1;
+using GdscBackend.Database;
 using GdscBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,85 +14,131 @@ namespace GdscBackend.Tests
 {
     public class MembersControllerTests : TestingBase
     {
-        private readonly MembersController _controller;
+        private static readonly IEnumerable<MemberModel> TestData = _getTestData();
+        private MembersController _controller;
+        private Repository<MemberModel> _repository;
 
         public MembersControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
-            _controller = new MembersController();
+            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>().Object);
+            _controller = new MembersController(_repository);
         }
 
         [Fact]
-        public void Get_Should_Return_All_Members()
+        public async void Get_Should_Return_All_Members()
         {
-            // Arrange
-            var mockedList = new List<MemberModel>
-            {
-                new()
-                {
-                    Id = "1",
-                    Name = "Gigel",
-                    Email = "yahoo@gigel.com",
-                    TeamId = "1"
-                },
-                new()
-                {
-                    Id = "2",
-                    Name = "Dorel",
-                    Email = "dorel@gigel.com",
-                    TeamId = "2"
-                }
-            };
-
-            _controller.Post(mockedList[0]);
-            _controller.Post(mockedList[1]);
+            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
+            _controller = new MembersController(_repository);
 
             // Act
-            var result = _controller.Get().Result as OkObjectResult;
+            var actionResult = await _controller.Get();
+            var result = actionResult.Result as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
             var items = Assert.IsAssignableFrom<IEnumerable<MemberModel>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
-            Assert.Equal(mockedList, items);
+            Assert.Equal(TestData, items);
         }
 
         [Fact]
-        public void Post_ReturnsCreatedObject()
+        public async void Post_ReturnsCreatedObject()
         {
             // Arrange
             var member1 = new MemberModel
             {
-                Id = "1",
-                Name = "Gigel",
-                Email = "yahoo@gigel.com",
-                TeamId = "1"
+                Name = Name.FullName(),
+                Email = Lorem.Words(3).ToString(),
+                TeamId = Lorem.Words(1).ToString()
             };
             var member2 = new MemberModel
             {
-                Id = "2",
-                Name = "Dorel",
-                Email = "dorel@gigel.com",
-                TeamId = "2"
+                Name = Name.FullName(),
+                Email = Lorem.Words(3).ToString(),
+                TeamId = Lorem.Words(1).ToString()
             };
 
             // Act
-            var added1 = _controller.Post(member1).Result as CreatedResult;
-            var added2 = _controller.Post(member2).Result as CreatedResult;
+            var added1 = await _controller.Post(member1);
+            var added2 = await _controller.Post(member2);
+
+            var result1 = added1.Result as CreatedAtActionResult;
+            var result2 = added2.Result as CreatedAtActionResult;
 
             // Assert
-            Assert.NotNull(added1);
-            Assert.Equal(StatusCodes.Status201Created, added1.StatusCode);
-            Assert.Equal(member1, added1.Value as MemberModel);
+            Assert.NotNull(result1);
+            Assert.NotNull(result2);
+            var entity1 = result1.Value as MemberModel;
+            var entity2 = result2.Value as MemberModel;
 
-            Assert.NotNull(added2);
-            Assert.Equal(StatusCodes.Status201Created, added2.StatusCode);
-            Assert.Equal(member2, added2.Value as MemberModel);
+            Assert.NotNull(entity1);
+            Assert.NotNull(entity1.Id);
+            Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
+            Assert.Equal(member1, entity1);
+
+            Assert.NotNull(entity2);
+            Assert.NotNull(entity2.Id);
+            Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
+            Assert.Equal(member2, entity2);
+        }
+
+        [Fact]
+        public async void Get_Returns_Member_by_ID()
+        {
+            // Arrange
+            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
+            _controller = new MembersController(_repository);
+
+            //Act
+
+            var anElementById = TestData.First();
+            var actionResult = await _controller.Get(anElementById.Id);
+            var result = actionResult.Result as OkObjectResult;
+
+            //Assert
+
+            Assert.NotNull(result);
+            var entity = result.Value as MemberModel;
+            Assert.Equal(anElementById, entity);
+        }
+
+        [Fact]
+        public async void Delete_Should_Delete_Member_By_ID()
+        {
+            //
+            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
+            _controller = new MembersController(_repository);
+
+            // Act
+            var deleted = await _controller.Delete(TestData.First().Id);
+            var result = deleted.Result as OkObjectResult;
+
+            // Assert
+            var entity = result.Value as MemberModel;
+            Assert.NotNull(result);
+            Assert.Equal(TestData.First(), entity);
         }
 
         public override void Dispose()
         {
             base.Dispose();
-            MembersController.MockMembers.Clear();
+            _controller = null;
+            _repository = null;
+        }
+
+        private static IEnumerable<MemberModel> _getTestData()
+        {
+            Bot.Define(x => new MemberModel
+            {
+                Id = x.Strings.Guid(),
+                Name = x.Names.FullName(),
+                Email = x.Strings.Any(),
+                TeamId = x.Strings.Any(),
+                Created = x.Dates.Any(),
+                Updated = x.Dates.Any()
+            });
+
+            return Bot.BuildSequence<MemberModel>().Take(10).ToList();
         }
     }
 }

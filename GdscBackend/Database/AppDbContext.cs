@@ -1,13 +1,13 @@
-using GdscBackend.Authentication;
+using GdscBackend.Auth;
 using GdscBackend.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GdscBackend.Database
 {
-    public class AppDbContext: IdentityDbContext<User, Role, string>{
-
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public class AppDbContext : IdentityDbContext<User, Role, string>
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
@@ -20,5 +20,6 @@ namespace GdscBackend.Database
         public DbSet<PageModel> Pages { get; set; }
         public DbSet<SettingModel> Settings { get; set; }
         public DbSet<TeamModel> Teams { get; set; }
+        public DbSet<TechnologyModel> Technologies { get; set; }
     }
 }

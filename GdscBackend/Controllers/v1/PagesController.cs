@@ -4,15 +4,16 @@ using System.Threading.Tasks;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PageModel = GdscBackend.Models.PageModel;
 
 namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/pages")]
+    [Authorize(Roles = "admin")]
+    [Route("v1/pages")]
     public class PagesController : ControllerBase
     {
         private readonly IRepository<PageModel> _repository;
@@ -23,6 +24,7 @@ namespace GdscBackend.Controllers.v1
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<PageModel>>> Get()
         {
@@ -37,7 +39,7 @@ namespace GdscBackend.Controllers.v1
         {
             entity = await _repository.AddAsync(entity);
 
-            return CreatedAtAction(nameof(Post), new {entity.Id}, entity);
+            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
         }
 
         [HttpDelete("{id}")]
@@ -59,7 +61,7 @@ namespace GdscBackend.Controllers.v1
         {
             entity = await _repository.UpdateAsync(entity);
 
-            return CreatedAtAction(nameof(Update), new {entity.Id}, entity);
+            return CreatedAtAction(nameof(Update), new { entity.Id }, entity);
         }
     }
 }
