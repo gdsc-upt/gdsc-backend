@@ -125,20 +125,18 @@ namespace GdscBackend.Tests
                 Type = MenuItemTypeEnum.InternalLink,
                 Link = Faker.Lorem.Words(3).ToString()
             };
-            WriteLine(model1);
-            WriteLine(model2);
+
             var actionResult1 = await controller.Update(model1);
             var actionResult2 = await controller.Update(model2);
-            
-          //  var resultResult1 = actionResult1.Result as CreatedAtActionResult;
-          //  var resultResult2 = actionResult2.Result as CreatedAtActionResult;
 
-          //  Assert.NotNull(resultResult1);
-          //  Assert.NotNull(resultResult2);
+            var resultResult1 = actionResult1.Result as OkObjectResult;
+            var resultResult2 = actionResult2.Result as OkObjectResult;
 
-         //   Assert.Equal(StatusCodes.Status201Created,resultResult1.StatusCode);
-          //  Assert.Equal(StatusCodes.Status201Created,resultResult2.StatusCode);
-            
+            Assert.NotNull(resultResult1);
+            Assert.NotNull(resultResult2);
+
+            Assert.Equal(StatusCodes.Status200OK, resultResult1.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, resultResult2.StatusCode);
             
         }
 
