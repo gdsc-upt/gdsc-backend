@@ -73,8 +73,7 @@ namespace GdscBackend.Controllers.v1
         public async Task<ActionResult<MenuItemModel>> Update(MenuItemModel entity)
         {
             entity = await _repository.UpdateAsync(entity);
-
-            return CreatedAtAction(nameof(Update), new { entity.Id }, entity);
+            return Ok(entity);
         }
     }
 }
