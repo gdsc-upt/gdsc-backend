@@ -34,6 +34,12 @@ namespace GdscBackend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors(options => options.AddPolicy("EnableAll", builder =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+            }));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddApiVersioning(config =>
             {
@@ -96,6 +102,8 @@ namespace GdscBackend
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("EnableAll");
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
