@@ -97,7 +97,7 @@ namespace GdscBackend
 
                 Console.WriteLine("Done!");
             }
-
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
