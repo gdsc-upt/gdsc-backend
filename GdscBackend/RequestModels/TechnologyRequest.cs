@@ -1,6 +1,6 @@
 namespace GdscBackend.RequestModels
 {
-    public class TechnologyRequest
+    public class TechnologyRequest : Request
     {
         public string Name { get; set; }
         

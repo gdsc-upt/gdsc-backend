@@ -2,7 +2,7 @@ using GdscBackend.Models.Enums;
 
 namespace GdscBackend.RequestModels
 {
-    public class SettingsRequest
+    public class SettingsRequest : Request
     {
         public string Name { get; set; }
         public string Slug { get; set; }

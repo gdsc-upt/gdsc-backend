@@ -1,6 +1,6 @@
 namespace GdscBackend.RequestModels
 {
-    public class PageRequest
+    public class PageRequest : Request
     {
         public string Title { get; set; }
         public string Body { get; set; }
