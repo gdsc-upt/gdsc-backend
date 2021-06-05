@@ -109,7 +109,7 @@ namespace GdscBackend.Tests
         }
 
         [Fact]
-        public async void Update_ReturnsCreatedAtAction()
+        public async void Update_ReturnsOkObjectAction()
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
             var controller = new MenuItemsController(repository);
@@ -137,7 +137,6 @@ namespace GdscBackend.Tests
 
             Assert.Equal(StatusCodes.Status200OK, resultResult1.StatusCode);
             Assert.Equal(StatusCodes.Status200OK, resultResult2.StatusCode);
-            
         }
 
         private static IEnumerable<MenuItemModel> _getTestData()
