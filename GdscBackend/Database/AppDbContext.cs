@@ -1,5 +1,6 @@
 using GdscBackend.Auth;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

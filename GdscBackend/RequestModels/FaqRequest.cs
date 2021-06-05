@@ -1,6 +1,6 @@
 namespace GdscBackend.RequestModels
 {
-    public class FaqRequest
+    public class FaqRequest : Request
     {
         public string Question { get; set; }
         

@@ -1,6 +1,6 @@
 namespace GdscBackend.RequestModels
 {
-    public class EventRequest
+    public class EventRequest : Request
     {
         public string Title { get; set; }
 

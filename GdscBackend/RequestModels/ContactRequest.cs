@@ -1,6 +1,6 @@
 namespace GdscBackend.RequestModels
 {
-    public class ContactRequest
+    public class ContactRequest : Request
     {
         public string Name { get; set; }
         
