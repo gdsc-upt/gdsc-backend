@@ -48,6 +48,8 @@ namespace GdscBackend.Controllers.v1
                     var relativePath = Path.Combine("media",
                         fileName + System.Guid.NewGuid().ToString().Split("-")[0] + "." + fileExtension);
                     
+                    var directoryPath = Path.Combine(_hostEnvironment.ContentRootPath, "..", "media");
+                    Directory.CreateDirectory(directoryPath);
                     var filePath = Path.Combine(_hostEnvironment.ContentRootPath, "..", relativePath);
                     
                     using (var stream = System.IO.File.Create(filePath))
