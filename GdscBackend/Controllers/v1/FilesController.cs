@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using GdscBackend.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace GdscBackend.Controllers.v1
 {
@@ -17,18 +19,18 @@ namespace GdscBackend.Controllers.v1
     public class FilesController : ControllerBase
     {
         private readonly IRepository<FileModel> _repository;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHostEnvironment _hostEnvironment;
 
-        public FilesController(IWebHostEnvironment webHostEnvironment, IRepository<FileModel> repository)
+        public FilesController(IHostEnvironment webHostEnvironment, IRepository<FileModel> repository)
         {
-            _webHostEnvironment = webHostEnvironment;
+            _hostEnvironment = webHostEnvironment;
             _repository = repository;
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult> Upload([FromForm] List<IFormFile> files)
+        public async Task<ActionResult<IEnumerable<FileModel>>> Upload([FromForm] List<IFormFile> files)
         {
             long size = files.Sum(f => f.Length);
 
@@ -46,7 +48,7 @@ namespace GdscBackend.Controllers.v1
                     var relativePath = Path.Combine("media",
                         fileName + System.Guid.NewGuid().ToString().Split("-")[0] + "." + fileExtension);
                     
-                    var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "..", relativePath);
+                    var filePath = Path.Combine(_hostEnvironment.ContentRootPath, "..", relativePath);
                     
                     using (var stream = System.IO.File.Create(filePath))
                     {
