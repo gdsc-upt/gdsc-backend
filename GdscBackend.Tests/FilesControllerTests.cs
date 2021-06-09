@@ -38,9 +38,9 @@ namespace GdscBackend.Tests
             var files = Assert.IsAssignableFrom<IEnumerable<FileModel>>(result.Value);
             WriteLine(files);
             Assert.Equal( 3, files.ToList().Count);
-            Assert.Contains("media\\", files.ElementAt(0).Path);
-            Assert.Contains("media\\", files.ElementAt(1).Path);
-            Assert.Contains("media\\", files.ElementAt(2).Path);
+            Assert.Contains("media", files.ElementAt(0).Path);
+            Assert.Contains("media", files.ElementAt(1).Path);
+            Assert.Contains("media", files.ElementAt(2).Path);
 
         }
 
