@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Xunit;
 using Xunit.Abstractions;
@@ -22,11 +22,11 @@ namespace GdscBackend.Tests
         public FilesControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             _repository = new Repository<FileModel>(new TestDbContext<FileModel>().Object);
-            _controller = new FilesController(new HostingEnvironment { EnvironmentName = Environments.Development }, _repository);
+            _controller = new FilesController(new HostingEnvironment { ContentRootPath = Path.Combine(Directory.GetCurrentDirectory(), "../../..")}, _repository);
         }
 
         [Fact]
-        public async void Post_ShouldUploadOneOrMoreFiles()
+        public async void Upload_ShouldReturnFilePaths()
         {
             var upload = await _controller.Upload(TestData);
 
@@ -34,33 +34,42 @@ namespace GdscBackend.Tests
             
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status201Created, result.StatusCode);
-
-            WriteLine(result.Value);
+            
+            var files = Assert.IsAssignableFrom<IEnumerable<FileModel>>(result.Value);
+            WriteLine(files);
+            Assert.Equal( 3, files.ToList().Count);
+            Assert.Contains("media\\", files.ElementAt(0).Path);
+            Assert.Contains("media\\", files.ElementAt(1).Path);
+            Assert.Contains("media\\", files.ElementAt(2).Path);
 
         }
 
         private static List<IFormFile> _getTestData()
         {
+            var stream1 = new MemoryStream(Encoding.UTF8.GetBytes("x are mere"));
+            var stream2 = new MemoryStream(Encoding.UTF8.GetBytes("y are mere"));
+            var stream3 = new MemoryStream(Encoding.UTF8.GetBytes("y are pere"));
+            
             var file1 = new FormFile(
-                new MemoryStream(Encoding.UTF8.GetBytes("x are mere")),
+                stream1,
                 0,
-                0,
+                stream1.Length,
                 "Data",
                 "test1.txt"
             );
             
             var file2 = new FormFile(
-                new MemoryStream(Encoding.UTF8.GetBytes("y are mere")),
+                stream2,
                 0,
-                0,
+                stream2.Length,
                 "Data",
                 "test1.txt"
             );
             
             var file3 = new FormFile(
-                new MemoryStream(Encoding.UTF8.GetBytes("y are pere")),
+                stream3,
                 0,
-                0,
+                stream3.Length,
                 "Data",
                 "test2.txt"
             );
