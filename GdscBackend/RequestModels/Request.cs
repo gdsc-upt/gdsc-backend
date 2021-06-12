@@ -7,7 +7,7 @@ namespace GdscBackend.RequestModels
     {
         public Request()
         {
-            CreateMap<User, Request>();
+            CreateMap<Request,User>();
         }
     }
 }
