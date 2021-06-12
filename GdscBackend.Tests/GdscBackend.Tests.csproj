@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="10.1.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="FactoryBot" Version="1.5.1" />
         <PackageReference Include="Faker.Net" Version="1.5.138" />
         <PackageReference Include="LiquidTestReports.Markdown" Version="1.0.9" />

@@ -11,10 +11,6 @@ namespace GdscBackend
     {
         public static void Main(string[] args)
         {
-            var config = new MapperConfiguration(cfg=>cfg.CreateMap<Model,Request>());
-            var mapper = new Mapper(config);
-            
-            
             CreateHostBuilder(args).Build().Run();
         }
 
