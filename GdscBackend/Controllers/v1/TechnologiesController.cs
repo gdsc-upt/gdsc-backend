@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using AutoMapper;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,10 +35,10 @@ namespace GdscBackend.Controllers.v1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<TechnologyModel>> Post(TechnologyModel entity)
+        public async Task<ActionResult<TechnologyRequest>> Post(TechnologyRequest entity)
         {
-            entity = await _repository.AddAsync(entity);
-            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
+            var newentity = await _repository.AddAsync(Map(entity));
+            return CreatedAtAction(nameof(Post), new {newentity.Id}, newentity);
         }
 
         [HttpDelete("{id}")]
@@ -48,5 +50,12 @@ namespace GdscBackend.Controllers.v1
             var entity = await _repository.DeleteAsync(id);
             return entity is null ? NotFound() : Ok(entity);
         }
+        
+        protected static TechnologyModel Map(TechnologyRequest entity)
+        {
+            return Mapper.Map<TechnologyModel>(entity);
+        }
+
     }
+
 }
