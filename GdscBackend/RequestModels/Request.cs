@@ -1,13 +1,11 @@
 using AutoMapper;
 using GdscBackend.Auth;
+using GdscBackend.Models;
 
 namespace GdscBackend.RequestModels
 {
-    public class Request : Profile
+    public class Request
     {
-        public Request()
-        {
-            CreateMap<Request,User>();
-        }
+
     }
 }

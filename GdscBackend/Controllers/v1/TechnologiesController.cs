@@ -18,11 +18,13 @@ namespace GdscBackend.Controllers.v1
     [Produces(MediaTypeNames.Application.Json)]
     public class TechnologiesController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IRepository<TechnologyModel> _repository;
 
-        public TechnologiesController(IRepository<TechnologyModel> repository)
+        public TechnologiesController(IRepository<TechnologyModel> repository,IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -50,12 +52,11 @@ namespace GdscBackend.Controllers.v1
             var entity = await _repository.DeleteAsync(id);
             return entity is null ? NotFound() : Ok(entity);
         }
-        
-        protected static TechnologyModel Map(TechnologyRequest entity)
-        {
-            return Mapper.Map<TechnologyModel>(entity);
-        }
 
+        private TechnologyModel Map(TechnologyRequest entity)
+        {
+            return _mapper.Map<TechnologyModel>(entity);
+        }
     }
 
 }
