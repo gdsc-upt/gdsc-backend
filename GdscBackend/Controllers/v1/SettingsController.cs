@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using AutoMapper;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +23,13 @@ namespace GdscBackend.Controllers.v1
     [Produces(MediaTypeNames.Application.Json)] // specifies which type of data this conrtoller returns
     public class SettingsController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IRepository<SettingModel> _repository;
 
-        public SettingsController(IRepository<SettingModel> repository)
+        public SettingsController(IRepository<SettingModel> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -38,9 +42,9 @@ namespace GdscBackend.Controllers.v1
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<SettingModel>>> Get()
+        public async Task<ActionResult<IEnumerable<SettingRequest>>> Get()
         {
-            return Ok((await _repository.GetAsync()).ToList());
+            return Ok(Map((await _repository.GetAsync()).ToList()));
         }
 
         /// <summary>
@@ -55,9 +59,9 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<SettingModel>> Get([FromRoute] string id)
+        public async Task<ActionResult<SettingRequest>> Get([FromRoute] string id)
         {
-            var entity = await _repository.GetAsync(id);
+            var entity = Map(await _repository.GetAsync(id));
 
             return entity is null ? NotFound() : Ok(entity);
         }
@@ -70,11 +74,11 @@ namespace GdscBackend.Controllers.v1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<SettingModel>> Post(SettingModel entity)
+        public async Task<ActionResult<SettingRequest>> Post(SettingRequest entity)
         {
-            entity = await _repository.AddAsync(entity);
+            entity = Map(await _repository.AddAsync(Map(entity)));
 
-            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
+            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
         }
 
         /// <summary>
@@ -87,11 +91,30 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<SettingModel>> Delete([FromRoute] string id)
+        public async Task<ActionResult<SettingRequest>> Delete([FromRoute] string id)
         {
-            var entity = await _repository.DeleteAsync(id);
+            var entity = Map(await _repository.DeleteAsync(id));
 
             return entity is null ? NotFound() : Ok(entity);
+        }
+        private SettingModel Map(SettingRequest entity)
+        {
+            return _mapper.Map<SettingModel>(entity);
+        }
+
+        private SettingRequest Map(SettingModel entity)
+        {
+            return _mapper.Map<SettingRequest>(entity);
+        }
+
+        private IEnumerable<SettingRequest> Map(IEnumerable<SettingModel> entity)
+        {
+            return _mapper.Map<IEnumerable<SettingRequest>>(entity);
+        }
+
+        private IEnumerable<SettingModel> Map(IEnumerable<SettingRequest> entity)
+        {
+            return _mapper.Map<IEnumerable<SettingModel>>(entity);
         }
     }
 }
