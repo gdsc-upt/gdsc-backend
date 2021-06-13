@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -8,7 +9,6 @@ using GdscBackend.Models;
 using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TechnologyModel = GdscBackend.RequestModels.TechnologyModel;
 
 namespace GdscBackend.Controllers.v1
 {
@@ -20,9 +20,9 @@ namespace GdscBackend.Controllers.v1
     public class TechnologiesController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IRepository<Models.TechnologyModel> _repository;
+        private readonly IRepository<TechnologyModel> _repository;
 
-        public TechnologiesController(IRepository<Models.TechnologyModel> repository,IMapper mapper)
+        public TechnologiesController(IRepository<TechnologyModel> repository,IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -30,7 +30,7 @@ namespace GdscBackend.Controllers.v1
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<TechnologyModel>>> Get()
+        public async Task<ActionResult<IEnumerable<TechnologyRequest>>> Get()
         {
             return Ok(Map((await _repository.GetAsync()).ToList()));
         }
@@ -38,7 +38,7 @@ namespace GdscBackend.Controllers.v1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<TechnologyModel>> Post(TechnologyModel entity)
+        public async Task<ActionResult<TechnologyRequest>> Post(TechnologyRequest entity)
         {
             var newentity = await _repository.AddAsync(Map(entity));
             return CreatedAtAction(nameof(Post), new {newentity.Id}, newentity);
@@ -48,28 +48,27 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TechnologyModel>> Delete([FromRoute] string id)
+        public async Task<ActionResult<TechnologyRequest>> Delete([FromRoute] string id)
         {
             var entity = await _repository.DeleteAsync(id);
             return entity is null ? NotFound() : Ok(Map(entity));
         }
 
-        private Models.TechnologyModel Map(TechnologyModel entity)
-        {
-            return _mapper.Map<Models.TechnologyModel>(entity);
-        }
-        private TechnologyModel Map(Models.TechnologyModel entity)
+        private TechnologyModel Map(TechnologyRequest entity)
         {
             return _mapper.Map<TechnologyModel>(entity);
         }
-        private IEnumerable<TechnologyModel> Map(IEnumerable<Models.TechnologyModel> entity)
+        private TechnologyRequest Map(TechnologyModel entity)
+        {
+            return _mapper.Map<TechnologyRequest>(entity);
+        }
+        private IEnumerable<TechnologyRequest> Map(IEnumerable<TechnologyModel> entity)
+        {
+            return _mapper.Map<IEnumerable<TechnologyRequest>>(entity);
+        }
+        private IEnumerable<TechnologyModel> Map(IEnumerable<TechnologyRequest> entity)
         {
             return _mapper.Map<IEnumerable<TechnologyModel>>(entity);
         }
-        private IEnumerable<Models.TechnologyModel> Map(IEnumerable<TechnologyModel> entity)
-        {
-            return _mapper.Map<IEnumerable<Models.TechnologyModel>>(entity);
-        }
     }
-
 }
