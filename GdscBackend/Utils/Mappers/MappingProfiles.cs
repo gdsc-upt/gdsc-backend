@@ -1,13 +1,14 @@
 using AutoMapper;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
 
-namespace GdscBackend.RequestModels
+namespace GdscBackend.Utils.Mappers
 {
     public class MappingProfiles : Profile
     {
         public MappingProfiles()
         {
-            CreateMap(typeof(Models.TechnologyModel), typeof(TechnologyModel)).ReverseMap();
+            CreateMap(typeof(TechnologyModel), typeof(TechnologyRequest)).ReverseMap();
             CreateMap(typeof(FaqModel), typeof(FaqRequest)).ReverseMap();
             CreateMap(typeof(EventModel), typeof(EventRequest)).ReverseMap();
             CreateMap(typeof(MemberModel), typeof(MemberRequest)).ReverseMap();
