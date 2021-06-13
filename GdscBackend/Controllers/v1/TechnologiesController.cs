@@ -8,6 +8,7 @@ using GdscBackend.Models;
 using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TechnologyModel = GdscBackend.RequestModels.TechnologyModel;
 
 namespace GdscBackend.Controllers.v1
 {
@@ -19,9 +20,9 @@ namespace GdscBackend.Controllers.v1
     public class TechnologiesController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IRepository<TechnologyModel> _repository;
+        private readonly IRepository<Models.TechnologyModel> _repository;
 
-        public TechnologiesController(IRepository<TechnologyModel> repository,IMapper mapper)
+        public TechnologiesController(IRepository<Models.TechnologyModel> repository,IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -31,13 +32,13 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<TechnologyModel>>> Get()
         {
-            return Ok((await _repository.GetAsync()).ToList());
+            return Ok(Map((await _repository.GetAsync()).ToList()));
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<TechnologyRequest>> Post(TechnologyRequest entity)
+        public async Task<ActionResult<TechnologyModel>> Post(TechnologyModel entity)
         {
             var newentity = await _repository.AddAsync(Map(entity));
             return CreatedAtAction(nameof(Post), new {newentity.Id}, newentity);
@@ -50,12 +51,24 @@ namespace GdscBackend.Controllers.v1
         public async Task<ActionResult<TechnologyModel>> Delete([FromRoute] string id)
         {
             var entity = await _repository.DeleteAsync(id);
-            return entity is null ? NotFound() : Ok(entity);
+            return entity is null ? NotFound() : Ok(Map(entity));
         }
 
-        private TechnologyModel Map(TechnologyRequest entity)
+        private Models.TechnologyModel Map(TechnologyModel entity)
+        {
+            return _mapper.Map<Models.TechnologyModel>(entity);
+        }
+        private TechnologyModel Map(Models.TechnologyModel entity)
         {
             return _mapper.Map<TechnologyModel>(entity);
+        }
+        private IEnumerable<TechnologyModel> Map(IEnumerable<Models.TechnologyModel> entity)
+        {
+            return _mapper.Map<IEnumerable<TechnologyModel>>(entity);
+        }
+        private IEnumerable<Models.TechnologyModel> Map(IEnumerable<TechnologyModel> entity)
+        {
+            return _mapper.Map<IEnumerable<Models.TechnologyModel>>(entity);
         }
     }
 
