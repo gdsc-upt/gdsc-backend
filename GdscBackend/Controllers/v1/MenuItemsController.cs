@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using AutoMapper;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,19 +20,21 @@ namespace GdscBackend.Controllers.v1
     [Produces(MediaTypeNames.Application.Json)]
     public class MenuItemsController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IRepository<MenuItemModel> _repository;
 
-        public MenuItemsController(IRepository<MenuItemModel> repository)
+        public MenuItemsController(IRepository<MenuItemModel> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<MenuItemModel>>> Get()
+        public async Task<ActionResult<IEnumerable<MenuItemRequest>>> Get()
         {
-            return Ok((await _repository.GetAsync()).ToList());
+            return Ok(Map((await _repository.GetAsync()).ToList()));
         }
 
         [HttpGet("{id}")]
@@ -38,30 +42,30 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MenuItemModel>> Get([FromRoute] string id)
+        public async Task<ActionResult<MenuItemRequest>> Get([FromRoute] string id)
         {
-            var entity = await _repository.GetAsync(id);
+            var entity = Map(await _repository.GetAsync(id));
 
             return entity is null ? NotFound() : Ok(entity);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(MenuItemModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(MenuItemRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<MenuItemModel>> Post(MenuItemModel entity)
+        public async Task<ActionResult<MenuItemRequest>> Post(MenuItemRequest entity)
         {
-            entity = await _repository.AddAsync(entity);
+            entity = Map(await _repository.AddAsync(Map(entity)));
 
-            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
+            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(MenuItemModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(MenuItemRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MenuItemModel>> Delete([FromRoute] string id)
+        public async Task<ActionResult<MenuItemRequest>> Delete([FromRoute] string id)
         {
-            var entity = await _repository.DeleteAsync(id);
+            var entity = Map(await _repository.DeleteAsync(id));
 
             return entity is null ? NotFound() : Ok(entity);
         }
@@ -70,10 +74,30 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MenuItemModel>> Update(MenuItemModel entity)
+        public async Task<ActionResult<MenuItemRequest>> Update(MenuItemRequest entity)
         {
             entity = await _repository.UpdateAsync(entity);
             return Ok(entity);
+        }
+
+        private MenuItemModel Map(MenuItemRequest entity)
+        {
+            return _mapper.Map<MenuItemModel>(entity);
+        }
+
+        private MenuItemRequest Map(MenuItemModel entity)
+        {
+            return _mapper.Map<MenuItemRequest>(entity);
+        }
+
+        private IEnumerable<MenuItemRequest> Map(IEnumerable<MenuItemModel> entity)
+        {
+            return _mapper.Map<IEnumerable<MenuItemRequest>>(entity);
+        }
+
+        private IEnumerable<MenuItemModel> Map(IEnumerable<MenuItemRequest> entity)
+        {
+            return _mapper.Map<IEnumerable<MenuItemModel>>(entity);
         }
     }
 }

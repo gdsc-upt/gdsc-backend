@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,39 +18,41 @@ namespace GdscBackend.Controllers.v1
     [Route("v1/pages")]
     public class PagesController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IRepository<PageModel> _repository;
 
-        public PagesController(IRepository<PageModel> repository)
+        public PagesController(IRepository<PageModel> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<PageModel>>> Get()
+        public async Task<ActionResult<IEnumerable<PageRequest>>> Get()
         {
-            return Ok((await _repository.GetAsync()).ToList());
+            return Ok(Map((await _repository.GetAsync()).ToList()));
         }
 
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(PageModel), StatusCodes.Status201Created)]
-        public async Task<ActionResult<PageModel>> Post(PageModel entity)
+        [ProducesResponseType(typeof(PageRequest), StatusCodes.Status201Created)]
+        public async Task<ActionResult<PageRequest>> Post(PageRequest entity)
         {
-            entity = await _repository.AddAsync(entity);
+            entity = Map(await _repository.AddAsync(Map(entity)));
 
-            return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
+            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(PageModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(PageRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<PageModel>> Delete([FromRoute] string id)
+        public async Task<ActionResult<PageRequest>> Delete([FromRoute] string id)
         {
-            var entity = await _repository.DeleteAsync(id);
+            var entity = Map(await _repository.DeleteAsync(id));
 
             return entity is null ? NotFound() : Ok(entity);
         }
@@ -57,11 +61,31 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MenuItemModel>> Update(PageModel entity)
+        public async Task<ActionResult<MenuItemRequest>> Update(PageRequest entity)
         {
-            entity = await _repository.UpdateAsync(entity);
+            entity = Map(await _repository.UpdateAsync(Map(entity)));
 
-            return CreatedAtAction(nameof(Update), new { entity.Id }, entity);
+            return CreatedAtAction(nameof(Update), new {Map(entity).Id}, entity);
+        }
+
+        private PageModel Map(PageRequest entity)
+        {
+            return _mapper.Map<PageModel>(entity);
+        }
+
+        private PageRequest Map(PageModel entity)
+        {
+            return _mapper.Map<PageRequest>(entity);
+        }
+
+        private IEnumerable<PageRequest> Map(IEnumerable<PageModel> entity)
+        {
+            return _mapper.Map<IEnumerable<PageRequest>>(entity);
+        }
+
+        private IEnumerable<PageModel> Map(IEnumerable<PageRequest> entity)
+        {
+            return _mapper.Map<IEnumerable<PageModel>>(entity);
         }
     }
 }

@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using AutoMapper;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +20,13 @@ namespace GdscBackend.Controllers.v1
     [Produces(MediaTypeNames.Application.Json)]
     public class TeamsController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IRepository<TeamModel> _repository;
 
-        public TeamsController(IRepository<TeamModel> repository)
+        public TeamsController(IRepository<TeamModel> repository,IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -64,6 +68,25 @@ namespace GdscBackend.Controllers.v1
             var entity = await _repository.DeleteAsync(id);
 
             return entity is null ? NotFound() : Ok(entity);
+        }
+        private TeamModel Map(TeamRequest entity)
+        {
+            return _mapper.Map<TeamModel>(entity);
+        }
+
+        private TeamRequest Map(TeamModel entity)
+        {
+            return _mapper.Map<TeamRequest>(entity);
+        }
+
+        private IEnumerable<TeamRequest> Map(IEnumerable<TeamModel> entity)
+        {
+            return _mapper.Map<IEnumerable<TeamRequest>>(entity);
+        }
+
+        private IEnumerable<TeamModel> Map(IEnumerable<TeamRequest> entity)
+        {
+            return _mapper.Map<IEnumerable<TeamModel>>(entity);
         }
     }
 }
