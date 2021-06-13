@@ -3,6 +3,7 @@ using GdscBackend.Models;
 using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TechnologyModel = GdscBackend.Models.TechnologyModel;
 
 namespace GdscBackend.Database
 {

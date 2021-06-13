@@ -7,7 +7,7 @@ namespace GdscBackend.RequestModels
     {
         public MappingProfiles()
         {
-            CreateMap(typeof(TechnologyModel), typeof(TechnologyRequest)).ReverseMap();
+            CreateMap(typeof(Models.TechnologyModel), typeof(TechnologyModel)).ReverseMap();
             CreateMap(typeof(FaqModel), typeof(FaqRequest)).ReverseMap();
             CreateMap(typeof(EventModel), typeof(EventRequest)).ReverseMap();
             CreateMap(typeof(MemberModel), typeof(MemberRequest)).ReverseMap();
