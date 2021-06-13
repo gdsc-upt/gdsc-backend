@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
 using System.Text;
+using AutoMapper;
 using GdscBackend.Auth;
 using GdscBackend.Database;
+using GdscBackend.Models;
+using GdscBackend.RequestModels;
 using GdscBackend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,7 +36,8 @@ namespace GdscBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(MappingProfiles));
+            
             services.AddControllers();
             services.AddCors(options => options.AddPolicy("EnableAll", builder =>
             {
@@ -58,15 +62,15 @@ namespace GdscBackend
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
-               .AddEntityFrameworkStores<AppDbContext>()
-               .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-               .AddJwtBearer(options =>
+                .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;
@@ -98,7 +102,7 @@ namespace GdscBackend
 
                 Console.WriteLine("Done!");
             }
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
