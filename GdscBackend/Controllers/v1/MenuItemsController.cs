@@ -78,7 +78,7 @@ namespace GdscBackend.Controllers.v1
         {
             var newEntity = await _repository.UpdateAsync(Map(entity));
 
-            return Created("v1/menuitem", newEntity);
+            return Ok(newEntity);
         }
 
         private MenuItemModel Map(MenuItemRequest entity)
