@@ -22,9 +22,9 @@ namespace GdscBackend.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly IRepository<ContactModel> _repository;
-        private readonly EmailSender _sender;
+        private readonly IEmailSender _sender;
 
-        public ContactController(IRepository<ContactModel> repository, IMapper mapper, EmailSender sender)
+        public ContactController(IRepository<ContactModel> repository, IMapper mapper, IEmailSender sender)
         {
             _repository = repository;
             _mapper = mapper;
@@ -41,18 +41,16 @@ namespace GdscBackend.Controllers.v1
             {
                 return BadRequest(new ErrorViewModel { Message = "Request has no body" });
             }
-            
-            var isValid = new EmailAddressAttribute().IsValid(entity.Email);
 
-            if (!isValid)
+            if (!new EmailAddressAttribute().IsValid(entity.Email))
             {
                 return BadRequest(new ErrorViewModel { Message = "Invalid email provided" });
             }
-            
+
             var newEntity = await _repository.AddAsync(Map(entity));
-            
+
             _sender.SendEmail(entity.Email, entity.Subject, entity.Text);
-            
+
             return Created("v1/contact", newEntity);
         }
 

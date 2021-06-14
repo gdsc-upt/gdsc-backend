@@ -6,11 +6,11 @@ namespace GdscBackend.Tests
 {
     public class TestingBase : IDisposable
     {
-        private readonly ITestOutputHelper _outputHelper;
+        protected readonly ITestOutputHelper OutputHelper;
 
         protected TestingBase(ITestOutputHelper outputHelper)
         {
-            _outputHelper = outputHelper;
+            OutputHelper = outputHelper;
         }
 
         // Cleanup hook after each test
@@ -21,12 +21,12 @@ namespace GdscBackend.Tests
         // This method will print formatted objects to testing console
         protected void WriteLine(object obj)
         {
-            _outputHelper.WriteLine(JsonConvert.SerializeObject(obj, Formatting.Indented));
+            OutputHelper.WriteLine(JsonConvert.SerializeObject(obj, Formatting.Indented));
         }
 
         protected void WriteLine(string obj)
         {
-            _outputHelper.WriteLine(obj);
+            OutputHelper.WriteLine(obj);
         }
     }
 }

@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using FactoryBot;
 using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
+using GdscBackend.Tests.Mocks;
 using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ namespace GdscBackend.Tests
         public async void Get_Should_Return_All_Contacts()
         {
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper);
+            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper));
 
             // Act
             var actionResult = await controller.Get();
@@ -48,19 +48,19 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper);
+            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper));
 
             var contact1 = new ContactRequest
             {
                 Name = Name.FullName(),
-                Email = Lorem.Words(3).ToString(),
+                Email = "validemail@example.com",
                 Subject = Lorem.Words(1).ToString(),
                 Text = Lorem.Words(3).ToString()
             };
             var contact2 = new ContactRequest
             {
                 Name = Name.FullName(),
-                Email = Lorem.Words(3).ToString(),
+                Email = "validemail2@example.com",
                 Subject = Lorem.Words(1).ToString(),
                 Text = Lorem.Words(3).ToString()
             };
@@ -98,7 +98,7 @@ namespace GdscBackend.Tests
         {
             //
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper);
+            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper));
 
             // Act
             var deleted = await controller.Delete(TestData.First().Id);
@@ -119,7 +119,7 @@ namespace GdscBackend.Tests
         {
             //
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper);
+            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper));
 
             // Act
             string[] listOfIds = { TestData.First().Id, TestData.ElementAt(1).Id };
