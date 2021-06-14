@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace GdscBackend.Controllers.v1
         private readonly IMapper _mapper;
         private readonly IRepository<TechnologyModel> _repository;
 
-        public TechnologiesController(IRepository<TechnologyModel> repository,IMapper mapper)
+        public TechnologiesController(IRepository<TechnologyModel> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -58,14 +57,17 @@ namespace GdscBackend.Controllers.v1
         {
             return _mapper.Map<TechnologyModel>(entity);
         }
+
         private TechnologyRequest Map(TechnologyModel entity)
         {
             return _mapper.Map<TechnologyRequest>(entity);
         }
+
         private IEnumerable<TechnologyRequest> Map(IEnumerable<TechnologyModel> entity)
         {
             return _mapper.Map<IEnumerable<TechnologyRequest>>(entity);
         }
+
         private IEnumerable<TechnologyModel> Map(IEnumerable<TechnologyRequest> entity)
         {
             return _mapper.Map<IEnumerable<TechnologyModel>>(entity);

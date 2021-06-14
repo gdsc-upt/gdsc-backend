@@ -97,6 +97,7 @@ namespace GdscBackend.Controllers.v1
 
             return entity is null ? NotFound() : Ok(entity);
         }
+
         private SettingModel Map(SettingRequest entity)
         {
             return _mapper.Map<SettingModel>(entity);

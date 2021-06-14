@@ -57,7 +57,7 @@ namespace GdscBackend.Controllers.v1
         {
             var newEntity = await _repository.AddAsync(Map(entity));
 
-            return Created( "v1/faq", newEntity);
+            return Created("v1/faq", newEntity);
         }
 
         [HttpDelete("{id}")]

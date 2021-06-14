@@ -18,14 +18,10 @@ namespace GdscBackend.Tests
     public class MembersControllerTests : TestingBase
     {
         private static readonly IEnumerable<MemberModel> TestData = _getTestData();
-        private MembersController _controller;
-        private Repository<MemberModel> _repository;
         private readonly IMapper _mapper;
 
         public MembersControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
-            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>().Object);
-            _controller = new MembersController(_repository,_mapper);
             var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
             _mapper = mapconfig.CreateMapper();
         }
@@ -33,16 +29,16 @@ namespace GdscBackend.Tests
         [Fact]
         public async void Get_Should_Return_All_Members()
         {
-            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
-            _controller = new MembersController(_repository,_mapper);
+            var repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
+            var controller = new MembersController(repository, _mapper);
 
             // Act
-            var actionResult = await _controller.Get();
+            var actionResult = await controller.Get();
             var result = actionResult.Result as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
-            var items = Assert.IsAssignableFrom<IEnumerable<MemberRequest>>(result.Value);
+            var items = Assert.IsAssignableFrom<IEnumerable<MemberModel>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
         }
 
@@ -50,6 +46,9 @@ namespace GdscBackend.Tests
         public async void Post_ReturnsCreatedObject()
         {
             // Arrange
+            var repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
+            var controller = new MembersController(repository, _mapper);
+
             var member1 = new MemberRequest
             {
                 Name = Name.FullName(),
@@ -64,8 +63,8 @@ namespace GdscBackend.Tests
             };
 
             // Act
-            var added1 = await _controller.Post(member1);
-            var added2 = await _controller.Post(member2);
+            var added1 = await controller.Post(member1);
+            var added2 = await controller.Post(member2);
 
             var result1 = added1.Result as CreatedResult;
             var result2 = added2.Result as CreatedResult;
@@ -93,19 +92,20 @@ namespace GdscBackend.Tests
         public async void Get_Returns_Member_by_ID()
         {
             // Arrange
-            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
-            _controller = new MembersController(_repository,_mapper);
+            var repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
+            var controller = new MembersController(repository, _mapper);
 
             //Act
 
             var anElementById = TestData.First();
-            var actionResult = await _controller.Get(anElementById.Id);
+            var actionResult = await controller.Get(anElementById.Id);
             var result = actionResult.Result as OkObjectResult;
 
             //Assert
 
             Assert.NotNull(result);
             var entity = result.Value as MemberModel;
+            Assert.NotNull(entity);
             Assert.Equal(anElementById.Email, entity.Email);
             Assert.Equal(anElementById.Name, entity.Name);
             Assert.Equal(anElementById.TeamId, entity.TeamId);
@@ -115,26 +115,20 @@ namespace GdscBackend.Tests
         public async void Delete_Should_Delete_Member_By_ID()
         {
             //
-            _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
-            _controller = new MembersController(_repository,_mapper);
+            var repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
+            var controller = new MembersController(repository, _mapper);
 
             // Act
-            var deleted = await _controller.Delete(TestData.First().Id);
+            var deleted = await controller.Delete(TestData.First().Id);
             var result = deleted.Result as OkObjectResult;
 
             // Assert
-            var entity = result.Value as MemberModel;
             Assert.NotNull(result);
+            var entity = result.Value as MemberModel;
+            Assert.NotNull(entity);
             Assert.Equal(TestData.First().Email, entity.Email);
             Assert.Equal(TestData.First().Name, entity.Name);
             Assert.Equal(TestData.First().TeamId, entity.TeamId);
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            _controller = null;
-            _repository = null;
         }
 
         private static IEnumerable<MemberModel> _getTestData()

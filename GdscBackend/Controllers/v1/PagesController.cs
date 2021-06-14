@@ -43,7 +43,7 @@ namespace GdscBackend.Controllers.v1
         {
             var newEntity = await _repository.AddAsync(Map(entity));
 
-            return Created("v1/page",newEntity);
+            return Created("v1/page", newEntity);
         }
 
         [HttpDelete("{id}")]
@@ -65,7 +65,7 @@ namespace GdscBackend.Controllers.v1
         {
             var newEntity = await _repository.UpdateAsync(Map(entity));
 
-            return Created("v1/page",newEntity);
+            return Created("v1/page", newEntity);
         }
 
         private PageModel Map(PageRequest entity)

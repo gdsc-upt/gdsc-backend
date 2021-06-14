@@ -30,7 +30,8 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<EventModel>(new TestDbContext<EventModel>().Object);
-            var controller = new EventsController(repository,_mapper);
+            var controller = new EventsController(repository, _mapper);
+
             var example1 = new EventRequest
             {
                 Title = Lorem.Words(1).ToString(),
@@ -64,7 +65,7 @@ namespace GdscBackend.Tests
             Assert.Equal(example1.Image, entity1.Image);
             Assert.Equal(example1.Title, entity1.Title);
 
-            Assert.NotNull(entity1);
+            Assert.NotNull(entity2);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
             Assert.Equal(example2.Description, entity2.Description);
             Assert.Equal(example2.Image, entity2.Image);
@@ -76,7 +77,7 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<EventModel>(new TestDbContext<EventModel>(TestData).Object);
-            var controller = new EventsController(repository,_mapper);
+            var controller = new EventsController(repository, _mapper);
 
             // Act
             var actionResult = await controller.Get();
@@ -85,7 +86,7 @@ namespace GdscBackend.Tests
             // Assert
             Assert.NotNull(result);
             var items = Assert.IsAssignableFrom<IEnumerable<EventModel>>(result.Value);
-            
+            Assert.NotNull(items);
         }
 
         private static IEnumerable<EventModel> _getTestData()
