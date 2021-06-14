@@ -76,8 +76,8 @@ namespace GdscBackend.Tests
             // Assert
             Assert.NotNull(result1);
             Assert.NotNull(result2);
-            var entity1 = result1.Value as ContactRequest;
-            var entity2 = result2.Value as ContactRequest;
+            var entity1 = result1.Value as ContactModel;
+            var entity2 = result2.Value as ContactModel;
 
             Assert.NotNull(entity1);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
@@ -89,6 +89,7 @@ namespace GdscBackend.Tests
             Assert.NotNull(entity2);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
             Assert.Equal(contact2.Name, entity2.Name);
+            Assert.Equal(contact2.Email, entity2.Email);
             Assert.Equal(contact2.Subject, entity2.Subject);
             Assert.Equal(contact2.Text, entity2.Text);
         }

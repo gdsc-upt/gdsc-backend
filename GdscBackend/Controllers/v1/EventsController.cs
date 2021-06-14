@@ -32,7 +32,7 @@ namespace GdscBackend.Controllers.v1
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<EventRequest>>> Get()
+        public async Task<ActionResult<IEnumerable<EventModel>>> Get()
         {
             return Ok(Map((await _repository.GetAsync()).ToList()));
         }
@@ -42,7 +42,7 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<EventRequest>> Get([FromRoute] string id)
+        public async Task<ActionResult<EventModel>> Get([FromRoute] string id)
         {
             var entity = Map(await _repository.GetAsync(id));
             return entity is null ? NotFound() : Ok(entity);
@@ -51,17 +51,17 @@ namespace GdscBackend.Controllers.v1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<EventRequest>> Post(EventRequest entity)
+        public async Task<ActionResult<EventModel>> Post(EventRequest entity)
         {
-            entity = Map(await _repository.AddAsync(Map(entity)));
-            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
+            var newEntity = await _repository.AddAsync(Map(entity));
+            return Created("v1/event", newEntity);
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<EventRequest>> Delete([FromRoute] string id)
+        public async Task<ActionResult<EventModel>> Delete([FromRoute] string id)
         {
             var entity = Map(await _repository.DeleteAsync(id));
             return entity is null ? NotFound() : Ok(entity);
@@ -71,7 +71,7 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<EventRequest>> Update(EventRequest entity)
+        public async Task<ActionResult<EventModel>> Update(EventRequest entity)
         {
             entity = Map(await _repository.UpdateAsync(Map(entity)));
             return entity is null ? BadRequest() : Ok(entity);

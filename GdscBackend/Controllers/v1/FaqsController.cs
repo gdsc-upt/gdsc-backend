@@ -32,9 +32,9 @@ namespace GdscBackend.Controllers.v1
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<FaqRequest>>> Get()
+        public async Task<ActionResult<IEnumerable<FaqModel>>> Get()
         {
-            return Ok(Map((await _repository.GetAsync()).ToList()));
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
         [HttpGet("{id}")]
@@ -42,9 +42,9 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<FaqRequest>> Get([FromRoute] string id)
+        public async Task<ActionResult<FaqModel>> Get([FromRoute] string id)
         {
-            var entity = Map(await _repository.GetAsync(id));
+            var entity = await _repository.GetAsync(id);
 
             return entity is null ? NotFound() : Ok(entity);
         }
@@ -53,11 +53,11 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<FaqRequest>> Post(FaqRequest entity)
+        public async Task<ActionResult<FaqModel>> Post(FaqRequest entity)
         {
-            entity = Map(await _repository.AddAsync(Map(entity)));
+            var newEntity = await _repository.AddAsync(Map(entity));
 
-            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
+            return Created( "v1/faq", newEntity);
         }
 
         [HttpDelete("{id}")]
@@ -65,9 +65,9 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<FaqRequest>> Delete([FromRoute] string id)
+        public async Task<ActionResult<FaqModel>> Delete([FromRoute] string id)
         {
-            var entity = Map(await _repository.DeleteAsync(id));
+            var entity = await _repository.DeleteAsync(id);
 
             return entity is null ? NotFound() : Ok(entity);
         }
