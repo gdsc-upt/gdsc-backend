@@ -67,14 +67,14 @@ namespace GdscBackend.Tests
             var added1 = await _controller.Post(member1);
             var added2 = await _controller.Post(member2);
 
-            var result1 = added1.Result as CreatedAtActionResult;
-            var result2 = added2.Result as CreatedAtActionResult;
+            var result1 = added1.Result as CreatedResult;
+            var result2 = added2.Result as CreatedResult;
 
             // Assert
             Assert.NotNull(result1);
             Assert.NotNull(result2);
-            var entity1 = result1.Value as MemberRequest;
-            var entity2 = result2.Value as MemberRequest;
+            var entity1 = result1.Value as MemberModel;
+            var entity2 = result2.Value as MemberModel;
 
             Assert.NotNull(entity1);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
@@ -105,7 +105,7 @@ namespace GdscBackend.Tests
             //Assert
 
             Assert.NotNull(result);
-            var entity = result.Value as MemberRequest;
+            var entity = result.Value as MemberModel;
             Assert.Equal(anElementById.Email, entity.Email);
             Assert.Equal(anElementById.Name, entity.Name);
             Assert.Equal(anElementById.TeamId, entity.TeamId);
@@ -123,7 +123,7 @@ namespace GdscBackend.Tests
             var result = deleted.Result as OkObjectResult;
 
             // Assert
-            var entity = result.Value as MemberRequest;
+            var entity = result.Value as MemberModel;
             Assert.NotNull(result);
             Assert.Equal(TestData.First().Email, entity.Email);
             Assert.Equal(TestData.First().Name, entity.Name);

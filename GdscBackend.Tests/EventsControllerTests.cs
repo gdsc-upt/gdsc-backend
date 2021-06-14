@@ -48,15 +48,15 @@ namespace GdscBackend.Tests
             var added1 = await controller.Post(example1);
             var added2 = await controller.Post(example2);
 
-            var result1 = added1.Result as CreatedAtActionResult;
-            var result2 = added2.Result as CreatedAtActionResult;
+            var result1 = added1.Result as CreatedResult;
+            var result2 = added2.Result as CreatedResult;
 
             // Assert
             Assert.NotNull(result1);
             Assert.NotNull(result2);
 
-            var entity1 = result1.Value as EventRequest;
-            var entity2 = result2.Value as EventRequest;
+            var entity1 = result1.Value as EventModel;
+            var entity2 = result2.Value as EventModel;
 
             Assert.NotNull(entity1);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
@@ -84,7 +84,8 @@ namespace GdscBackend.Tests
 
             // Assert
             Assert.NotNull(result);
-            var items = Assert.IsAssignableFrom<IEnumerable<EventRequest>>(result.Value);
+            var items = Assert.IsAssignableFrom<IEnumerable<EventModel>>(result.Value);
+            
         }
 
         private static IEnumerable<EventModel> _getTestData()

@@ -34,7 +34,7 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<EventModel>>> Get()
         {
-            return Ok(Map((await _repository.GetAsync()).ToList()));
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
         [HttpGet("{id}")]
@@ -44,7 +44,7 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EventModel>> Get([FromRoute] string id)
         {
-            var entity = Map(await _repository.GetAsync(id));
+            var entity = await _repository.GetAsync(id);
             return entity is null ? NotFound() : Ok(entity);
         }
 
@@ -63,7 +63,7 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EventModel>> Delete([FromRoute] string id)
         {
-            var entity = Map(await _repository.DeleteAsync(id));
+            var entity = await _repository.DeleteAsync(id);
             return entity is null ? NotFound() : Ok(entity);
         }
 
@@ -73,8 +73,8 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EventModel>> Update(EventRequest entity)
         {
-            entity = Map(await _repository.UpdateAsync(Map(entity)));
-            return entity is null ? BadRequest() : Ok(entity);
+            var newEntity = await _repository.UpdateAsync(Map(entity));
+            return newEntity is null ? BadRequest() : Ok(newEntity);
         }
 
         private EventModel Map(EventRequest entity)

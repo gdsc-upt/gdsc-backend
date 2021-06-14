@@ -37,10 +37,12 @@ namespace GdscBackend.Controllers.v1
             {
                 return BadRequest(new ErrorViewModel {Message = "Request has no body"});
             }
-
+            
             var newEntity = await _repository.AddAsync(Map(entity));
-
-            return Created("v1/contact", newEntity);
+              
+                          return Created("v1/contact", newEntity);  
+            
+            
         }
 
         [HttpDelete("{id}")]
@@ -49,7 +51,7 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ContactModel>> Delete([FromRoute] string id)
         {
-            var entity = Map(await _repository.DeleteAsync(id));
+            var entity = await _repository.DeleteAsync(id);
 
             return entity is null ? NotFound() : Ok(entity);
         }
@@ -71,8 +73,7 @@ namespace GdscBackend.Controllers.v1
 
         private ContactModel Map(ContactRequest entity)
         {
-            return _mapper
-                .Map<ContactModel>(entity);
+            return _mapper.Map<ContactModel>(entity);
         }
 
         private ContactRequest Map(ContactModel entity)

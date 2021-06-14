@@ -43,7 +43,7 @@ namespace GdscBackend.Tests
 
             // Assert
             Assert.NotNull(result);
-            var items = Assert.IsAssignableFrom<IEnumerable<ContactRequest>>(result.Value);
+            var items = Assert.IsAssignableFrom<IEnumerable<ContactModel>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
         }
 
@@ -70,8 +70,8 @@ namespace GdscBackend.Tests
             var added1 = await _controller.Post(contact1);
             var added2 = await _controller.Post(contact2);
 
-            var result1 = added1.Result as CreatedAtActionResult;
-            var result2 = added2.Result as CreatedAtActionResult;
+            var result1 = added1.Result as CreatedResult;
+            var result2 = added2.Result as CreatedResult;
 
             // Assert
             Assert.NotNull(result1);
@@ -106,7 +106,7 @@ namespace GdscBackend.Tests
             var result = deleted.Result as OkObjectResult;
 
             // Assert
-            var entity = result.Value as ContactRequest;
+            var entity = result.Value as ContactModel;
             Assert.NotNull(result);
             Assert.Equal(TestData.First().Email, entity.Email);
             Assert.Equal(TestData.First().Name, entity.Name);
