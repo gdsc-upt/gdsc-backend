@@ -42,9 +42,8 @@ namespace GdscBackend.Tests
 
             // Assert
             Assert.NotNull(result);
-            var items = Assert.IsAssignableFrom<IEnumerable<MemberModel>>(result.Value);
+            var items = Assert.IsAssignableFrom<IEnumerable<MemberRequest>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
-            Assert.Equal(TestData, items);
         }
 
         [Fact]
@@ -74,8 +73,8 @@ namespace GdscBackend.Tests
             // Assert
             Assert.NotNull(result1);
             Assert.NotNull(result2);
-            var entity1 = result1.Value as MemberModel;
-            var entity2 = result2.Value as MemberModel;
+            var entity1 = result1.Value as MemberRequest;
+            var entity2 = result2.Value as MemberRequest;
 
             Assert.NotNull(entity1);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
@@ -106,8 +105,10 @@ namespace GdscBackend.Tests
             //Assert
 
             Assert.NotNull(result);
-            var entity = result.Value as MemberModel;
-            Assert.Equal(anElementById, entity);
+            var entity = result.Value as MemberRequest;
+            Assert.Equal(anElementById.Email, entity.Email);
+            Assert.Equal(anElementById.Name, entity.Name);
+            Assert.Equal(anElementById.TeamId, entity.TeamId);
         }
 
         [Fact]
@@ -122,9 +123,11 @@ namespace GdscBackend.Tests
             var result = deleted.Result as OkObjectResult;
 
             // Assert
-            var entity = result.Value as MemberModel;
+            var entity = result.Value as MemberRequest;
             Assert.NotNull(result);
-            Assert.Equal(TestData.First(), entity);
+            Assert.Equal(TestData.First().Email, entity.Email);
+            Assert.Equal(TestData.First().Name, entity.Name);
+            Assert.Equal(TestData.First().TeamId, entity.TeamId);
         }
 
         public override void Dispose()

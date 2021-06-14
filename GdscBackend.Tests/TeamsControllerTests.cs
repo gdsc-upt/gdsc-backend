@@ -69,13 +69,11 @@ namespace GdscBackend.Tests
 
             Assert.NotNull(result1);
             Assert.NotNull(result2);
-            var entity1 = result1.Value as TeamModel;
-            var entity2 = result2.Value as TeamModel;
+            var entity1 = result1.Value as TeamRequest;
+            var entity2 = result2.Value as TeamRequest;
 
             Assert.NotNull(entity1);
-            Assert.NotNull(entity1.Id);
             Assert.NotNull(entity2);
-            Assert.NotNull(entity2.Id);
 
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
             Assert.Equal(team1.Name, entity1.Name);
