@@ -1,14 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using FactoryBot;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.Models.Enums;
+using GdscBackend.RequestModels;
+using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,23 +18,26 @@ namespace GdscBackend.Tests
     public class MenuItemsControllerTests : TestingBase
     {
         private readonly IEnumerable<MenuItemModel> _testData = _getTestData();
+        private readonly IMapper _mapper;
 
         public MenuItemsControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
+            var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
+            _mapper = mapconfig.CreateMapper();
         }
 
         [Fact]
         public async void Post_ReturnsCreatedObject()
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
-            var controller = new MenuItemsController(repository);
-            var model1 = new MenuItemModel
+            var controller = new MenuItemsController(repository, _mapper);
+            var model1 = new MenuItemRequest
             {
                 Name = Faker.Name.First(),
                 Type = MenuItemTypeEnum.ExternalLink,
                 Link = Faker.Lorem.Words(3).ToString()
             };
-            var model2 = new MenuItemModel
+            var model2 = new MenuItemRequest
             {
                 Name = Faker.Name.First(),
                 Type = MenuItemTypeEnum.InternalLink,
@@ -54,19 +58,21 @@ namespace GdscBackend.Tests
             Assert.NotNull(entity1);
             Assert.NotNull(entity1.Id);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
-            Assert.Equal(model1, entity1);
+            Assert.Equal(model1.Name, entity1.Name);
+            Assert.Equal(model1.Link, entity1.Link);
 
             Assert.NotNull(entity2);
             Assert.NotNull(entity2.Id);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
-            Assert.Equal(model2, entity2);
+            Assert.Equal(model2.Name, entity2.Name);
+            Assert.Equal(model2.Link, entity2.Link);
         }
 
         [Fact]
         public async void GetById_ReturnsOkObjectResult()
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
-            var controller = new MenuItemsController(repository);
+            var controller = new MenuItemsController(repository, _mapper);
             var firstObj = repository.DbSet.First();
             var actionResult = await controller.Get(firstObj.Id);
             var returnedResult = actionResult.Result as OkObjectResult;
@@ -80,13 +86,13 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllExamples()
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
-            var controller = new MenuItemsController(repository);
+            var controller = new MenuItemsController(repository, _mapper);
 
             var actionResult = await controller.Get();
             var returnedResult = actionResult.Result as OkObjectResult;
-            var items = Assert.IsAssignableFrom<IEnumerable<MenuItemModel>>(returnedResult.Value);
 
             Assert.NotNull(returnedResult);
+            var items = Assert.IsAssignableFrom<IEnumerable<MenuItemModel>>(returnedResult.Value);
             Assert.Equal(StatusCodes.Status200OK, returnedResult.StatusCode);
             Assert.Equal(_testData.ToList(), items.ToList());
         }
@@ -95,7 +101,7 @@ namespace GdscBackend.Tests
         public async void Delete_Returns404NotFoundResult()
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
-            var controller = new MenuItemsController(repository);
+            var controller = new MenuItemsController(repository, _mapper);
             var deletedobj = repository.DbSet.First();
 
             var actionResult = await controller.Delete(deletedobj.Id);
@@ -104,6 +110,7 @@ namespace GdscBackend.Tests
             var result1Result = actionResult1.Result as NotFoundResult;
 
             Assert.NotNull(result1Result);
+            Assert.NotNull(resultResult);
             Assert.Equal(StatusCodes.Status404NotFound, result1Result.StatusCode);
             Assert.Equal(deletedobj, resultResult.Value);
         }
@@ -112,14 +119,14 @@ namespace GdscBackend.Tests
         public async void Update_ReturnsOkObjectAction()
         {
             var repository = new Repository<MenuItemModel>(new TestDbContext<MenuItemModel>(_testData).Object);
-            var controller = new MenuItemsController(repository);
-            var model1 = new MenuItemModel
+            var controller = new MenuItemsController(repository, _mapper);
+            var model1 = new MenuItemRequest
             {
                 Name = Faker.Name.First(),
                 Type = MenuItemTypeEnum.ExternalLink,
                 Link = Faker.Lorem.Words(3).ToString()
             };
-            var model2 = new MenuItemModel
+            var model2 = new MenuItemRequest
             {
                 Name = Faker.Name.First(),
                 Type = MenuItemTypeEnum.InternalLink,
