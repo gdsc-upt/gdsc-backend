@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using GdscBackend.Auth;
 using GdscBackend.Database;
+using GdscBackend.Email;
 using GdscBackend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -78,6 +79,7 @@ namespace GdscBackend
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
                     };
                 });
+            services.AddTransient<EmailSender>();
             services.AddSwaggerGen();
 
             var connectionString = Configuration.GetConnectionString("Default");
