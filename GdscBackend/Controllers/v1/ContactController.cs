@@ -31,23 +31,23 @@ namespace GdscBackend.Controllers.v1
         [AllowAnonymous]
         [ProducesResponseType(typeof(ContactRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<ContactRequest>>> Post(ContactRequest entity)
+        public async Task<ActionResult<IEnumerable<ContactModel>>> Post(ContactRequest entity)
         {
             if (entity is null)
             {
                 return BadRequest(new ErrorViewModel {Message = "Request has no body"});
             }
 
-            entity = Map(await _repository.AddAsync(Map(entity)));
+            var newEntity = await _repository.AddAsync(Map(entity));
 
-            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
+            return Created("v1/contact", newEntity);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(ContactRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ContactModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ContactRequest>> Delete([FromRoute] string id)
+        public async Task<ActionResult<ContactModel>> Delete([FromRoute] string id)
         {
             var entity = Map(await _repository.DeleteAsync(id));
 
@@ -57,21 +57,22 @@ namespace GdscBackend.Controllers.v1
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<ContactRequest>>> Get()
+        public async Task<ActionResult<IEnumerable<ContactModel>>> Get()
         {
-            return Ok(Map((await _repository.GetAsync()).ToList()));
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
         [HttpDelete]
-        public async Task<ActionResult<ContactRequest>> Delete(string[] ids)
+        public async Task<ActionResult<ContactModel>> Delete(string[] ids)
         {
-            var entity = Map(await _repository.DeleteAsync(ids));
+            var entity = await _repository.DeleteAsync(ids);
             return entity is null ? NotFound() : Ok(entity);
         }
 
         private ContactModel Map(ContactRequest entity)
         {
-            return _mapper.Map<ContactModel>(entity);
+            return _mapper
+                .Map<ContactModel>(entity);
         }
 
         private ContactRequest Map(ContactModel entity)

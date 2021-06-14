@@ -30,29 +30,29 @@ namespace GdscBackend.Controllers.v1
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<PageRequest>>> Get()
+        public async Task<ActionResult<IEnumerable<PageModel>>> Get()
         {
-            return Ok(Map((await _repository.GetAsync()).ToList()));
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(PageRequest), StatusCodes.Status201Created)]
-        public async Task<ActionResult<PageRequest>> Post(PageRequest entity)
+        [ProducesResponseType(typeof(PageModel), StatusCodes.Status201Created)]
+        public async Task<ActionResult<PageModel>> Post(PageRequest entity)
         {
-            entity = Map(await _repository.AddAsync(Map(entity)));
+            var newEntity = await _repository.AddAsync(Map(entity));
 
-            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
+            return Created("v1/page",newEntity);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(PageRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(PageModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<PageRequest>> Delete([FromRoute] string id)
+        public async Task<ActionResult<PageModel>> Delete([FromRoute] string id)
         {
-            var entity = Map(await _repository.DeleteAsync(id));
+            var entity = await _repository.DeleteAsync(id);
 
             return entity is null ? NotFound() : Ok(entity);
         }
@@ -61,11 +61,11 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MenuItemRequest>> Update(PageRequest entity)
+        public async Task<ActionResult<PageModel>> Update(PageRequest entity)
         {
-            entity = Map(await _repository.UpdateAsync(Map(entity)));
+            var newEntity = await _repository.UpdateAsync(Map(entity));
 
-            return CreatedAtAction(nameof(Update), new {Map(entity).Id}, entity);
+            return Created("v1/page",newEntity);
         }
 
         private PageModel Map(PageRequest entity)

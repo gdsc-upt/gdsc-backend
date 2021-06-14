@@ -54,9 +54,9 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<TeamModel>> Post(TeamRequest entity)
         {
-            entity = Map(await _repository.AddAsync(Map(entity)));
+            var newEntity = await _repository.AddAsync(Map(entity));
 
-            return CreatedAtAction(nameof(Post), new { Map(entity).Id }, entity);
+            return Created("v1/team", newEntity);
         }
 
         [HttpDelete("{id}")]

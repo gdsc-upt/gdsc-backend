@@ -42,9 +42,9 @@ namespace GdscBackend.Controllers.v1
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<SettingRequest>>> Get()
+        public async Task<ActionResult<IEnumerable<SettingModel>>> Get()
         {
-            return Ok(Map((await _repository.GetAsync()).ToList()));
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
         /// <summary>
@@ -74,11 +74,11 @@ namespace GdscBackend.Controllers.v1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<SettingRequest>> Post(SettingRequest entity)
+        public async Task<ActionResult<SettingModel>> Post(SettingRequest entity)
         {
-            entity = Map(await _repository.AddAsync(Map(entity)));
+            var newEntity = await _repository.AddAsync(Map(entity));
 
-            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
+            return Created("v1/setting", newEntity);
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<SettingRequest>> Delete([FromRoute] string id)
+        public async Task<ActionResult<SettingModel>> Delete([FromRoute] string id)
         {
-            var entity = Map(await _repository.DeleteAsync(id));
+            var entity = await _repository.DeleteAsync(id);
 
             return entity is null ? NotFound() : Ok(entity);
         }

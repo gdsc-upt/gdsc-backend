@@ -32,10 +32,10 @@ namespace GdscBackend.Controllers.v1
 
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(IEnumerable<MemberRequest>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<MemberRequest>>> Get()
+        [ProducesResponseType(typeof(IEnumerable<MemberModel>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<MemberModel>>> Get()
         {
-            return Ok(Map((await _repository.GetAsync()).ToList()));
+            return Ok((await _repository.GetAsync()).ToList());
         }
 
         [HttpGet("{id}")]
@@ -43,9 +43,9 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MemberRequest>> Get([FromRoute] string id)
+        public async Task<ActionResult<MemberModel>> Get([FromRoute] string id)
         {
-            var entity = Map(await _repository.GetAsync(id));
+            var entity = await _repository.GetAsync(id);
 
             return entity is null ? NotFound() : Ok(entity);
         }
@@ -53,21 +53,21 @@ namespace GdscBackend.Controllers.v1
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(MemberRequest), StatusCodes.Status201Created)]
-        public async Task<ActionResult<MemberRequest>> Post(MemberRequest entity)
+        [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]
+        public async Task<ActionResult<MemberModel>> Post(MemberRequest entity)
         {
-            entity = Map(await _repository.AddAsync(Map(entity)));
+            var newEntity = await _repository.AddAsync(Map(entity));
 
-            return CreatedAtAction(nameof(Post),Map(entity).Id, entity);
+            return Created( "v1/member",newEntity);
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(MemberRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MemberRequest>> Delete([FromBody] string id)
+        public async Task<ActionResult<MemberModel>> Delete([FromBody] string id)
         {
-            var entity = Map(await _repository.DeleteAsync(id));
+            var entity = await _repository.DeleteAsync(id);
 
             return entity is null ? NotFound() : Ok(entity);
         }
