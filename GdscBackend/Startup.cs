@@ -81,7 +81,7 @@ namespace GdscBackend
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
                     };
                 });
-            services.AddTransient<EmailSender>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddSwaggerGen();
 
             var connectionString = Configuration.GetConnectionString("Default");

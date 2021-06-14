@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace GdscBackend.Utils
 {
-    public class EmailSender
+    public class EmailSender : IEmailSender
     {
         private readonly SmtpClient _sender;
         private readonly string _senderName;
@@ -16,7 +16,7 @@ namespace GdscBackend.Utils
             {
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(
-                    configuration["Email:Login"], 
+                    configuration["Email:Login"],
                     configuration["Email:Password"]
                 ),
                 Port = int.Parse(configuration["Email:Port"]),
