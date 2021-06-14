@@ -20,6 +20,7 @@ namespace GdscBackend.Tests
     {
         private static readonly IEnumerable<SettingModel> TestData = _getTestData();
         private readonly IMapper _mapper;
+
         public SettingsControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
@@ -31,7 +32,7 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<SettingModel>(new TestDbContext<SettingModel>().Object);
-            var controller = new SettingsController(repository,_mapper);
+            var controller = new SettingsController(repository, _mapper);
             var example1 = new SettingRequest
             {
                 Name = Lorem.Words(1).ToString(),
@@ -80,7 +81,7 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repostitory = new Repository<SettingModel>(new TestDbContext<SettingModel>(TestData).Object);
-            var controller = new SettingsController(repostitory,_mapper);
+            var controller = new SettingsController(repostitory, _mapper);
 
             // Act
             var actionResult = await controller.Get();

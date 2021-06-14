@@ -23,7 +23,7 @@ namespace GdscBackend.Controllers.v1
         private readonly IMapper _mapper;
         private readonly IRepository<TeamModel> _repository;
 
-        public TeamsController(IRepository<TeamModel> repository,IMapper mapper)
+        public TeamsController(IRepository<TeamModel> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -69,6 +69,7 @@ namespace GdscBackend.Controllers.v1
 
             return entity is null ? NotFound() : Ok(entity);
         }
+
         private TeamModel Map(TeamRequest entity)
         {
             return _mapper.Map<TeamModel>(entity);

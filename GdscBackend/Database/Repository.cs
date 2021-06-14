@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using GdscBackend.Models;
-using GdscBackend.RequestModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace GdscBackend.Database

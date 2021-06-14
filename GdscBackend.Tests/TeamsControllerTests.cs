@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
@@ -17,8 +18,9 @@ namespace GdscBackend.Tests
 {
     public class TeamsControllerTests : TestingBase
     {
-        private readonly IEnumerable<TeamModel> _testData = _getTestData();
         private readonly IMapper _mapper;
+        private readonly IEnumerable<TeamModel> _testData = _getTestData();
+
         public TeamsControllerTests(ITestOutputHelper helper) : base(helper)
         {
             var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
@@ -29,7 +31,7 @@ namespace GdscBackend.Tests
         public async void Delete_Returns_OkResult()
         {
             var repos = new Repository<TeamModel>(new TestDbContext<TeamModel>(_testData).Object);
-            var controller = new TeamsController(repos,_mapper);
+            var controller = new TeamsController(repos, _mapper);
             var deletedVar = _testData.First();
 
             var actionResult = await controller.Delete(deletedVar.Id);
@@ -51,7 +53,7 @@ namespace GdscBackend.Tests
         public async void Post_ReturnsCreatedObject()
         {
             var repos = new Repository<TeamModel>(new TestDbContext<TeamModel>(_testData).Object);
-            var controller = new TeamsController(repos,_mapper);
+            var controller = new TeamsController(repos, _mapper);
             var team1 = new TeamRequest
             {
                 Name = Lorem.Words(3).ToString()
@@ -85,7 +87,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllExamples()
         {
             var repos = new Repository<TeamModel>(new TestDbContext<TeamModel>(_testData).Object);
-            var controller = new TeamsController(repos,_mapper);
+            var controller = new TeamsController(repos, _mapper);
 
             var actionResult = await controller.Get();
             var result = actionResult.Result as OkObjectResult;
@@ -99,7 +101,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllExamplesById()
         {
             var repos = new Repository<TeamModel>(new TestDbContext<TeamModel>(_testData).Object);
-            var controller = new TeamsController(repos,_mapper);
+            var controller = new TeamsController(repos, _mapper);
 
             var actionResult = await controller.Get(_testData.First().Id);
             var result = actionResult.Result as OkObjectResult;
@@ -110,14 +112,15 @@ namespace GdscBackend.Tests
 
         private static IEnumerable<TeamModel> _getTestData()
         {
-            Bot.Define(x => new TeamModel
-            {
-                Id = x.Strings.Guid(),
-                Name = x.Names.LastName(),
-                Created = x.Dates.AfterNow(),
-                Updated = x.Dates.AfterNow()
-            });
-            return Bot.BuildSequence<TeamModel>().Take(10).ToList();
+            var models = new List<TeamModel>();
+            for (var _ = 0; _ < 10; _++)
+                models.Add(new TeamModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = Lorem.Words(1).ToString(),
+                });
+
+            return models;
         }
     }
 }

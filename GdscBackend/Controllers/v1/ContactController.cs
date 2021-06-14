@@ -35,14 +35,12 @@ namespace GdscBackend.Controllers.v1
         {
             if (entity is null)
             {
-                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
+                return BadRequest(new ErrorViewModel { Message = "Request has no body" });
             }
-            
+
             var newEntity = await _repository.AddAsync(Map(entity));
-              
-                          return Created("v1/contact", newEntity);  
-            
-            
+
+            return Created("v1/contact", newEntity);
         }
 
         [HttpDelete("{id}")]

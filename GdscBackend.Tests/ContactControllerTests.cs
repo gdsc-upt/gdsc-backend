@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using AutoMapper.Configuration;
 using FactoryBot;
 using Faker;
 using GdscBackend.Controllers.v1;
@@ -18,15 +18,11 @@ namespace GdscBackend.Tests
 {
     public class ContactsControllerTests : TestingBase
     {
-        private readonly IMapper _mapper;
         private static readonly IEnumerable<ContactModel> TestData = _getTestData();
-        private ContactController _controller;
-        private Repository<ContactModel> _repository;
+        private readonly IMapper _mapper;
 
         public ContactsControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
-            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>().Object);
-            _controller = new ContactController(_repository, _mapper);
             var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
             _mapper = mapconfig.CreateMapper();
         }
@@ -34,11 +30,11 @@ namespace GdscBackend.Tests
         [Fact]
         public async void Get_Should_Return_All_Contacts()
         {
-            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            _controller = new ContactController(_repository, _mapper);
+            var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
+            var controller = new ContactController(repository, _mapper);
 
             // Act
-            var actionResult = await _controller.Get();
+            var actionResult = await controller.Get();
             var result = actionResult.Result as OkObjectResult;
 
             // Assert
@@ -51,6 +47,9 @@ namespace GdscBackend.Tests
         public async void Post_ReturnsCreatedObject()
         {
             // Arrange
+            var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
+            var controller = new ContactController(repository, _mapper);
+
             var contact1 = new ContactRequest
             {
                 Name = Name.FullName(),
@@ -67,8 +66,8 @@ namespace GdscBackend.Tests
             };
 
             // Act
-            var added1 = await _controller.Post(contact1);
-            var added2 = await _controller.Post(contact2);
+            var added1 = await controller.Post(contact1);
+            var added2 = await controller.Post(contact2);
 
             var result1 = added1.Result as CreatedResult;
             var result2 = added2.Result as CreatedResult;
@@ -98,16 +97,17 @@ namespace GdscBackend.Tests
         public async void Delete_Should_Delete_Contact_By_ID()
         {
             //
-            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            _controller = new ContactController(_repository, _mapper);
+            var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
+            var controller = new ContactController(repository, _mapper);
 
             // Act
-            var deleted = await _controller.Delete(TestData.First().Id);
+            var deleted = await controller.Delete(TestData.First().Id);
             var result = deleted.Result as OkObjectResult;
 
             // Assert
-            var entity = result.Value as ContactModel;
             Assert.NotNull(result);
+            var entity = result.Value as ContactModel;
+            Assert.NotNull(entity);
             Assert.Equal(TestData.First().Email, entity.Email);
             Assert.Equal(TestData.First().Name, entity.Name);
             Assert.Equal(TestData.First().Subject, entity.Subject);
@@ -118,42 +118,34 @@ namespace GdscBackend.Tests
         public async void Delete_Multiple_Contacts()
         {
             //
-            _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            _controller = new ContactController(_repository, _mapper);
+            var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
+            var controller = new ContactController(repository, _mapper);
 
             // Act
-            string[] listOfIds = {TestData.First().Id, TestData.ElementAt(1).Id};
-            List<ContactModel> listOfContacts = new() {TestData.First(), TestData.ElementAt(1)};
-            var deleted = await _controller.Delete(listOfIds);
+            string[] listOfIds = { TestData.First().Id, TestData.ElementAt(1).Id };
+            var deleted = await controller.Delete(listOfIds);
             var result = deleted.Result as OkObjectResult;
 
             // Assert
-            var entity = result.Value as IEnumerable<ContactModel>;
             Assert.NotNull(result);
-            
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            _controller = null;
-            _repository = null;
+            var entity = result.Value as IEnumerable<ContactModel>;
+            Assert.NotNull(entity);
         }
 
         private static IEnumerable<ContactModel> _getTestData()
         {
-            Bot.Define(x => new ContactModel
-            {
-                Id = x.Strings.Guid(),
-                Name = x.Names.FullName(),
-                Email = x.Strings.Any(),
-                Subject = x.Strings.Any(),
-                Text = x.Strings.Any(),
-                Created = x.Dates.Any(),
-                Updated = x.Dates.Any()
-            });
+            var models = new List<ContactModel>();
+            for (var _ = 0; _ < 10; _++)
+                models.Add(new ContactModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = Lorem.Words(1).ToString(),
+                    Email = Lorem.Words(5).ToString(),
+                    Subject = Lorem.Words(1).ToString(),
+                    Text = Lorem.Words(1).ToString(),
+                });
 
-            return Bot.BuildSequence<ContactModel>().Take(10).ToList();
+            return models;
         }
     }
 }

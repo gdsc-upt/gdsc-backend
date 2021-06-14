@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Text;
-using AutoMapper;
 using GdscBackend.Auth;
 using GdscBackend.Database;
 using GdscBackend.Utils;
@@ -36,7 +35,7 @@ namespace GdscBackend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MappingProfiles));
-            
+
             services.AddControllers();
             services.AddCors(options => options.AddPolicy("EnableAll", builder =>
             {
@@ -61,15 +60,15 @@ namespace GdscBackend
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
+               .AddEntityFrameworkStores<AppDbContext>()
+               .AddDefaultTokenProviders();
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(options =>
+               .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;

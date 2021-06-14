@@ -17,8 +17,9 @@ namespace GdscBackend.Tests
 {
     public class TechnologiesControllerTests : TestingBase
     {
-        private readonly IEnumerable<TechnologyModel> _testData = _getTestData();
         private readonly IMapper _mapper;
+        private readonly IEnumerable<TechnologyModel> _testData = _getTestData();
+
         public TechnologiesControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
@@ -29,7 +30,7 @@ namespace GdscBackend.Tests
         public async void Post_ReturnsCreatedObject()
         {
             var repository = new Repository<TechnologyModel>(new TestDbContext<TechnologyModel>().Object);
-            var controller = new TechnologiesController(repository,_mapper);
+            var controller = new TechnologiesController(repository, _mapper);
             var example1 = new TechnologyRequest
             {
                 Name = Lorem.Words(3).ToString(),
@@ -73,7 +74,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllTechnologies()
         {
             var repository = new Repository<TechnologyModel>(new TestDbContext<TechnologyModel>(_testData).Object);
-            var controller = new TechnologiesController(repository,_mapper);
+            var controller = new TechnologiesController(repository, _mapper);
 
             var actionResult = await controller.Get();
             var result = actionResult.Result as OkObjectResult;
@@ -87,7 +88,7 @@ namespace GdscBackend.Tests
         public async void Delete_ReturnsOkResult()
         {
             var repository = new Repository<TechnologyModel>(new TestDbContext<TechnologyModel>(_testData).Object);
-            var controller = new TechnologiesController(repository,_mapper);
+            var controller = new TechnologiesController(repository, _mapper);
 
             var actionResult = await controller.Delete(_testData.First().Id);
             var result = actionResult.Result as OkObjectResult;
