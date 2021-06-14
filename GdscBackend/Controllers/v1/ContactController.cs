@@ -1,13 +1,16 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GdscBackend.Database;
+using GdscBackend.Email;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GdscBackend.Controllers.v1
@@ -20,11 +23,13 @@ namespace GdscBackend.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly IRepository<ContactModel> _repository;
+        private readonly EmailSender _sender;
 
-        public ContactController(IRepository<ContactModel> repository, IMapper mapper)
+        public ContactController(IRepository<ContactModel> repository, IMapper mapper, EmailSender sender)
         {
             _repository = repository;
             _mapper = mapper;
+            _sender = sender;
         }
 
         [HttpPost]
@@ -37,9 +42,18 @@ namespace GdscBackend.Controllers.v1
             {
                 return BadRequest(new ErrorViewModel { Message = "Request has no body" });
             }
+            
+            var isValid = new EmailAddressAttribute().IsValid(entity.Email);
 
+            if (!isValid)
+            {
+                return BadRequest(new ErrorViewModel { Message = "Invalid email provided" });
+            }
+            
             var newEntity = await _repository.AddAsync(Map(entity));
-
+            
+            _sender.SendEmail(entity.Email, entity.Subject, entity.Text);
+            
             return Created("v1/contact", newEntity);
         }
 
