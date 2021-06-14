@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using FactoryBot;
 using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
+using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -17,18 +20,21 @@ namespace GdscBackend.Tests
         private static readonly IEnumerable<MemberModel> TestData = _getTestData();
         private MembersController _controller;
         private Repository<MemberModel> _repository;
+        private readonly IMapper _mapper;
 
         public MembersControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>().Object);
-            _controller = new MembersController(_repository);
+            _controller = new MembersController(_repository,_mapper);
+            var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
+            _mapper = mapconfig.CreateMapper();
         }
 
         [Fact]
         public async void Get_Should_Return_All_Members()
         {
             _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
-            _controller = new MembersController(_repository);
+            _controller = new MembersController(_repository,_mapper);
 
             // Act
             var actionResult = await _controller.Get();
@@ -45,13 +51,13 @@ namespace GdscBackend.Tests
         public async void Post_ReturnsCreatedObject()
         {
             // Arrange
-            var member1 = new MemberModel
+            var member1 = new MemberRequest
             {
                 Name = Name.FullName(),
                 Email = Lorem.Words(3).ToString(),
                 TeamId = Lorem.Words(1).ToString()
             };
-            var member2 = new MemberModel
+            var member2 = new MemberRequest
             {
                 Name = Name.FullName(),
                 Email = Lorem.Words(3).ToString(),
@@ -72,14 +78,16 @@ namespace GdscBackend.Tests
             var entity2 = result2.Value as MemberModel;
 
             Assert.NotNull(entity1);
-            Assert.NotNull(entity1.Id);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
-            Assert.Equal(member1, entity1);
+            Assert.Equal(member1.Email, entity1.Email);
+            Assert.Equal(member1.Name, entity1.Name);
+            Assert.Equal(member1.TeamId, entity1.TeamId);
 
             Assert.NotNull(entity2);
-            Assert.NotNull(entity2.Id);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
-            Assert.Equal(member2, entity2);
+            Assert.Equal(member2.Email, entity2.Email);
+            Assert.Equal(member2.Name, entity2.Name);
+            Assert.Equal(member2.TeamId, entity2.TeamId);
         }
 
         [Fact]
@@ -87,7 +95,7 @@ namespace GdscBackend.Tests
         {
             // Arrange
             _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
-            _controller = new MembersController(_repository);
+            _controller = new MembersController(_repository,_mapper);
 
             //Act
 
@@ -107,7 +115,7 @@ namespace GdscBackend.Tests
         {
             //
             _repository = new Repository<MemberModel>(new TestDbContext<MemberModel>(TestData).Object);
-            _controller = new MembersController(_repository);
+            _controller = new MembersController(_repository,_mapper);
 
             // Act
             var deleted = await _controller.Delete(TestData.First().Id);
