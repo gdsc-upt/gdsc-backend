@@ -3,12 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using GdscBackend.Database;
-using GdscBackend.Email;
+using GdscBackend.Utils;
 using GdscBackend.Models;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GdscBackend.Controllers.v1

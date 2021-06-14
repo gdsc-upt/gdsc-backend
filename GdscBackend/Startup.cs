@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using GdscBackend.Auth;
 using GdscBackend.Database;
-using GdscBackend.Email;
 using GdscBackend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

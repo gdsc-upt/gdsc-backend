@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
 
-namespace GdscBackend.Email
+namespace GdscBackend.Utils
 {
     public class EmailSender
     {
