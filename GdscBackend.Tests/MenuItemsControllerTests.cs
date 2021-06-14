@@ -46,8 +46,8 @@ namespace GdscBackend.Tests
             var added1 = await controller.Post(model1);
             var added2 = await controller.Post(model2);
 
-            var result1 = added1.Result as CreatedAtActionResult;
-            var result2 = added2.Result as CreatedAtActionResult;
+            var result1 = added1.Result as CreatedResult;
+            var result2 = added2.Result as CreatedResult;
 
             Assert.NotNull(result1);
             Assert.NotNull(result2);

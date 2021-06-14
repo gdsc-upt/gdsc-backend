@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using FactoryBot;
@@ -104,17 +105,17 @@ namespace GdscBackend.Tests
 
         private static IEnumerable<TechnologyModel> _getTestData()
         {
-            Bot.Define(x => new TechnologyModel
-            {
-                Id = x.Strings.Guid(),
-                Name = x.Names.FullName(),
-                Description = x.Strings.Any(),
-                Icon = x.Strings.Any(),
-                Created = x.Dates.Any(),
-                Updated = x.Dates.Any()
-            });
+            var models = new List<TechnologyModel>();
+            for (var _ = 0; _ < 10; _++)
+                models.Add(new TechnologyModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = Lorem.Words(1).ToString(),
+                    Description = Lorem.Words(1).ToString(),
+                    Icon = Lorem.Words(1).ToString()
+                });
 
-            return Bot.BuildSequence<TechnologyModel>().Take(10).ToList();
+            return models;
         }
     }
 }
