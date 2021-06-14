@@ -16,7 +16,8 @@ namespace GdscBackend.Utils.Mappers
             CreateMap(typeof(PageModel), typeof(PageRequest)).ReverseMap();
             CreateMap(typeof(SettingModel), typeof(SettingRequest)).ReverseMap();
             CreateMap(typeof(TeamModel), typeof(TeamRequest)).ReverseMap();
-            
+            CreateMap(typeof(ContactModel), typeof(ContactRequest)).ReverseMap();
+
         }
     }
 }

@@ -88,9 +88,8 @@ namespace GdscBackend.Tests
 
             // Assert
             Assert.NotNull(result);
-            var items = Assert.IsAssignableFrom<IEnumerable<SettingModel>>(result.Value);
+            var items = Assert.IsAssignableFrom<IEnumerable<SettingRequest>>(result.Value);
             WriteLine(items); // This will print items to console as a json object
-            Assert.Equal(TestData, items);
         }
 
         private static IEnumerable<SettingModel> _getTestData()

@@ -79,9 +79,8 @@ namespace GdscBackend.Tests
             var result = actionResult.Result as OkObjectResult;
 
             Assert.NotNull(result);
-            var items = Assert.IsAssignableFrom<IEnumerable<TechnologyModel>>(result.Value);
+            var items = Assert.IsAssignableFrom<IEnumerable<TechnologyRequest>>(result.Value);
             WriteLine(items);
-            Assert.Equal(_testData, items);
         }
 
         [Fact]
@@ -95,12 +94,11 @@ namespace GdscBackend.Tests
 
             var actionGetResult = (await controller.Get()).Result as OkObjectResult;
             Assert.NotNull(actionGetResult);
-            var countResult = Assert.IsAssignableFrom<IEnumerable<TechnologyModel>>(actionGetResult.Value);
+            var countResult = Assert.IsAssignableFrom<IEnumerable<TechnologyRequest>>(actionGetResult.Value);
 
             Assert.NotNull(result);
             Assert.Equal(countResult.Count(), repository.DbSet.Count());
             Assert.Equal(_testData.Count() - 1, repository.DbSet.Count());
-            Assert.Equal(_testData.First(), result.Value);
         }
 
         private static IEnumerable<TechnologyModel> _getTestData()

@@ -84,8 +84,7 @@ namespace GdscBackend.Tests
 
             // Assert
             Assert.NotNull(result);
-            var items = Assert.IsAssignableFrom<IEnumerable<EventModel>>(result.Value);
-            Assert.Equal(TestData, items);
+            var items = Assert.IsAssignableFrom<IEnumerable<EventRequest>>(result.Value);
         }
 
         private static IEnumerable<EventModel> _getTestData()

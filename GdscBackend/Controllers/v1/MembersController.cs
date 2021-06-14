@@ -53,12 +53,12 @@ namespace GdscBackend.Controllers.v1
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorViewModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(MemberModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(MemberRequest), StatusCodes.Status201Created)]
         public async Task<ActionResult<MemberRequest>> Post(MemberRequest entity)
         {
             entity = Map(await _repository.AddAsync(Map(entity)));
 
-            return CreatedAtAction(nameof(Post), new {Map(entity).Id}, entity);
+            return CreatedAtAction(nameof(Post),Map(entity).Id, entity);
         }
 
         [HttpDelete("{id}")]
