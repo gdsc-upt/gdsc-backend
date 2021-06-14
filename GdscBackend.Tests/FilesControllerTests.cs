@@ -16,13 +16,14 @@ namespace GdscBackend.Tests
     public class FilesControllerTests : TestingBase
     {
         private static readonly List<IFormFile> TestData = _getTestData();
-        private FilesController _controller;
-        private Repository<FileModel> _repository;
+        private readonly FilesController _controller;
+        private const string MediaDirectory = "media";
         
         public FilesControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
-            _repository = new Repository<FileModel>(new TestDbContext<FileModel>().Object);
-            _controller = new FilesController(new HostingEnvironment { ContentRootPath = Path.Combine(Directory.GetCurrentDirectory(), "../../..")}, _repository);
+            var repository = new Repository<FileModel>(new TestDbContext<FileModel>().Object);
+            var rootDirectory = Path.Combine(Directory.GetCurrentDirectory(), "../../..");
+            _controller = new FilesController(new HostingEnvironment { ContentRootPath = rootDirectory}, repository);
         }
 
         [Fact]
@@ -35,13 +36,17 @@ namespace GdscBackend.Tests
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status201Created, result.StatusCode);
             
-            var files = Assert.IsAssignableFrom<IEnumerable<FileModel>>(result.Value);
+            var files = Assert.IsAssignableFrom<IEnumerable<FileModel>>(result.Value).ToList();
             WriteLine(files);
-            Assert.Equal( 3, files.ToList().Count);
-            Assert.Contains("media", files.ElementAt(0).Path);
-            Assert.Contains("media", files.ElementAt(1).Path);
-            Assert.Contains("media", files.ElementAt(2).Path);
-
+            Assert.Equal( 3, files.Count);
+            
+            Assert.Contains(MediaDirectory, files.ElementAt(0).Path);
+            Assert.Contains(MediaDirectory, files.ElementAt(1).Path);
+            Assert.Contains(MediaDirectory, files.ElementAt(2).Path);
+            
+            Assert.Equal(TestData.ElementAt(0).Length, files.ElementAt(0).Size);
+            Assert.Equal(TestData.ElementAt(1).Length, files.ElementAt(1).Size);
+            Assert.Equal(TestData.ElementAt(2).Length, files.ElementAt(2).Size);
         }
 
         private static List<IFormFile> _getTestData()
@@ -74,9 +79,7 @@ namespace GdscBackend.Tests
                 "test2.txt"
             );
 
-            var data = new List<IFormFile> {file1, file2, file3};
-
-            return data;
+            return new List<IFormFile> {file1, file2, file3};
         }
     }
 }
