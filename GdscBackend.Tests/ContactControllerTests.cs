@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using AutoMapper.Configuration;
 using FactoryBot;
 using Faker;
 using GdscBackend.Controllers.v1;
@@ -22,11 +23,12 @@ namespace GdscBackend.Tests
         private ContactController _controller;
         private Repository<ContactModel> _repository;
 
-        public ContactsControllerTests(ITestOutputHelper outputHelper,IMapper mapper) : base(outputHelper)
+        public ContactsControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             _repository = new Repository<ContactModel>(new TestDbContext<ContactModel>().Object);
             _controller = new ContactController(_repository, _mapper);
-            _mapper = mapper;
+            var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
+            _mapper = mapconfig.CreateMapper();
         }
 
         [Fact]

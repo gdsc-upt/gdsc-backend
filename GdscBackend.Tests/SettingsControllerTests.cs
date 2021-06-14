@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using FactoryBot;
 using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.Models.Enums;
+using GdscBackend.RequestModels;
+using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -16,9 +19,11 @@ namespace GdscBackend.Tests
     public class SettingsControllerTests : TestingBase
     {
         private static readonly IEnumerable<SettingModel> TestData = _getTestData();
-
+        private readonly IMapper _mapper;
         public SettingsControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
+            var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
+            _mapper = mapconfig.CreateMapper();
         }
 
         [Fact]
@@ -26,8 +31,8 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<SettingModel>(new TestDbContext<SettingModel>().Object);
-            var controller = new SettingsController(repository);
-            var example1 = new SettingModel
+            var controller = new SettingsController(repository,_mapper);
+            var example1 = new SettingRequest
             {
                 Name = Lorem.Words(1).ToString(),
                 Slug = Lorem.Words(1).ToString(),
@@ -35,7 +40,7 @@ namespace GdscBackend.Tests
                 Value = Boolean.Random(),
                 Image = Lorem.Words(1).ToString()
             };
-            var example2 = new SettingModel
+            var example2 = new SettingRequest
             {
                 Name = Lorem.Words(1).ToString(),
                 Slug = Lorem.Words(1).ToString(),
@@ -54,18 +59,20 @@ namespace GdscBackend.Tests
             // Assert
             Assert.NotNull(result1);
             Assert.NotNull(result2);
-            var entity1 = result1.Value as SettingModel;
-            var entity2 = result2.Value as SettingModel;
+            var entity1 = result1.Value as SettingRequest;
+            var entity2 = result2.Value as SettingRequest;
 
             Assert.NotNull(entity1);
-            Assert.NotNull(entity1.Id);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
-            Assert.Equal(example1, entity1);
+            Assert.Equal(example1.Image, entity1.Image);
+            Assert.Equal(example1.Name, entity1.Name);
+            Assert.Equal(example1.Slug, entity1.Slug);
 
             Assert.NotNull(entity1);
-            Assert.NotNull(entity1.Id);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
-            Assert.Equal(example2, entity2);
+            Assert.Equal(example2.Image, entity2.Image);
+            Assert.Equal(example2.Name, entity2.Name);
+            Assert.Equal(example2.Slug, entity2.Slug);
         }
 
         [Fact]
@@ -73,7 +80,7 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repostitory = new Repository<SettingModel>(new TestDbContext<SettingModel>(TestData).Object);
-            var controller = new SettingsController(repostitory);
+            var controller = new SettingsController(repostitory,_mapper);
 
             // Act
             var actionResult = await controller.Get();

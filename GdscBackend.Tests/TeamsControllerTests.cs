@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using FactoryBot;
 using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
+using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -15,16 +18,18 @@ namespace GdscBackend.Tests
     public class TeamsControllerTests : TestingBase
     {
         private readonly IEnumerable<TeamModel> _testData = _getTestData();
-
+        private readonly IMapper _mapper;
         public TeamsControllerTests(ITestOutputHelper helper) : base(helper)
         {
+            var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
+            _mapper = mapconfig.CreateMapper();
         }
 
         [Fact]
         public async void Delete_Returns_OkResult()
         {
             var repos = new Repository<TeamModel>(new TestDbContext<TeamModel>(_testData).Object);
-            var controller = new TeamsController(repos);
+            var controller = new TeamsController(repos,_mapper);
             var deletedVar = _testData.First();
 
             var actionResult = await controller.Delete(deletedVar.Id);
@@ -46,12 +51,12 @@ namespace GdscBackend.Tests
         public async void Post_ReturnsCreatedObject()
         {
             var repos = new Repository<TeamModel>(new TestDbContext<TeamModel>(_testData).Object);
-            var controller = new TeamsController(repos);
-            var team1 = new TeamModel
+            var controller = new TeamsController(repos,_mapper);
+            var team1 = new TeamRequest
             {
                 Name = Lorem.Words(3).ToString()
             };
-            var team2 = new TeamModel
+            var team2 = new TeamRequest
             {
                 Name = Lorem.Words(3).ToString()
             };
@@ -73,16 +78,16 @@ namespace GdscBackend.Tests
             Assert.NotNull(entity2.Id);
 
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
-            Assert.Equal(team1, entity1);
+            Assert.Equal(team1.Name, entity1.Name);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
-            Assert.Equal(team2, entity2);
+            Assert.Equal(team2.Name, entity2.Name);
         }
 
         [Fact]
         public async void Get_ReturnsAllExamples()
         {
             var repos = new Repository<TeamModel>(new TestDbContext<TeamModel>(_testData).Object);
-            var controller = new TeamsController(repos);
+            var controller = new TeamsController(repos,_mapper);
 
             var actionResult = await controller.Get();
             var result = actionResult.Result as OkObjectResult;
@@ -96,7 +101,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllExamplesById()
         {
             var repos = new Repository<TeamModel>(new TestDbContext<TeamModel>(_testData).Object);
-            var controller = new TeamsController(repos);
+            var controller = new TeamsController(repos,_mapper);
 
             var actionResult = await controller.Get(_testData.First().Id);
             var result = actionResult.Result as OkObjectResult;
