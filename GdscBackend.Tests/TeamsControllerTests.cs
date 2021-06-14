@@ -64,13 +64,13 @@ namespace GdscBackend.Tests
             var added1 = await controller.Post(team1);
             var added2 = await controller.Post(team2);
 
-            var result1 = added1.Result as CreatedAtActionResult;
-            var result2 = added2.Result as CreatedAtActionResult;
+            var result1 = added1.Result as CreatedResult;
+            var result2 = added2.Result as CreatedResult;
 
             Assert.NotNull(result1);
             Assert.NotNull(result2);
-            var entity1 = result1.Value as TeamRequest;
-            var entity2 = result2.Value as TeamRequest;
+            var entity1 = result1.Value as TeamModel;
+            var entity2 = result2.Value as TeamModel;
 
             Assert.NotNull(entity1);
             Assert.NotNull(entity2);

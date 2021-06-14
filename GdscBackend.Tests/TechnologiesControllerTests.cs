@@ -46,8 +46,8 @@ namespace GdscBackend.Tests
             var added1 = await controller.Post(example1);
             var added2 = await controller.Post(example2);
 
-            var result1 = added1.Result as CreatedAtActionResult;
-            var result2 = added2.Result as CreatedAtActionResult;
+            var result1 = added1.Result as CreatedResult;
+            var result2 = added2.Result as CreatedResult;
 
             Assert.NotNull(result1);
             Assert.NotNull(result2);
@@ -79,7 +79,7 @@ namespace GdscBackend.Tests
             var result = actionResult.Result as OkObjectResult;
 
             Assert.NotNull(result);
-            var items = Assert.IsAssignableFrom<IEnumerable<TechnologyRequest>>(result.Value);
+            var items = Assert.IsAssignableFrom<IEnumerable<TechnologyModel>>(result.Value);
             WriteLine(items);
         }
 
@@ -94,7 +94,7 @@ namespace GdscBackend.Tests
 
             var actionGetResult = (await controller.Get()).Result as OkObjectResult;
             Assert.NotNull(actionGetResult);
-            var countResult = Assert.IsAssignableFrom<IEnumerable<TechnologyRequest>>(actionGetResult.Value);
+            var countResult = Assert.IsAssignableFrom<IEnumerable<TechnologyModel>>(actionGetResult.Value);
 
             Assert.NotNull(result);
             Assert.Equal(countResult.Count(), repository.DbSet.Count());
