@@ -2,6 +2,6 @@
 {
     public interface IWebhookService
     {
-        void SendMessage(string author, string mail, string subject, string message);
+        void SendContact(string author, string mail, string subject, string message);
     }
 }

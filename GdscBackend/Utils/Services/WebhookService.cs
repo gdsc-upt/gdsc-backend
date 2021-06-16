@@ -1,17 +1,19 @@
-﻿namespace GdscBackend.Utils.Services
+﻿using Microsoft.Extensions.Configuration;
+
+namespace GdscBackend.Utils.Services
 {
     public class WebhookService : IWebhookService
     {
-        private readonly string _url;
+        private readonly IConfiguration _configuration;
 
-        public WebhookService(string url)
+        public WebhookService(IConfiguration configuration)
         {
-            _url = url;
+            _configuration = configuration;
         }
 
-        public async void SendMessage(string author, string mail, string subject, string message)
+        public async void SendContact(string author, string mail, string subject, string message)
         {
-            var webhook = new Webhook(_url);
+            var webhook = new Webhook(_configuration["Webhooks:Contact"]);
             await webhook.Send(author, mail, subject, message);
         }
     }
