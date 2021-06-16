@@ -15,7 +15,7 @@ namespace GdscBackend.Utils
         [JsonProperty("username")]
         public string Username { get; set; } = "";
         [JsonProperty("avatar_url")]
-        public string AvatarUrl { get; set; } = "https://www.pngitem.com/pimgs/m/156-1568414_book-contact-icon-volkswagen-hd-png-download.png";
+        public string AvatarUrl { get; set; } = "";
         
         public Webhook(string webhookUrl)
         {
@@ -23,15 +23,24 @@ namespace GdscBackend.Utils
             _webhookUrl = webhookUrl;
         }
 
-        private string ContactContentBuilder(string author, string mail, string subject, string message)
+        public Webhook(string webhookUrl, string username)
         {
-            return "**Name:**  " + author + "\n" + "**Email:**  " + mail + "\n" + "**Subject:**  " + subject + "\n" + "**Message:**  " + message + "\n";
+            _httpClient = new HttpClient();
+            _webhookUrl = webhookUrl;
+            Username = username;
         }
-        
-        public async Task<HttpResponseMessage> Send(string author, string mail, string subject, string message)
+
+        public Webhook(string webhookUrl, string username, string avatarUrl)
         {
-            Username = "Baiatu' cu contactele";
-            Content = ContactContentBuilder(author, mail, subject, message);
+            _httpClient = new HttpClient();
+            _webhookUrl = webhookUrl;
+            Username = username;
+            AvatarUrl = avatarUrl;
+        }
+
+        public async Task<HttpResponseMessage> Send(string content)
+        {
+            Content = content;
             var payload = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
             return await _httpClient.PostAsync(_webhookUrl, payload);
         }
