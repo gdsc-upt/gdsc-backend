@@ -27,12 +27,12 @@ namespace GdscBackend.Controllers.v1
         private readonly IEmailSender _sender;
         private readonly IWebhookService _webhookService; 
 
-        public ContactController(IRepository<ContactModel> repository, IMapper mapper, IEmailSender sender, IConfiguration configuration)
+        public ContactController(IRepository<ContactModel> repository, IMapper mapper, IEmailSender sender, IWebhookService webhookService)
         {
             _repository = repository;
             _mapper = mapper;
             _sender = sender;
-            _webhookService = new WebhookService(configuration["Webhooks:Contact"]);
+            _webhookService = webhookService;
         }
 
         [HttpPost]
@@ -55,7 +55,7 @@ namespace GdscBackend.Controllers.v1
 
             _sender.SendEmail(entity.Email, entity.Subject, entity.Text);
             
-            _webhookService.SendMessage(entity.Name,entity.Email, entity.Subject, entity.Text);
+            _webhookService.SendContact(entity.Name,entity.Email, entity.Subject, entity.Text);
             
             return Created("v1/contact", newEntity);
         }
