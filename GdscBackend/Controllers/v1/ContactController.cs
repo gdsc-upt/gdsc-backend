@@ -54,7 +54,7 @@ namespace GdscBackend.Controllers.v1
 
             _sender.SendEmail(entity.Email, entity.Subject, entity.Text);
             
-            _webhookService.SendContact(entity.Name,entity.Email, entity.Subject, entity.Text);
+            _webhookService.SendContact(newEntity);
             
             return Created("v1/contact", newEntity);
         }
