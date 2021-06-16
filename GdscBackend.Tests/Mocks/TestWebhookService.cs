@@ -1,4 +1,5 @@
-﻿using GdscBackend.Utils.Services;
+﻿using GdscBackend.Models;
+using GdscBackend.Utils.Services;
 using Xunit.Abstractions;
 
 namespace GdscBackend.Tests.Mocks
@@ -11,12 +12,12 @@ namespace GdscBackend.Tests.Mocks
             _outputHelper = outputHelper;
         }
 
-        public void SendContact(string author, string mail, string subject, string message)
+        public void SendContact(ContactModel contact)
         {
-            _outputHelper.WriteLine("Message sent by: " + author);
-            _outputHelper.WriteLine("With email: " + mail);
-            _outputHelper.WriteLine("Message subject: " + subject);
-            _outputHelper.WriteLine("Message content: " + message);
+            _outputHelper.WriteLine("Message sent by: " + contact.Name);
+            _outputHelper.WriteLine("With email: " + contact.Email);
+            _outputHelper.WriteLine("Message subject: " + contact.Subject);
+            _outputHelper.WriteLine("Message content: " + contact.Text);
         }
     }
 }
