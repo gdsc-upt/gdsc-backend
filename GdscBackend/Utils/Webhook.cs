@@ -1,10 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using GdscBackend.Auth;
 using Newtonsoft.Json;
-// using Discord;
-
 namespace GdscBackend.Utils
 {
     [JsonObject]
@@ -17,7 +14,8 @@ namespace GdscBackend.Utils
         public string Content { get; set; } = "";
         [JsonProperty("username")]
         public string Username { get; set; } = "";
-        // public Embed Embed { get; set; }
+        [JsonProperty("avatar_url")]
+        public string AvatarUrl { get; set; } = "https://www.pngitem.com/pimgs/m/156-1568414_book-contact-icon-volkswagen-hd-png-download.png";
         
         public Webhook(string webhookUrl)
         {
@@ -32,11 +30,7 @@ namespace GdscBackend.Utils
         
         public async Task<HttpResponseMessage> Send(string author, string mail, string subject, string message)
         {
-            // var builder = new EmbedBuilder {Author = new EmbedAuthorBuilder().WithName(author), Title = subject};
-            // builder.AddField("Message: ", "\"" + message + "\"", true);
-            // builder.AddField("Email: ", mail, true);
-            // Embed = builder.Build();
-            Username = "Contact Hook";
+            Username = "Baiatu' cu contactele";
             Content = ContactContentBuilder(author, mail, subject, message);
             var payload = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
             return await _httpClient.PostAsync(_webhookUrl, payload);
