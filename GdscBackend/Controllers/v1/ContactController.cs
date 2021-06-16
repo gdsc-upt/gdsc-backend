@@ -7,10 +7,12 @@ using GdscBackend.Database;
 using GdscBackend.Utils;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
+using GdscBackend.Utils.Services;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace GdscBackend.Controllers.v1
 {
@@ -23,12 +25,14 @@ namespace GdscBackend.Controllers.v1
         private readonly IMapper _mapper;
         private readonly IRepository<ContactModel> _repository;
         private readonly IEmailSender _sender;
+        private readonly IWebhookService _webhookService; 
 
-        public ContactController(IRepository<ContactModel> repository, IMapper mapper, IEmailSender sender)
+        public ContactController(IRepository<ContactModel> repository, IMapper mapper, IEmailSender sender, IConfiguration configuration)
         {
             _repository = repository;
             _mapper = mapper;
             _sender = sender;
+            _webhookService = new WebhookService(configuration["Webhooks:Contact"]);
         }
 
         [HttpPost]
@@ -50,7 +54,9 @@ namespace GdscBackend.Controllers.v1
             var newEntity = await _repository.AddAsync(Map(entity));
 
             _sender.SendEmail(entity.Email, entity.Subject, entity.Text);
-
+            
+            _webhookService.SendMessage(entity.Name,entity.Email, entity.Subject, entity.Text);
+            
             return Created("v1/contact", newEntity);
         }
 
