@@ -12,10 +12,10 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/ideas")]
+    [Route("v1/ideas")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
-    public class IdeasController : ControllerBase 
+    public class IdeasController : ControllerBase
     {
         private readonly IRepository<IdeaModel> _repository;
 
@@ -31,7 +31,7 @@ namespace GdscBackend.Controllers.v1
         {
             return Ok((await _repository.GetAsync()).ToList());
         }
-        
+
         [HttpGet("{id}")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -52,6 +52,6 @@ namespace GdscBackend.Controllers.v1
         {
             entity = await _repository.AddAsync(entity);
             return CreatedAtAction(nameof(Post), new { entity.Id }, entity);
-        }   
+        }
     }
 }
