@@ -59,10 +59,12 @@ namespace GdscBackend.Tests
             var team1 = new TeamRequest
             {
                 Name = Lorem.Words(3).ToString(),
+                Members = _getMemberData()
             };
             var team2 = new TeamRequest
             {
-                Name = Lorem.Words(3).ToString()
+                Name = Lorem.Words(3).ToString(),
+                Members = _getMemberData()
             };
 
             var added1 = await controller.Post(team1);
@@ -118,7 +120,9 @@ namespace GdscBackend.Tests
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = Lorem.Words(1).ToString(),
-                Members = _getMemberData()
+                Members = _getMemberData(),
+                Created = x.Dates.Any(),
+                Updated = x.Dates.Any()
             });
 
             return Bot.BuildSequence<TeamModel>().Take(10).ToList();
@@ -126,10 +130,14 @@ namespace GdscBackend.Tests
 
         private static IEnumerable<MemberModel> _getMemberData()
         {
-            Bot.Define(x => new MemberModel{
+            Bot.Define(x => new MemberModel
+            {
+                Id = Guid.NewGuid().ToString(),
                 Name = Lorem.Words(1).ToString(),
                 Email = Lorem.Words(1) + "@" + Lorem.Words(1) + ".com",
-                TeamId = Guid.NewGuid().ToString()
+                TeamId = Guid.NewGuid().ToString(),
+                Created = x.Dates.Any(),
+                Updated = x.Dates.Any()
             });
             return Bot.BuildSequence<MemberModel>().Take(10).ToList();
         }
