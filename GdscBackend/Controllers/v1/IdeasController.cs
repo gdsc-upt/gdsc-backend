@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using AutoMapper;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.RequestModels;
 using GdscBackend.Utils;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -21,11 +23,13 @@ namespace GdscBackend.Controllers.v1
     public class IdeasController : ControllerBase
     {
         private readonly IRepository<IdeaModel> _repository;
+        private readonly IMapper _mapper;
         private readonly IEmailSender _sender;
 
-        public IdeasController(IRepository<IdeaModel> repository,IEmailSender sender)
+        public IdeasController(IRepository<IdeaModel> repository, IEmailSender sender, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
             _sender = sender;
         }
 
@@ -53,21 +57,29 @@ namespace GdscBackend.Controllers.v1
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IdeaModel>> Post(IdeaModel entity)
+        public async Task<ActionResult<IdeaModel>> Post(IdeaRequest entity)
         {
             if (entity is null)
             {
-                return BadRequest(new ErrorViewModel { Message = "Request has no body" });
+                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
             }
+
             if (!new EmailAddressAttribute().IsValid(entity.Email))
             {
-                return BadRequest(new ErrorViewModel { Message = "Invalid email provided" });
+                return BadRequest(new ErrorViewModel {Message = "Invalid email provided"});
             }
-            var newEntity = await _repository.AddAsync(entity);
-            
-            _sender.SendEmail(entity.Email,"", "");
+
+            var newEntity = await _repository.AddAsync(Map(entity));
+
+            _sender.SendEmail(newEntity.Email, "Google Developer Student Clubs UPT Idea sent!",
+                "Thanks for submitting your idea! \nWe will contact you as soon as possible!");
 
             return Created("v1/idea", newEntity);
+        }
+
+        private IdeaModel Map(IdeaRequest entity)
+        {
+            return _mapper.Map<IdeaModel>(entity);
         }
     }
 }
