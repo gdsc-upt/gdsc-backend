@@ -5,5 +5,7 @@ namespace GdscBackend.Utils.Services
     public interface IWebhookService
     {
         void SendContact(ContactModel contact);
+
+        void SendIdea(IdeaModel idea);
     }
 }

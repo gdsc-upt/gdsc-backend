@@ -8,6 +8,7 @@ using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
 using GdscBackend.Utils;
+using GdscBackend.Utils.Services;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,12 +26,14 @@ namespace GdscBackend.Controllers.v1
         private readonly IRepository<IdeaModel> _repository;
         private readonly IMapper _mapper;
         private readonly IEmailSender _sender;
+        private readonly IWebhookService _webhookService;
 
-        public IdeasController(IRepository<IdeaModel> repository, IEmailSender sender, IMapper mapper)
+        public IdeasController(IRepository<IdeaModel> repository, IEmailSender sender, IMapper mapper, IWebhookService webhookService)
         {
             _repository = repository;
             _mapper = mapper;
             _sender = sender;
+            _webhookService = webhookService;
         }
 
         [HttpGet]
@@ -74,6 +77,8 @@ namespace GdscBackend.Controllers.v1
             _sender.SendEmail(newEntity.Email, "Google Developer Student Clubs UPT Idea sent!",
                 "Thanks for submitting your idea! \nWe will contact you as soon as possible!");
 
+            _webhookService.SendIdea(newEntity);
+            
             return Created("v1/idea", newEntity);
         }
 
