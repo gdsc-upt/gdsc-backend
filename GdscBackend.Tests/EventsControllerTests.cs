@@ -37,16 +37,16 @@ namespace GdscBackend.Tests
                 Title = Lorem.Words(1).ToString(),
                 Description = Lorem.Words(5).ToString(),
                 Image = Lorem.Words(1).ToString(),
-                Start =Identification.DateOfBirth() ,
-                End=Identification.DateOfBirth()
+                Start = Identification.DateOfBirth(),
+                End = Identification.DateOfBirth()
             };
             var example2 = new EventRequest
             {
                 Title = Lorem.Words(1).ToString(),
                 Description = Lorem.Words(5).ToString(),
                 Image = Lorem.Words(1).ToString(),
-                Start =Identification.DateOfBirth() ,
-                End=Identification.DateOfBirth()
+                Start = Identification.DateOfBirth(),
+                End = Identification.DateOfBirth()
             };
 
             // Act
@@ -107,10 +107,9 @@ namespace GdscBackend.Tests
                     Title = Lorem.Words(1).ToString(),
                     Description = Lorem.Words(5).ToString(),
                     Image = Lorem.Words(1).ToString(),
-                    Start =Identification.DateOfBirth(),
-                    End =Identification.DateOfBirth()
+                    Start = Identification.DateOfBirth(),
+                    End = Identification.DateOfBirth()
                 });
-
             return models;
         }
     }
