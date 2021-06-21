@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using AutoMapper;
+using FactoryBot;
+using FactoryBot.DSL.Generators;
 using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
@@ -9,6 +11,7 @@ using GdscBackend.RequestModels;
 using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Design;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -36,13 +39,17 @@ namespace GdscBackend.Tests
             {
                 Title = Lorem.Words(1).ToString(),
                 Description = Lorem.Words(5).ToString(),
-                Image = Lorem.Words(1).ToString()
+                Image = Lorem.Words(1).ToString(),
+                Start =Identification.DateOfBirth() ,
+                End=Identification.DateOfBirth()
             };
             var example2 = new EventRequest
             {
                 Title = Lorem.Words(1).ToString(),
                 Description = Lorem.Words(5).ToString(),
-                Image = Lorem.Words(1).ToString()
+                Image = Lorem.Words(1).ToString(),
+                Start =Identification.DateOfBirth() ,
+                End=Identification.DateOfBirth()
             };
 
             // Act
@@ -98,7 +105,9 @@ namespace GdscBackend.Tests
                     Id = Guid.NewGuid().ToString(),
                     Title = Lorem.Words(1).ToString(),
                     Description = Lorem.Words(5).ToString(),
-                    Image = Lorem.Words(1).ToString()
+                    Image = Lorem.Words(1).ToString(),
+                    Start =Identification.DateOfBirth(),
+                    End =Identification.DateOfBirth()
                 });
 
             return models;
