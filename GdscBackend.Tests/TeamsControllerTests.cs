@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using FactoryBot;
+using FactoryBot.Generators.Strings;
 using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
@@ -11,6 +12,7 @@ using GdscBackend.RequestModels;
 using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Expressions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -56,7 +58,7 @@ namespace GdscBackend.Tests
             var controller = new TeamsController(repos, _mapper);
             var team1 = new TeamRequest
             {
-                Name = Lorem.Words(3).ToString()
+                Name = Lorem.Words(3).ToString(),
             };
             var team2 = new TeamRequest
             {
@@ -112,15 +114,24 @@ namespace GdscBackend.Tests
 
         private static IEnumerable<TeamModel> _getTestData()
         {
-            var models = new List<TeamModel>();
-            for (var _ = 0; _ < 10; _++)
-                models.Add(new TeamModel
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = Lorem.Words(1).ToString(),
-                });
+            Bot.Define(x => new TeamModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = Lorem.Words(1).ToString(),
+                Members = _getMemberData()
+            });
 
-            return models;
+            return Bot.BuildSequence<TeamModel>().Take(10).ToList();
+        }
+
+        private static IEnumerable<MemberModel> _getMemberData()
+        {
+            Bot.Define(x => new MemberModel{
+                Name = Lorem.Words(1).ToString(),
+                Email = Lorem.Words(1) + "@" + Lorem.Words(1) + ".com",
+                TeamId = Guid.NewGuid().ToString()
+            });
+            return Bot.BuildSequence<MemberModel>().Take(10).ToList();
         }
     }
 }
