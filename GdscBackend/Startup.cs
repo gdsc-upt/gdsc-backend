@@ -5,6 +5,7 @@ using GdscBackend.Auth;
 using GdscBackend.Database;
 using GdscBackend.Utils;
 using GdscBackend.Utils.Mappers;
+using GdscBackend.Utils.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -82,6 +83,7 @@ namespace GdscBackend
                     };
                 });
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IWebhookService, WebhookService>();
             services.AddSwaggerGen();
 
             var connectionString = Configuration.GetConnectionString("Default");

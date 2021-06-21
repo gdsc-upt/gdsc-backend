@@ -9,6 +9,7 @@ using GdscBackend.Models;
 using GdscBackend.RequestModels;
 using GdscBackend.Tests.Mocks;
 using GdscBackend.Utils.Mappers;
+using GdscBackend.Utils.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -20,18 +21,20 @@ namespace GdscBackend.Tests
     {
         private static readonly IEnumerable<ContactModel> TestData = _getTestData();
         private readonly IMapper _mapper;
+        private readonly IWebhookService _webhookService;
 
         public ContactsControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
             _mapper = mapconfig.CreateMapper();
+            _webhookService = new TestWebhookService(outputHelper);
         }
 
         [Fact]
         public async void Get_Should_Return_All_Contacts()
         {
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper));
+            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
 
             // Act
             var actionResult = await controller.Get();
@@ -48,7 +51,7 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper));
+            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
 
             var contact1 = new ContactRequest
             {
@@ -98,7 +101,7 @@ namespace GdscBackend.Tests
         {
             //
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper));
+            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
 
             // Act
             var deleted = await controller.Delete(TestData.First().Id);
@@ -119,7 +122,7 @@ namespace GdscBackend.Tests
         {
             //
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper));
+            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
 
             // Act
             string[] listOfIds = { TestData.First().Id, TestData.ElementAt(1).Id };

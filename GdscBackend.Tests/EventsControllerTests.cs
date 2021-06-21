@@ -36,13 +36,17 @@ namespace GdscBackend.Tests
             {
                 Title = Lorem.Words(1).ToString(),
                 Description = Lorem.Words(5).ToString(),
-                Image = Lorem.Words(1).ToString()
+                Image = Lorem.Words(1).ToString(),
+                Start = Identification.DateOfBirth(),
+                End = Identification.DateOfBirth()
             };
             var example2 = new EventRequest
             {
                 Title = Lorem.Words(1).ToString(),
                 Description = Lorem.Words(5).ToString(),
-                Image = Lorem.Words(1).ToString()
+                Image = Lorem.Words(1).ToString(),
+                Start = Identification.DateOfBirth(),
+                End = Identification.DateOfBirth()
             };
 
             // Act
@@ -64,12 +68,16 @@ namespace GdscBackend.Tests
             Assert.Equal(example1.Description, entity1.Description);
             Assert.Equal(example1.Image, entity1.Image);
             Assert.Equal(example1.Title, entity1.Title);
+            Assert.Equal(example1.Start, entity1.Start);
+            Assert.Equal(example1.End, entity1.End);
 
             Assert.NotNull(entity2);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
             Assert.Equal(example2.Description, entity2.Description);
             Assert.Equal(example2.Image, entity2.Image);
             Assert.Equal(example2.Title, entity2.Title);
+            Assert.Equal(example2.Start, entity2.Start);
+            Assert.Equal(example2.End, entity2.End);
         }
 
         [Fact]
@@ -98,9 +106,10 @@ namespace GdscBackend.Tests
                     Id = Guid.NewGuid().ToString(),
                     Title = Lorem.Words(1).ToString(),
                     Description = Lorem.Words(5).ToString(),
-                    Image = Lorem.Words(1).ToString()
+                    Image = Lorem.Words(1).ToString(),
+                    Start = Identification.DateOfBirth(),
+                    End = Identification.DateOfBirth()
                 });
-
             return models;
         }
     }
