@@ -22,9 +22,10 @@ namespace GdscBackend.Tests
         private readonly IEnumerable<IdeaModel> _testData = _getTestData();
         private readonly IEmailSender _sender;
         private readonly IMapper _mapper;
+
         public IdeasControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
-            _sender=new TestEmailSender(OutputHelper);
+            _sender = new TestEmailSender(OutputHelper);
             var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
             _mapper = mapconfig.CreateMapper();
         }
@@ -33,21 +34,19 @@ namespace GdscBackend.Tests
         public async void Post_ReturnsCreatedObject()
         {
             var repository = new Repository<IdeaModel>(new TestDbContext<IdeaModel>().Object);
-            var controller = new IdeasController(repository,_sender,_mapper);
+            var controller = new IdeasController(repository, _sender, _mapper);
             var example1 = new IdeaRequest
             {
                 Name = Lorem.Words(3).ToString(),
-                Email = Lorem.Words(1).ToString(),
+                Email = Lorem.Words(4) + "@" + Lorem.Words(3) + ".com",
                 Branch = Lorem.Words(2).ToString(),
                 Year = RandomNumber.Next(),
                 Description = Lorem.Sentence(7),
-                
-                
             };
             var example2 = new IdeaRequest
             {
                 Name = Lorem.Words(3).ToString(),
-                Email = Lorem.Words(1).ToString(),
+                Email = Lorem.Words(4) + "@" + Lorem.Words(3) + ".com",
                 Branch = Lorem.Words(2).ToString(),
                 Year = RandomNumber.Next(),
                 Description = Lorem.Sentence(7),
@@ -85,7 +84,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllIdeas()
         {
             var repository = new Repository<IdeaModel>(new TestDbContext<IdeaModel>(_testData).Object);
-            var controller = new IdeasController(repository,_sender,_mapper);
+            var controller = new IdeasController(repository, _sender, _mapper);
 
             var actionResult = await controller.Get();
             var result = actionResult.Result as OkObjectResult;
@@ -95,13 +94,13 @@ namespace GdscBackend.Tests
             WriteLine(items);
             Assert.Equal(_testData, items);
         }
-        
+
         [Fact]
         public async void Get_ReturnsIdeaByID()
         {
             var repository = new Repository<IdeaModel>(new TestDbContext<IdeaModel>(_testData).Object);
-            var controller = new IdeasController(repository,_sender,_mapper);
-            
+            var controller = new IdeasController(repository, _sender, _mapper);
+
             var anElementById = _testData.First();
             var actionResult = await controller.Get(anElementById.Id);
             var result = actionResult.Result as OkObjectResult;
@@ -111,7 +110,7 @@ namespace GdscBackend.Tests
             WriteLine(entity);
             Assert.Equal(anElementById, entity);
         }
-        
+
         private static IEnumerable<IdeaModel> _getTestData()
         {
             Bot.Define(x => new IdeaModel
