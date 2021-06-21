@@ -10,6 +10,7 @@ using GdscBackend.RequestModels;
 using GdscBackend.Tests.Mocks;
 using GdscBackend.Utils;
 using GdscBackend.Utils.Mappers;
+using GdscBackend.Utils.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -22,19 +23,21 @@ namespace GdscBackend.Tests
         private readonly IEnumerable<IdeaModel> _testData = _getTestData();
         private readonly IEmailSender _sender;
         private readonly IMapper _mapper;
+        private readonly IWebhookService _webhookService;
 
         public IdeasControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             _sender = new TestEmailSender(OutputHelper);
             var mapconfig = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfiles()));
             _mapper = mapconfig.CreateMapper();
+            _webhookService = new TestWebhookService(outputHelper);
         }
 
         [Fact]
         public async void Post_ReturnsCreatedObject()
         {
             var repository = new Repository<IdeaModel>(new TestDbContext<IdeaModel>().Object);
-            var controller = new IdeasController(repository, _sender, _mapper);
+            var controller = new IdeasController(repository, _sender, _mapper, _webhookService);
             var example1 = new IdeaRequest
             {
                 Name = Lorem.Words(3).ToString(),
@@ -84,7 +87,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsAllIdeas()
         {
             var repository = new Repository<IdeaModel>(new TestDbContext<IdeaModel>(_testData).Object);
-            var controller = new IdeasController(repository, _sender, _mapper);
+            var controller = new IdeasController(repository, _sender, _mapper, _webhookService);
 
             var actionResult = await controller.Get();
             var result = actionResult.Result as OkObjectResult;
@@ -99,7 +102,7 @@ namespace GdscBackend.Tests
         public async void Get_ReturnsIdeaByID()
         {
             var repository = new Repository<IdeaModel>(new TestDbContext<IdeaModel>(_testData).Object);
-            var controller = new IdeasController(repository, _sender, _mapper);
+            var controller = new IdeasController(repository, _sender, _mapper, _webhookService);
 
             var anElementById = _testData.First();
             var actionResult = await controller.Get(anElementById.Id);

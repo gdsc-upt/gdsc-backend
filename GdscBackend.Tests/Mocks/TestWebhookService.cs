@@ -19,5 +19,14 @@ namespace GdscBackend.Tests.Mocks
             _outputHelper.WriteLine("Message subject: " + contact.Subject);
             _outputHelper.WriteLine("Message content: " + contact.Text);
         }
+
+        public void SendIdea(IdeaModel idea)
+        {
+            _outputHelper.WriteLine("Idea sent by: " + idea.Name);
+            _outputHelper.WriteLine("With email: " + idea.Email);
+            _outputHelper.WriteLine("Branch: " + idea.Branch);
+            _outputHelper.WriteLine("From year: " + idea.Year);
+            _outputHelper.WriteLine("Content: " + idea.Description);
+        }
     }
 }

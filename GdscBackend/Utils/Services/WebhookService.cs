@@ -19,8 +19,8 @@ namespace GdscBackend.Utils.Services
 
         private string IdeaContentBuilder(string name, string email, string branch, string year, string description)
         {
-            return "**Name:**  " + name + "\n" + "**Email:**  " + email + "\n" + "**Branch:**  " + branch + "\n" +
-                   "**Year:**  " + year + "\n" + "**Description:\n\"**" + description + "**\"**";
+            return "**Name:**  " + name + "\n" + "**Email:**  " + email + "\n" + "**Year:**  " + year + "\n" +
+                   "**Branch:**  " + branch + "\n" + "**Description:\n\"**" + description + "**\"**";
         }
 
         public async void SendContact(ContactModel contact)
