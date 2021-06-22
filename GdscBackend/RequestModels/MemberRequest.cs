@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using GdscBackend.Models;
+
 namespace GdscBackend.RequestModels
 {
     public class MemberRequest : Request
@@ -6,6 +9,5 @@ namespace GdscBackend.RequestModels
 
         public string Email { get; set; }
 
-        public string TeamId { get; set; }
     }
 }
