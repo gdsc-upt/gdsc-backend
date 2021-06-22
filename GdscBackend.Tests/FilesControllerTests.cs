@@ -5,6 +5,7 @@ using System.Text;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
+using GdscBackend.Tests.Mocks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting.Internal;
@@ -15,15 +16,15 @@ namespace GdscBackend.Tests
 {
     public class FilesControllerTests : TestingBase
     {
+        private const string MediaDirectory = "media";
         private static readonly List<IFormFile> TestData = _getTestData();
         private readonly FilesController _controller;
-        private const string MediaDirectory = "media";
-        
+
         public FilesControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             var repository = new Repository<FileModel>(new TestDbContext<FileModel>().Object);
             var rootDirectory = Path.Combine(Directory.GetCurrentDirectory(), "../../..");
-            _controller = new FilesController(new HostingEnvironment { ContentRootPath = rootDirectory}, repository);
+            _controller = new FilesController(new HostingEnvironment {ContentRootPath = rootDirectory}, repository);
         }
 
         [Fact]
@@ -32,18 +33,18 @@ namespace GdscBackend.Tests
             var upload = await _controller.Upload(TestData);
 
             var result = upload.Result as CreatedResult;
-            
+
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status201Created, result.StatusCode);
-            
+
             var files = Assert.IsAssignableFrom<IEnumerable<FileModel>>(result.Value).ToList();
             WriteLine(files);
-            Assert.Equal( 3, files.Count);
-            
+            Assert.Equal(3, files.Count);
+
             Assert.Contains(MediaDirectory, files.ElementAt(0).Path);
             Assert.Contains(MediaDirectory, files.ElementAt(1).Path);
             Assert.Contains(MediaDirectory, files.ElementAt(2).Path);
-            
+
             Assert.Equal(TestData.ElementAt(0).Length, files.ElementAt(0).Size);
             Assert.Equal(TestData.ElementAt(1).Length, files.ElementAt(1).Size);
             Assert.Equal(TestData.ElementAt(2).Length, files.ElementAt(2).Size);
@@ -54,7 +55,7 @@ namespace GdscBackend.Tests
             var stream1 = new MemoryStream(Encoding.UTF8.GetBytes("x are mere"));
             var stream2 = new MemoryStream(Encoding.UTF8.GetBytes("y are mere"));
             var stream3 = new MemoryStream(Encoding.UTF8.GetBytes("y are pere"));
-            
+
             var file1 = new FormFile(
                 stream1,
                 0,
@@ -62,7 +63,7 @@ namespace GdscBackend.Tests
                 "Data",
                 "test1.txt"
             );
-            
+
             var file2 = new FormFile(
                 stream2,
                 0,
@@ -70,7 +71,7 @@ namespace GdscBackend.Tests
                 "Data",
                 "test1.txt"
             );
-            
+
             var file3 = new FormFile(
                 stream3,
                 0,

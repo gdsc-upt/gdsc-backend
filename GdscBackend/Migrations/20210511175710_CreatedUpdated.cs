@@ -1,135 +1,135 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace gdsc_web_backend.Migrations
+namespace GdscBackend.Migrations
 {
     public partial class CreatedUpdated : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Teams",
-                type: "timestamp without time zone",
+                "Created",
+                "Teams",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "Teams",
-                type: "timestamp without time zone",
+                "Updated",
+                "Teams",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Settings",
-                type: "timestamp without time zone",
+                "Created",
+                "Settings",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "Settings",
-                type: "timestamp without time zone",
+                "Updated",
+                "Settings",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Pages",
-                type: "timestamp without time zone",
+                "Created",
+                "Pages",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "Pages",
-                type: "timestamp without time zone",
+                "Updated",
+                "Pages",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "MenuItems",
-                type: "timestamp without time zone",
+                "Created",
+                "MenuItems",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "MenuItems",
-                type: "timestamp without time zone",
+                "Updated",
+                "MenuItems",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Members",
-                type: "timestamp without time zone",
+                "Created",
+                "Members",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "Members",
-                type: "timestamp without time zone",
+                "Updated",
+                "Members",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Faqs",
-                type: "timestamp without time zone",
+                "Created",
+                "Faqs",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "Faqs",
-                type: "timestamp without time zone",
+                "Updated",
+                "Faqs",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Examples",
-                type: "timestamp without time zone",
+                "Created",
+                "Examples",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "Examples",
-                type: "timestamp without time zone",
+                "Updated",
+                "Examples",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Events",
-                type: "timestamp without time zone",
+                "Created",
+                "Events",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "Events",
-                type: "timestamp without time zone",
+                "Updated",
+                "Events",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Contacts",
-                type: "timestamp without time zone",
+                "Created",
+                "Contacts",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "Contacts",
-                type: "timestamp without time zone",
+                "Updated",
+                "Contacts",
+                "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
@@ -137,76 +137,76 @@ namespace gdsc_web_backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Teams");
+                "Created",
+                "Teams");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "Teams");
+                "Updated",
+                "Teams");
 
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Settings");
+                "Created",
+                "Settings");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "Settings");
+                "Updated",
+                "Settings");
 
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Pages");
+                "Created",
+                "Pages");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "Pages");
+                "Updated",
+                "Pages");
 
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "MenuItems");
+                "Created",
+                "MenuItems");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "MenuItems");
+                "Updated",
+                "MenuItems");
 
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Members");
+                "Created",
+                "Members");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "Members");
+                "Updated",
+                "Members");
 
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Faqs");
+                "Created",
+                "Faqs");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "Faqs");
+                "Updated",
+                "Faqs");
 
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Examples");
+                "Created",
+                "Examples");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "Examples");
+                "Updated",
+                "Examples");
 
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Events");
+                "Created",
+                "Events");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "Events");
+                "Updated",
+                "Events");
 
             migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Contacts");
+                "Created",
+                "Contacts");
 
             migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "Contacts");
+                "Updated",
+                "Contacts");
         }
     }
 }

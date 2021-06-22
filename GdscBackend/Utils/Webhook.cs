@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+
 namespace GdscBackend.Utils
 {
     [JsonObject]
@@ -9,14 +10,7 @@ namespace GdscBackend.Utils
     {
         private readonly HttpClient _httpClient;
         private readonly string _webhookUrl;
-        
-        [JsonProperty("content")]
-        public string Content { get; set; } = "";
-        [JsonProperty("username")]
-        public string Username { get; set; } = "";
-        [JsonProperty("avatar_url")]
-        public string AvatarUrl { get; set; } = "";
-        
+
         public Webhook(string webhookUrl)
         {
             _httpClient = new HttpClient();
@@ -37,6 +31,12 @@ namespace GdscBackend.Utils
             Username = username;
             AvatarUrl = avatarUrl;
         }
+
+        [JsonProperty("content")] public string Content { get; set; } = "";
+
+        [JsonProperty("username")] public string Username { get; set; } = "";
+
+        [JsonProperty("avatar_url")] public string AvatarUrl { get; set; } = "";
 
         public async Task<HttpResponseMessage> Send(string content)
         {

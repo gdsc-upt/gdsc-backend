@@ -19,9 +19,9 @@ namespace GdscBackend.Tests
 {
     public class IdeasControllerTests : TestingBase
     {
-        private readonly IEnumerable<IdeaModel> _testData = _getTestData();
-        private readonly IEmailSender _sender;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _sender;
+        private readonly IEnumerable<IdeaModel> _testData = _getTestData();
 
         public IdeasControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
@@ -41,7 +41,7 @@ namespace GdscBackend.Tests
                 Email = Lorem.Words(4) + "@" + Lorem.Words(3) + ".com",
                 Branch = Lorem.Words(2).ToString(),
                 Year = RandomNumber.Next(),
-                Description = Lorem.Sentence(7),
+                Description = Lorem.Sentence(7)
             };
             var example2 = new IdeaRequest
             {
@@ -49,7 +49,7 @@ namespace GdscBackend.Tests
                 Email = Lorem.Words(4) + "@" + Lorem.Words(3) + ".com",
                 Branch = Lorem.Words(2).ToString(),
                 Year = RandomNumber.Next(),
-                Description = Lorem.Sentence(7),
+                Description = Lorem.Sentence(7)
             };
 
             var added1 = await controller.Post(example1);

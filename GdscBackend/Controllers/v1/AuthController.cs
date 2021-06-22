@@ -37,10 +37,7 @@ namespace GdscBackend.Controllers.v1
         {
             var user = await _userModel.FindByNameAsync(model.Username);
             var wrongPassword = !await _userModel.CheckPasswordAsync(user, model.Password);
-            if (user == null || wrongPassword)
-            {
-                return Unauthorized();
-            }
+            if (user == null || wrongPassword) return Unauthorized();
 
             var userRoles = await _userModel.GetRolesAsync(user);
 
@@ -85,42 +82,33 @@ namespace GdscBackend.Controllers.v1
             var userWithSameName = await _userModel.FindByNameAsync(model.Username);
             var userWithSameEmail = await _userModel.FindByEmailAsync(model.Email);
             var userExists = userWithSameEmail is not null || userWithSameName is not null;
-            if (userExists)
-            {
-                return BadRequest("User already exists, please login");
-            }
+            if (userExists) return BadRequest("User already exists, please login");
 
             return await AddUser(model, false);
         }
 
         private async Task AddRoles()
         {
-            var role = new Role { Id = Guid.NewGuid().ToString(), Name = "admin" };
+            var role = new Role {Id = Guid.NewGuid().ToString(), Name = "admin"};
             var result = await _roleManager.CreateAsync(role);
-            if (!result.Succeeded)
-            {
-                Console.WriteLine(result.Errors);
-            }
+            if (!result.Succeeded) Console.WriteLine(result.Errors);
         }
 
         private async Task<UserViewModel> AddUser(RegisterViewModel model, bool makeAdmin)
         {
-            var puser = new User { UserName = model.Username, Email = model.Email };
+            var puser = new User {UserName = model.Username, Email = model.Email};
 
             var result = await _userModel.CreateAsync(puser, model.Password);
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(error => error.Description);
-                return new UserViewModel { Errors = errors };
+                return new UserViewModel {Errors = errors};
             }
 
             var user = await _userModel.FindByNameAsync(puser.UserName);
-            if (makeAdmin)
-            {
-                await _userModel.AddToRoleAsync(user, "admin");
-            }
+            if (makeAdmin) await _userModel.AddToRoleAsync(user, "admin");
 
-            return new UserViewModel { Id = user.Id, Email = user.Email, UserName = user.UserName };
+            return new UserViewModel {Id = user.Id, Email = user.Email, UserName = user.UserName};
         }
     }
 }

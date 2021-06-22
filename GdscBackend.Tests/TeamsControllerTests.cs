@@ -8,12 +8,12 @@ using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
+using GdscBackend.Tests.Mocks;
 using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace GdscBackend.Tests
 {
@@ -58,12 +58,12 @@ namespace GdscBackend.Tests
             var team1 = new TeamRequest
             {
                 Name = Lorem.Words(3).ToString(),
-                //Members = _getMemberData()
+                Members = new List<MemberModel>()
             };
             var team2 = new TeamRequest
             {
                 Name = Lorem.Words(3).ToString(),
-              // Members = _getMemberData()
+                Members = new List<MemberModel>()
             };
 
             var added1 = await controller.Post(team1);

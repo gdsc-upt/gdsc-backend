@@ -45,10 +45,7 @@ namespace GdscBackend.Database
 
         public async Task<T> AddOrUpdateAsync([NotNull] T entity)
         {
-            if (entity is null)
-            {
-                return null;
-            }
+            if (entity is null) return null;
 
             var existing = await DbSet.FirstOrDefaultAsync(item => item.Id == entity.Id);
 
@@ -57,10 +54,7 @@ namespace GdscBackend.Database
 
         public async Task<T> UpdateAsync([NotNull] T entity)
         {
-            if (entity?.Id is null || await GetAsync(entity.Id) is null)
-            {
-                return null;
-            }
+            if (entity?.Id is null || await GetAsync(entity.Id) is null) return null;
 
             entity.Updated = DateTime.UtcNow;
             entity = DbSet.Update(entity).Entity;
@@ -73,10 +67,7 @@ namespace GdscBackend.Database
         {
             var entity = await DbSet.FirstOrDefaultAsync(item => item.Id == id);
 
-            if (entity is null)
-            {
-                return null;
-            }
+            if (entity is null) return null;
 
             entity = DbSet.Remove(entity).Entity;
             await Save;

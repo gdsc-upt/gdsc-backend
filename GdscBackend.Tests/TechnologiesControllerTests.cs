@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using FactoryBot;
 using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
+using GdscBackend.Tests.Mocks;
 using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

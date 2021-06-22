@@ -54,10 +54,7 @@ namespace GdscBackend.Controllers.v1
             var result = await _userManager.CreateAsync(entity);
             //entity = await _userManager.CreateAsync(entity);
 
-            if (result.Succeeded)
-            {
-                return await _userManager.FindByNameAsync(entity.UserName);
-            }
+            if (result.Succeeded) return await _userManager.FindByNameAsync(entity.UserName);
 
             return BadRequest(result.Errors);
 

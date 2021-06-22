@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GdscBackend.Database;
-using GdscBackend.Utils;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
+using GdscBackend.Utils;
 using GdscBackend.Utils.Services;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -24,9 +24,10 @@ namespace GdscBackend.Controllers.v1
         private readonly IMapper _mapper;
         private readonly IRepository<ContactModel> _repository;
         private readonly IEmailSender _sender;
-        private readonly IWebhookService _webhookService; 
+        private readonly IWebhookService _webhookService;
 
-        public ContactController(IRepository<ContactModel> repository, IMapper mapper, IEmailSender sender, IWebhookService webhookService)
+        public ContactController(IRepository<ContactModel> repository, IMapper mapper, IEmailSender sender,
+            IWebhookService webhookService)
         {
             _repository = repository;
             _mapper = mapper;
@@ -40,22 +41,17 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ContactModel>>> Post(ContactRequest entity)
         {
-            if (entity is null)
-            {
-                return BadRequest(new ErrorViewModel { Message = "Request has no body" });
-            }
+            if (entity is null) return BadRequest(new ErrorViewModel {Message = "Request has no body"});
 
             if (!new EmailAddressAttribute().IsValid(entity.Email))
-            {
-                return BadRequest(new ErrorViewModel { Message = "Invalid email provided" });
-            }
+                return BadRequest(new ErrorViewModel {Message = "Invalid email provided"});
 
             var newEntity = await _repository.AddAsync(Map(entity));
 
             _sender.SendEmail(entity.Email, entity.Subject, entity.Text);
-            
+
             _webhookService.SendContact(newEntity);
-            
+
             return Created("v1/contact", newEntity);
         }
 

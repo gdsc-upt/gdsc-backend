@@ -34,7 +34,8 @@ namespace GdscBackend.Tests
         public async void Get_Should_Return_All_Contacts()
         {
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
+            var controller =
+                new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
 
             // Act
             var actionResult = await controller.Get();
@@ -51,7 +52,8 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
+            var controller =
+                new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
 
             var contact1 = new ContactRequest
             {
@@ -101,7 +103,8 @@ namespace GdscBackend.Tests
         {
             //
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
+            var controller =
+                new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
 
             // Act
             var deleted = await controller.Delete(TestData.First().Id);
@@ -122,10 +125,11 @@ namespace GdscBackend.Tests
         {
             //
             var repository = new Repository<ContactModel>(new TestDbContext<ContactModel>(TestData).Object);
-            var controller = new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
+            var controller =
+                new ContactController(repository, _mapper, new TestEmailSender(OutputHelper), _webhookService);
 
             // Act
-            string[] listOfIds = { TestData.First().Id, TestData.ElementAt(1).Id };
+            string[] listOfIds = {TestData.First().Id, TestData.ElementAt(1).Id};
             var deleted = await controller.Delete(listOfIds);
             var result = deleted.Result as OkObjectResult;
 
@@ -145,7 +149,7 @@ namespace GdscBackend.Tests
                     Name = Lorem.Words(1).ToString(),
                     Email = Lorem.Words(5).ToString(),
                     Subject = Lorem.Words(1).ToString(),
-                    Text = Lorem.Words(1).ToString(),
+                    Text = Lorem.Words(1).ToString()
                 });
 
             return models;

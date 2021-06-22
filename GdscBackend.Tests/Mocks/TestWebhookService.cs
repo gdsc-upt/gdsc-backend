@@ -7,6 +7,7 @@ namespace GdscBackend.Tests.Mocks
     public class TestWebhookService : IWebhookService
     {
         private readonly ITestOutputHelper _outputHelper;
+
         public TestWebhookService(ITestOutputHelper outputHelper)
         {
             _outputHelper = outputHelper;

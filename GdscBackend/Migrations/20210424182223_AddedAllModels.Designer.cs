@@ -4,10 +4,9 @@ using GdscBackend.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace gdsc_web_backend.Migrations
+namespace GdscBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20210424182223_AddedAllModels")]

@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using FactoryBot;
+using Faker;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.Models.Enums;
 using GdscBackend.RequestModels;
+using GdscBackend.Tests.Mocks;
 using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +19,8 @@ namespace GdscBackend.Tests
 {
     public class MenuItemsControllerTests : TestingBase
     {
-        private readonly IEnumerable<MenuItemModel> _testData = _getTestData();
         private readonly IMapper _mapper;
+        private readonly IEnumerable<MenuItemModel> _testData = _getTestData();
 
         public MenuItemsControllerTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
@@ -33,15 +35,15 @@ namespace GdscBackend.Tests
             var controller = new MenuItemsController(repository, _mapper);
             var model1 = new MenuItemRequest
             {
-                Name = Faker.Name.First(),
+                Name = Name.First(),
                 Type = MenuItemTypeEnum.ExternalLink,
-                Link = Faker.Lorem.Words(3).ToString()
+                Link = Lorem.Words(3).ToString()
             };
             var model2 = new MenuItemRequest
             {
-                Name = Faker.Name.First(),
+                Name = Name.First(),
                 Type = MenuItemTypeEnum.InternalLink,
-                Link = Faker.Lorem.Words(3).ToString()
+                Link = Lorem.Words(3).ToString()
             };
             var added1 = await controller.Post(model1);
             var added2 = await controller.Post(model2);
@@ -122,15 +124,15 @@ namespace GdscBackend.Tests
             var controller = new MenuItemsController(repository, _mapper);
             var model1 = new MenuItemRequest
             {
-                Name = Faker.Name.First(),
+                Name = Name.First(),
                 Type = MenuItemTypeEnum.ExternalLink,
-                Link = Faker.Lorem.Words(3).ToString()
+                Link = Lorem.Words(3).ToString()
             };
             var model2 = new MenuItemRequest
             {
-                Name = Faker.Name.First(),
+                Name = Name.First(),
                 Type = MenuItemTypeEnum.InternalLink,
-                Link = Faker.Lorem.Words(3).ToString()
+                Link = Lorem.Words(3).ToString()
             };
 
             var actionResult1 = await controller.Update(model1);
@@ -153,7 +155,7 @@ namespace GdscBackend.Tests
                 Id = x.Strings.Guid(),
                 Name = x.Names.FirstName(),
                 Type = x.Enums.Any<MenuItemTypeEnum>(),
-                Link = Faker.Lorem.Words(3).ToString()
+                Link = Lorem.Words(3).ToString()
             });
 
             return Bot.BuildSequence<MenuItemModel>().Take(10).ToList();

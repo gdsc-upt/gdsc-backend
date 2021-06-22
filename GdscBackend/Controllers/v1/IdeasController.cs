@@ -22,8 +22,8 @@ namespace GdscBackend.Controllers.v1
     [Produces(MediaTypeNames.Application.Json)]
     public class IdeasController : ControllerBase
     {
-        private readonly IRepository<IdeaModel> _repository;
         private readonly IMapper _mapper;
+        private readonly IRepository<IdeaModel> _repository;
         private readonly IEmailSender _sender;
 
         public IdeasController(IRepository<IdeaModel> repository, IEmailSender sender, IMapper mapper)
@@ -59,15 +59,10 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IdeaModel>> Post(IdeaRequest entity)
         {
-            if (entity is null)
-            {
-                return BadRequest(new ErrorViewModel {Message = "Request has no body"});
-            }
+            if (entity is null) return BadRequest(new ErrorViewModel {Message = "Request has no body"});
 
             if (!new EmailAddressAttribute().IsValid(entity.Email))
-            {
                 return BadRequest(new ErrorViewModel {Message = "Invalid email provided"});
-            }
 
             var newEntity = await _repository.AddAsync(Map(entity));
 
