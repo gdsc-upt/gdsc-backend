@@ -16,7 +16,7 @@ namespace GdscBackend.Controllers.v1
     // ex: https://localhost:5000/v1/examples
     [Route("v1/examples")]
     [Consumes(MediaTypeNames.Application.Json)] // specifies which type of data this controller accepts
-    [Produces(MediaTypeNames.Application.Json)] // specifies which type of data this conrtoller returns
+    [Produces(MediaTypeNames.Application.Json)] // specifies which type of data this controller returns
     public class ExamplesController : ControllerBase
     {
         private readonly IRepository<ExampleModel> _repository;

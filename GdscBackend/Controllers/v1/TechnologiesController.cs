@@ -13,7 +13,7 @@ namespace GdscBackend.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/technologies")]
+    [Route("v1/technologies")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     public class TechnologiesController : ControllerBase

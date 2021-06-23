@@ -14,12 +14,12 @@ namespace GdscBackend.Controllers.v1
     [ApiController]
     [ApiVersion("1")]
     [Authorize(Roles = "admin")]
-    [Route("api/v1/files")]
+    [Route("v1/files")]
     public class FilesController : ControllerBase
     {
         private readonly IRepository<FileModel> _repository;
         private readonly IHostEnvironment _hostEnvironment;
-        public const string MediaDirectory = "media";
+        private const string MediaDirectory = "media";
 
         public FilesController(IHostEnvironment webHostEnvironment, IRepository<FileModel> repository)
         {
@@ -63,7 +63,7 @@ namespace GdscBackend.Controllers.v1
                 fileModels.Add(await _repository.AddAsync(fileModel));
             }
 
-            return Created("api/v1/files", fileModels);
+            return Created("v1/files", fileModels);
         }
     }
 }
