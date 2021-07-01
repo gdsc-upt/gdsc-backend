@@ -3,15 +3,17 @@ using System;
 using GdscBackend.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace GdscBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210701113042_MemberModel")]
+    partial class MemberModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,7 +153,7 @@ namespace GdscBackend.Migrations
                     b.Property<DateTime>("End")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("ImageId")
+                    b.Property<string>("Image")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Start")
@@ -160,13 +162,10 @@ namespace GdscBackend.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
-                b.Property<DateTime>("Updated")
-                    .HasColumnType("timestamp without time zone");
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Title")
-                        .HasColumnType("text");
-
-                    b.HasIndex("ImageId");
+                    b.HasKey("Id");
 
                     b.ToTable("Events");
                 });
@@ -553,13 +552,19 @@ namespace GdscBackend.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("GdscBackend.Models.EventModel", b =>
+            modelBuilder.Entity("MemberModelTeamModel", b =>
                 {
-                    b.HasOne("GdscBackend.Models.FileModel", "Image")
+                    b.HasOne("GdscBackend.Models.MemberModel", null)
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Image");
+                    b.HasOne("GdscBackend.Models.TeamModel", null)
+                        .WithMany()
+                        .HasForeignKey("TeamsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
