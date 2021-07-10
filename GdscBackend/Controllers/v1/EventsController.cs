@@ -22,11 +22,14 @@ namespace GdscBackend.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly IRepository<EventModel> _repository;
+        private readonly IRepository<FileModel> _filesRepository;
 
-        public EventsController(IRepository<EventModel> repository, IMapper mapper)
+        public EventsController(IRepository<EventModel> repository, IMapper mapper,
+            IRepository<FileModel> filesRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _filesRepository = filesRepository;
         }
 
         [HttpGet]
@@ -53,7 +56,9 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<EventModel>> Post(EventRequest entity)
         {
-            var newEntity = await _repository.AddAsync(Map(entity));
+            var mappedEntity = Map(entity);
+            mappedEntity.Image = await _filesRepository.GetAsync(entity.ImageId);
+            var newEntity = await _repository.AddAsync(mappedEntity);
             return Created("v1/event", newEntity);
         }
 

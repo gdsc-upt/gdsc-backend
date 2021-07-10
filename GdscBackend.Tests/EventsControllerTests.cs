@@ -30,13 +30,18 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<EventModel>(new TestDbContext<EventModel>().Object);
-            var controller = new EventsController(repository, _mapper);
+            var imageId1 = Guid.NewGuid().ToString();
+            var imageId2 = Guid.NewGuid().ToString();
+            var filesRepository = new Repository<FileModel>(
+                new TestDbContext<FileModel>(new[] { new FileModel { Id = imageId1 }, new FileModel { Id = imageId2 } })
+                   .Object);
+            var controller = new EventsController(repository, _mapper, filesRepository);
 
             var example1 = new EventRequest
             {
                 Title = Lorem.Words(1).ToString(),
                 Description = Lorem.Words(5).ToString(),
-                Image = Lorem.Words(1).ToString(),
+                ImageId = imageId1,
                 Start = Identification.DateOfBirth(),
                 End = Identification.DateOfBirth()
             };
@@ -44,7 +49,7 @@ namespace GdscBackend.Tests
             {
                 Title = Lorem.Words(1).ToString(),
                 Description = Lorem.Words(5).ToString(),
-                Image = Lorem.Words(1).ToString(),
+                ImageId = imageId2,
                 Start = Identification.DateOfBirth(),
                 End = Identification.DateOfBirth()
             };
@@ -66,7 +71,7 @@ namespace GdscBackend.Tests
             Assert.NotNull(entity1);
             Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
             Assert.Equal(example1.Description, entity1.Description);
-            Assert.Equal(example1.Image, entity1.Image);
+            Assert.Equal(example1.ImageId, entity1.Image.Id);
             Assert.Equal(example1.Title, entity1.Title);
             Assert.Equal(example1.Start, entity1.Start);
             Assert.Equal(example1.End, entity1.End);
@@ -74,7 +79,7 @@ namespace GdscBackend.Tests
             Assert.NotNull(entity2);
             Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
             Assert.Equal(example2.Description, entity2.Description);
-            Assert.Equal(example2.Image, entity2.Image);
+            Assert.Equal(example2.ImageId, entity2.Image.Id);
             Assert.Equal(example2.Title, entity2.Title);
             Assert.Equal(example2.Start, entity2.Start);
             Assert.Equal(example2.End, entity2.End);
@@ -85,7 +90,9 @@ namespace GdscBackend.Tests
         {
             // Arrange
             var repository = new Repository<EventModel>(new TestDbContext<EventModel>(TestData).Object);
-            var controller = new EventsController(repository, _mapper);
+            var filesRepository = new Repository<FileModel>(
+                new TestDbContext<FileModel>(new[] { new FileModel { Id = Guid.NewGuid().ToString() } }).Object);
+            var controller = new EventsController(repository, _mapper, filesRepository);
 
             // Act
             var actionResult = await controller.Get();
@@ -106,7 +113,11 @@ namespace GdscBackend.Tests
                     Id = Guid.NewGuid().ToString(),
                     Title = Lorem.Words(1).ToString(),
                     Description = Lorem.Words(5).ToString(),
-                    Image = Lorem.Words(1).ToString(),
+                    Image = new FileModel
+                    {
+                        Name = Lorem.Words(1).ToString(), Extension = ".png", Size = 30,
+                        Path = Lorem.Words(1).ToString(), Id = Guid.NewGuid().ToString()
+                    },
                     Start = Identification.DateOfBirth(),
                     End = Identification.DateOfBirth()
                 });

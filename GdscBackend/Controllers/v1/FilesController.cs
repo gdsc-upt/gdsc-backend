@@ -33,7 +33,7 @@ namespace GdscBackend.Controllers.v1
         public async Task<ActionResult<IEnumerable<FileModel>>> Upload([FromForm] List<IFormFile> files)
         {
             var fileModels = new List<FileModel>();
-            
+
             foreach (var formFile in files)
             {
                 if (formFile.Length <= 0) continue;
@@ -42,11 +42,11 @@ namespace GdscBackend.Controllers.v1
                 var fileExtension = formFile.FileName.Split(".")[1];
 
                 var tag = Guid.NewGuid().ToString().Split("-")[0];
-                var relativePath = Path.Combine(MediaDirectory, fileName + tag + "." + fileExtension);
-                    
+                var relativePath = Path.Combine(MediaDirectory, $"{fileName}_{tag}.{fileExtension}");
+
                 Directory.CreateDirectory(Path.Combine(_hostEnvironment.ContentRootPath, "..", MediaDirectory));
                 var filePath = Path.Combine(_hostEnvironment.ContentRootPath, "..", relativePath);
-                    
+
                 await using (var stream = System.IO.File.Create(filePath))
                 {
                     await formFile.CopyToAsync(stream);
@@ -59,7 +59,7 @@ namespace GdscBackend.Controllers.v1
                     Path = relativePath,
                     Size = formFile.Length
                 };
-                
+
                 fileModels.Add(await _repository.AddAsync(fileModel));
             }
 
