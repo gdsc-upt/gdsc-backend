@@ -9,6 +9,7 @@ using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GdscBackend.Controllers.v1
 {
@@ -37,7 +38,8 @@ namespace GdscBackend.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<EventModel>>> Get()
         {
-            return Ok((await _repository.GetAsync()).ToList());
+            var dbSet = _repository.DbSet.AsQueryable().Include(r => r.Image);
+            return Ok(dbSet.ToList());
         }
 
         [HttpGet("{id}")]
