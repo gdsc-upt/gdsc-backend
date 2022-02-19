@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using GdscBackend.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,7 @@ public static class MigrationMiddleware
         Console.WriteLine("Applying migrations...");
 
         using var scope = app.ApplicationServices.CreateScope();
-        var dbContext = scope.ServiceProvider.GetService<DbContext>();
+        var dbContext = scope.ServiceProvider.GetService<AppDbContext>();
         if (dbContext is not null)
         {
             dbContext.Database.MigrateAsync().Wait();

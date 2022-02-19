@@ -58,12 +58,12 @@ namespace GdscBackend.Tests
             var team1 = new TeamRequest
             {
                 Name = Lorem.Words(3).ToString(),
-                Members = new List<MemberModel>()
+                // Members = new List<MemberModel>()
             };
             var team2 = new TeamRequest
             {
                 Name = Lorem.Words(3).ToString(),
-                Members = new List<MemberModel>()
+                // Members = new List<MemberModel>()
             };
 
             var added1 = await controller.Post(team1);
@@ -120,7 +120,7 @@ namespace GdscBackend.Tests
             {
                 Id = id,
                 Name = Lorem.Words(1).ToString(),
-                Members = _getMemberData(id),
+                // Members = _getMemberData(id),
                 Created = x.Dates.Any(),
                 Updated = x.Dates.Any()
             });
@@ -135,7 +135,7 @@ namespace GdscBackend.Tests
                 Id = Guid.NewGuid().ToString(),
                 Name = Lorem.Words(1).ToString(),
                 Email = Lorem.Words(1) + "@" + Lorem.Words(1) + ".com",
-                TeamId = teamId,
+                // TeamId = teamId,
                 Created = x.Dates.Any(),
                 Updated = x.Dates.Any()
             });

@@ -8,6 +8,7 @@ namespace GdscBackend.RequestModels
         public string Name { get; set; }
 
         public string Email { get; set; }
+        public string[] TeamsIds { get; set; }
 
     }
 }

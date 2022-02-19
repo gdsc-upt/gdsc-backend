@@ -90,6 +90,8 @@ if (builder.Environment.IsDevelopment())
 
 app.UseCors("EnableAll");
 
+app.UseRouting();
+
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
@@ -108,5 +110,7 @@ app.UseSwaggerUI(options =>
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
