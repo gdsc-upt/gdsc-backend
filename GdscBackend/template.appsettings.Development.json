@@ -7,6 +7,6 @@
     }
   },
   "ConnectionStrings": {
-    "Default": "Host=pga.dscupt.tech;Database=myDataBase;Username=root;Password=myPassword;Port=5432;"
+    "Default": "Host=gdscupt.tech;Database=myDataBase;Username=guest;Password=myPassword;Port=6969;"
   }
 }

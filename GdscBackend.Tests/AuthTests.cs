@@ -25,12 +25,10 @@ namespace GdscBackend.Tests
 {
     public class AuthTests : TestingBase
     {
-        private AppDbContext Context { get; }
-        private UserManager<User> _userManager { get; }
-        
-        private RoleManager<Role> _roleManager;
-        private IConfiguration _configuration;
-        
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
+        private readonly IConfiguration _configuration;
+
         public AuthTests(ITestOutputHelper outputHelper) : base(outputHelper)
         {
             var services = new ServiceCollection();
@@ -43,15 +41,15 @@ namespace GdscBackend.Tests
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
+               .AddEntityFrameworkStores<AppDbContext>()
+               .AddDefaultTokenProviders();
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(options =>
+               .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;
@@ -61,17 +59,17 @@ namespace GdscBackend.Tests
                         ValidateAudience = true,
                         ValidAudience = "http://localhost:5000",
                         ValidIssuer = "http://localhost:5000",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("somerandomsecretherefortesting"))
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes("somerandomsecretherefortesting"))
                     };
                 });
-            
+
             // Taken from https://github.com/aspnet/MusicStore/blob/dev/test/MusicStore.Test/ManageControllerTest.cs (and modified)
             // IHttpContextAccessor is required for SignInManager, and UserManager
             var context = new DefaultHttpContext();
             context.Features.Set<IHttpAuthenticationFeature>(new HttpAuthenticationFeature());
             services.AddSingleton<IHttpContextAccessor>(_ => new HttpContextAccessor { HttpContext = context });
             var serviceProvider = services.BuildServiceProvider();
-            Context = serviceProvider.GetRequiredService<AppDbContext>();
             _userManager = serviceProvider.GetRequiredService<UserManager<User>>();
             _roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
             _configuration = serviceProvider.GetRequiredService<IConfiguration>();
@@ -87,7 +85,7 @@ namespace GdscBackend.Tests
                 Email = "testuser@dscupt.tech",
                 Password = "sometestpasswordhere"
             };
-            
+
             var controller = new AuthController(_userManager, _roleManager, _configuration);
 
             // Act
@@ -111,8 +109,8 @@ namespace GdscBackend.Tests
             // Arrange
             var controller = new AuthController(_userManager, _roleManager, _configuration);
 
-            var userToRegister = new User {UserName = "basicUsername", Email = "basicEmail"};
-            
+            var userToRegister = new User { UserName = "basicUsername", Email = "basicEmail" };
+
             await _userManager.CreateAsync(userToRegister, "basicPassword");
 
             var userToLogin = new LoginViewModel()
@@ -124,10 +122,9 @@ namespace GdscBackend.Tests
             // Act
             var added = await controller.Login(userToLogin);
             var result = added as ViewResult;
-            
+
             // Assert
             Assert.NotNull(result);
         }
-        
     }
 }

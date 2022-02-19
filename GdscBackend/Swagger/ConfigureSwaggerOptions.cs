@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace GdscBackend.Utils
+namespace GdscBackend.Swagger
 {
     public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     {
@@ -35,8 +35,10 @@ namespace GdscBackend.Utils
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
                 Description =
-                    "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\""
+                    "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\n" +
+                    "Example: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\""
             });
+            
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -48,7 +50,7 @@ namespace GdscBackend.Utils
                             Id = "Bearer"
                         }
                     },
-                    new string[] { }
+                    System.Array.Empty<string>()
                 }
             });
         }

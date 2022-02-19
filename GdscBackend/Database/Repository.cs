@@ -25,7 +25,7 @@ namespace GdscBackend.Database
         public async Task<T> AddAsync([NotNull] T entity)
         {
             entity.Id = Guid.NewGuid().ToString();
-            entity.Created = entity.Updated = DateTime.Now;
+            entity.Created = entity.Updated = DateTime.UtcNow;
 
             entity = (await DbSet.AddAsync(entity)).Entity;
             await Save;
@@ -62,7 +62,7 @@ namespace GdscBackend.Database
                 return null;
             }
 
-            entity.Updated = DateTime.Now;
+            entity.Updated = DateTime.UtcNow;
             entity = DbSet.Update(entity).Entity;
             await Save;
 

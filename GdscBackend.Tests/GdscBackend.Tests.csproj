@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>GdscBackend.Tests</RootNamespace>
 
         <IsPackable>false</IsPackable>
@@ -10,16 +10,16 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="FactoryBot" Version="1.5.1" />
-        <PackageReference Include="Faker.Net" Version="1.5.138" />
+        <PackageReference Include="Faker.Net" Version="2.0.154" />
         <PackageReference Include="LiquidTestReports.Markdown" Version="1.0.9" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.6" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="3.0.3">
+        <PackageReference Include="coverlet.collector" Version="3.1.2">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
