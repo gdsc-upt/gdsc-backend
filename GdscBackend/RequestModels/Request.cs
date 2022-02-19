@@ -1,6 +1,5 @@
-namespace GdscBackend.RequestModels
+namespace GdscBackend.RequestModels;
+
+public class Request
 {
-    public class Request
-    {
-    }
 }

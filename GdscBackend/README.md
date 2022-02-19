@@ -8,7 +8,8 @@
 
 * Open [how-to-database] and learn how to connect to our database
 
-* Next, here in Rider, copy-paste `template.appsettings.Development.json` to `appsettings.Development.json` (make sure you DO NOT
+* Next, here in Rider, copy-paste `template.appsettings.Development.json` to `appsettings.Development.json` (make sure
+  you DO NOT
   delete `template.appsettings.Development.json`)
 
 * Good. Now we should tell our application which database to use. Open [appsettings.Development.json]

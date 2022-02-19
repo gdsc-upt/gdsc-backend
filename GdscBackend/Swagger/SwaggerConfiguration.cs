@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -17,10 +16,10 @@ public static class SwaggerConfiguration
             config.ReportApiVersions = true;
             config.ApiVersionReader = new UrlSegmentApiVersionReader();
         });
-        
+
         services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'V");
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-        
+
         return services.AddSwaggerGen();
     }
 }

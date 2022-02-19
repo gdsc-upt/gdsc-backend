@@ -1,18 +1,13 @@
-using System;
-using System.Linq;
-using GdscBackend.Database;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace GdscBackend.Utils.Extensions;
+namespace GdscBackend.Database;
 
 public static class MigrationMiddleware
 {
     /// <summary>
-    /// Migrates the database if --migrate option is passed to dotnet run.
+    ///     Migrates the database if --migrate option is passed to dotnet run.
     /// </summary>
-    /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+    /// <param name="app">The <see cref="IApplicationBuilder" /> to add the middleware to.</param>
     /// <returns>A boolean indicating if migration occured or not</returns>
     public static bool MigrateIfNeeded(this IApplicationBuilder app)
     {

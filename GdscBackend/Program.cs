@@ -3,16 +3,11 @@ using GdscBackend.Auth;
 using GdscBackend.Database;
 using GdscBackend.Swagger;
 using GdscBackend.Utils;
-using GdscBackend.Utils.Extensions;
 using GdscBackend.Utils.Mappers;
 using GdscBackend.Utils.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);

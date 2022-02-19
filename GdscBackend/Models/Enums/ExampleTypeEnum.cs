@@ -1,9 +1,8 @@
-namespace GdscBackend.Models.Enums
+namespace GdscBackend.Models.Enums;
+
+public enum ExampleTypeEnum
 {
-    public enum ExampleTypeEnum
-    {
-        EasyExample,
-        NotEasyExample,
-        WtfExample
-    }
+    EasyExample,
+    NotEasyExample,
+    WtfExample
 }
