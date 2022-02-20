@@ -115,10 +115,9 @@ public class TeamsControllerTests : TestingBase
 
     private static IEnumerable<TeamModel> _getTestData()
     {
-        var id = Guid.NewGuid().ToString();
         Bot.Define(x => new TeamModel
         {
-            Id = id,
+            Id = x.Strings.Guid(),
             Name = Lorem.Words(1).ToString(),
             // Members = _getMemberData(id),
             Created = x.Dates.Any(),

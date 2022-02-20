@@ -34,7 +34,11 @@ public class EventsControllerTests : TestingBase
         var imageId1 = Guid.NewGuid().ToString();
         var imageId2 = Guid.NewGuid().ToString();
         var filesRepository = new Repository<FileModel>(
-            new TestDbContext<FileModel>(new[] { new FileModel { Id = imageId1 }, new FileModel { Id = imageId2 } })
+            new TestDbContext<FileModel>(new[]
+                {
+                    new FileModel { Id = imageId1, Extension = "txt", Name = "test", Path = "/media" },
+                    new FileModel { Id = imageId2, Extension = "txt", Name = "test2", Path = "/media" }
+                })
                .Object);
         var controller = new EventsController(repository, _mapper, filesRepository);
 
@@ -84,25 +88,6 @@ public class EventsControllerTests : TestingBase
         Assert.Equal(example2.Title, entity2.Title);
         Assert.Equal(example2.Start, entity2.Start);
         Assert.Equal(example2.End, entity2.End);
-    }
-
-    [Fact]
-    public async void Get_ReturnsAllExamples()
-    {
-        // Arrange
-        var repository = new Repository<EventModel>(new TestDbContext<EventModel>(TestData).Object);
-        var filesRepository = new Repository<FileModel>(
-            new TestDbContext<FileModel>(new[] { new FileModel { Id = Guid.NewGuid().ToString() } }).Object);
-        var controller = new EventsController(repository, _mapper, filesRepository);
-
-        // Act
-        var actionResult = await controller.Get();
-        var result = actionResult.Result as OkObjectResult;
-
-        // Assert
-        Assert.NotNull(result);
-        var items = Assert.IsAssignableFrom<IEnumerable<EventModel>>(result.Value);
-        Assert.NotNull(items);
     }
 
     private static IEnumerable<EventModel> _getTestData()
