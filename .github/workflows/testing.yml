@@ -1,4 +1,4 @@
-name: .NET Core Build with Tests
+name: GDSC API Tests
 
 on:
   push:

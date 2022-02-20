@@ -1,4 +1,4 @@
-name: GDSC Website Backend
+name: GDSC API Build
 
 on:
   push:
