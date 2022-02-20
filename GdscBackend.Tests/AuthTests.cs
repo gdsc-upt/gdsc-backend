@@ -3,10 +3,12 @@ using GdscBackend.Auth;
 using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -23,9 +25,9 @@ public class AuthTests : TestingBase
 
     public AuthTests(ITestOutputHelper outputHelper) : base(outputHelper)
     {
-        var services = new ServiceCollection();
-        services.AddEntityFrameworkInMemoryDatabase();
-        services.AddDbContext<AppDbContext>();
+        var builder = WebApplication.CreateBuilder();
+        var services = builder.Services;
+        services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("TestDb"));
         services.AddIdentity<User, Role>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -62,9 +64,9 @@ public class AuthTests : TestingBase
         context.Features.Set<IHttpAuthenticationFeature>(new HttpAuthenticationFeature());
         services.AddSingleton<IHttpContextAccessor>(_ => new HttpContextAccessor { HttpContext = context });
         var serviceProvider = services.BuildServiceProvider();
-        _userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-        _roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
-        _configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        _userManager = serviceProvider.GetService<UserManager<User>>();
+        _roleManager = serviceProvider.GetService<RoleManager<Role>>();
+        _configuration = serviceProvider.GetService<IConfiguration>();
     }
 
     [Fact]
@@ -83,16 +85,18 @@ public class AuthTests : TestingBase
         // Act
         var added = await controller.Register(user);
 
-        var result = added.Result as CreatedAtActionResult;
-
         // Assert
-        Assert.NotNull(result);
-        var entity = result.Value as RegisterViewModel;
+        var actionResult = Assert.IsType<ActionResult<UserViewModel>>(added);
+        Assert.NotNull(actionResult);
+        var createdResult = Assert.IsType<CreatedResult>(actionResult.Result);
+        Assert.NotNull(createdResult);
+        var entity = Assert.IsType<UserViewModel>(createdResult.Value);
 
         Assert.NotNull(entity);
-        Assert.NotNull(entity.Username);
-        Assert.Equal(StatusCodes.Status201Created, result.StatusCode);
-        Assert.Equal(user, entity);
+        Assert.NotNull(entity.UserName);
+        Assert.Equal(StatusCodes.Status201Created, createdResult.StatusCode);
+        Assert.Equal(user.Username, entity.UserName);
+        Assert.Equal(user.Email, entity.Email);
     }
 
     [Fact]
@@ -113,9 +117,12 @@ public class AuthTests : TestingBase
 
         // Act
         var added = await controller.Login(userToLogin);
-        var result = added as ViewResult;
 
         // Assert
-        Assert.NotNull(result);
+        Assert.NotNull(added);
+        var actionResult = Assert.IsType<ActionResult<LoginResponse>>(added);
+        var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+        var result = Assert.IsType<LoginResponse>(okResult.Value);
+        Assert.NotNull(result.Token);
     }
 }

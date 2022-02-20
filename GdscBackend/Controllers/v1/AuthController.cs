@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     [Route("login")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Login(LoginViewModel model)
+    public async Task<ActionResult<LoginResponse>> Login(LoginViewModel model)
     {
         var user = await _userModel.FindByNameAsync(model.Username);
         var wrongPassword = !await _userModel.CheckPasswordAsync(user, model.Password);
@@ -56,10 +56,10 @@ public class AuthController : ControllerBase
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         );
 
-        return Ok(new
+        return Ok(new LoginResponse
         {
-            token = new JwtSecurityTokenHandler().WriteToken(token),
-            expiration = token.ValidTo
+            Token = new JwtSecurityTokenHandler().WriteToken(token),
+            Expiration = token.ValidTo
         });
     }
 
@@ -97,7 +97,7 @@ public class AuthController : ControllerBase
         }
     }
 
-    private async Task<UserViewModel> AddUser(RegisterViewModel model, bool makeAdmin)
+    private async Task<ActionResult<UserViewModel>> AddUser(RegisterViewModel model, bool makeAdmin)
     {
         var puser = new User { UserName = model.Username, Email = model.Email };
 
@@ -114,6 +114,6 @@ public class AuthController : ControllerBase
             await _userModel.AddToRoleAsync(user, "admin");
         }
 
-        return new UserViewModel { Id = user.Id, Email = user.Email, UserName = user.UserName };
+        return Created("", new UserViewModel { Id = user.Id, Email = user.Email, UserName = user.UserName });
     }
 }
