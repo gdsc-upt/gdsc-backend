@@ -17,6 +17,5 @@ public class MappingProfiles : Profile
         CreateMap(typeof(SettingModel), typeof(SettingRequest)).ReverseMap();
         CreateMap(typeof(TeamModel), typeof(TeamRequest)).ReverseMap();
         CreateMap(typeof(ContactModel), typeof(ContactRequest)).ReverseMap();
-        
     }
 }
