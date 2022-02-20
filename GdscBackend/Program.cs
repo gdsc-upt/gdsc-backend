@@ -1,27 +1,82 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
+using System.Text;
+using GdscBackend.Auth;
+using GdscBackend.Database;
+using GdscBackend.Swagger;
+using GdscBackend.Utils;
+using GdscBackend.Utils.Mappers;
+using GdscBackend.Utils.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
-namespace GdscBackend
+var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
+
+services.AddAutoMapper(typeof(MappingProfiles));
+
+services.AddControllers();
+services.AddCors(options => options.AddPolicy("EnableAll", policy =>
 {
-    public class Program
+    policy.AllowAnyOrigin();
+    policy.AllowAnyMethod();
+    policy.AllowAnyHeader();
+}));
+services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+services.AddSwaggerConfiguration();
+services.AddIdentity<User, Role>(options =>
     {
-        public static void Main(string[] args)
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+    })
+   .AddEntityFrameworkStores<AppDbContext>()
+   .AddDefaultTokenProviders();
+services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+   .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            CreateHostBuilder(args).Build().Run();
-        }
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidAudience = configuration["JWT:ValidAudience"],
+            ValidIssuer = configuration["JWT:ValidIssuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+        };
+    });
+services.AddTransient<IEmailSender, EmailSender>();
+services.AddTransient<IWebhookService, WebhookService>();
 
-        private static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args)
-               .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-               .ConfigureAppConfiguration(
-                    appConfig =>
-                    {
-                        appConfig.AddJsonFile("appsettings.json", false, true);
-                        appConfig.AddJsonFile("appsettings.Development.json", true, true);
-                        appConfig.AddJsonFile("appsettings.Local.json", true, true);
-                    });
-        }
-    }
+var connectionString = configuration.GetConnectionString("Default");
+services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+
+var app = builder.Build();
+
+app.MigrateIfNeeded();
+
+if (builder.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseCors("EnableAll");
+
+app.UseRouting();
+
+app.UseSwaggerMiddleware();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

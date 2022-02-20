@@ -1,9 +1,8 @@
-﻿namespace GdscBackend.Models.Enums
+﻿namespace GdscBackend.Models.Enums;
+
+public enum SettingTypeEnum
 {
-    public enum SettingTypeEnum
-    {
-        Text,
-        Image,
-        Boolean
-    }
+    Text,
+    Image,
+    Boolean
 }

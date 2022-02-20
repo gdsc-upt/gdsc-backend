@@ -11,21 +11,7 @@ namespace gdsc_web_backend.Migrations
                 name: "Image",
                 table: "Events",
                 newName: "ImageId");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "End",
-                table: "Events",
-                type: "timestamp without time zone",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "Start",
-                table: "Events",
-                type: "timestamp without time zone",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
+            
             migrationBuilder.CreateIndex(
                 name: "IX_Events_ImageId",
                 table: "Events",
@@ -48,14 +34,6 @@ namespace gdsc_web_backend.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_Events_ImageId",
-                table: "Events");
-
-            migrationBuilder.DropColumn(
-                name: "End",
-                table: "Events");
-
-            migrationBuilder.DropColumn(
-                name: "Start",
                 table: "Events");
 
             migrationBuilder.RenameColumn(

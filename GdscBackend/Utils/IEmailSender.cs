@@ -1,7 +1,6 @@
-namespace GdscBackend.Utils
+namespace GdscBackend.Utils;
+
+public interface IEmailSender
 {
-    public interface IEmailSender
-    {
-        void SendEmail(string to, string subject, string body);
-    }
+    void SendEmail(string to, string subject, string body);
 }

@@ -1,10 +1,9 @@
 using System.Runtime.Serialization;
 
-namespace GdscBackend.Models.Enums
+namespace GdscBackend.Models.Enums;
+
+public enum MenuItemTypeEnum
 {
-    public enum MenuItemTypeEnum
-    {
-        [EnumMember(Value = "InternalLink")] InternalLink,
-        [EnumMember(Value = "ExternalLink")] ExternalLink
-    }
+    [EnumMember(Value = "InternalLink")] InternalLink,
+    [EnumMember(Value = "ExternalLink")] ExternalLink
 }

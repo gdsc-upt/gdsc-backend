@@ -1,11 +1,10 @@
-namespace GdscBackend.RequestModels
+namespace GdscBackend.RequestModels;
+
+public class TechnologyRequest : Request
 {
-    public class TechnologyRequest : Request
-    {
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        public string Icon { get; set; }
-    }
+    public string Icon { get; set; }
 }

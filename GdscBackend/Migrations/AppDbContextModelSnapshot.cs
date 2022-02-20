@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace gdsc_web_backend.Migrations
+namespace GdscBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -160,10 +160,11 @@ namespace gdsc_web_backend.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("timestamp without time zone");
+                b.Property<DateTime>("Updated")
+                    .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
 
                     b.HasIndex("ImageId");
 
@@ -289,9 +290,6 @@ namespace gdsc_web_backend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TeamId")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Updated")
@@ -434,6 +432,21 @@ namespace gdsc_web_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Technologies");
+                });
+
+            modelBuilder.Entity("MemberModelTeamModel", b =>
+                {
+                    b.Property<string>("MembersId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TeamsId")
+                        .HasColumnType("text");
+
+                    b.HasKey("MembersId", "TeamsId");
+
+                    b.HasIndex("TeamsId");
+
+                    b.ToTable("MemberModelTeamModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

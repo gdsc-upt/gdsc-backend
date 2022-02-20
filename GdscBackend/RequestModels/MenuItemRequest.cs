@@ -1,11 +1,10 @@
 using GdscBackend.Models.Enums;
 
-namespace GdscBackend.RequestModels
+namespace GdscBackend.RequestModels;
+
+public class MenuItemRequest : Request
 {
-    public class MenuItemRequest : Request
-    {
-        public string Name { get; set; }
-        public MenuItemTypeEnum Type { get; set; }
-        public string Link { get; set; }
-    }
+    public string Name { get; set; }
+    public MenuItemTypeEnum Type { get; set; }
+    public string Link { get; set; }
 }

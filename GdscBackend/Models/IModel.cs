@@ -1,11 +1,8 @@
-using System;
+namespace GdscBackend.Models;
 
-namespace GdscBackend.Models
+public interface IModel
 {
-    public interface IModel
-    {
-        string Id { get; set; }
-        DateTime Created { get; set; }
-        DateTime Updated { get; set; }
-    }
+    string Id { get; set; }
+    DateTime Created { get; set; }
+    DateTime Updated { get; set; }
 }

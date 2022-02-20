@@ -1,9 +1,8 @@
 ﻿using GdscBackend.Models;
 
-namespace GdscBackend.Utils.Services
+namespace GdscBackend.Utils.Services;
+
+public interface IWebhookService
 {
-    public interface IWebhookService
-    {
-        void SendContact(ContactModel contact);
-    }
+    void SendContact(ContactModel contact);
 }

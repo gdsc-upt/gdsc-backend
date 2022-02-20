@@ -1,7 +1,7 @@
-﻿namespace GdscBackend.Models
+﻿namespace GdscBackend.Models;
+
+public class TeamModel : Model
 {
-    public class TeamModel : Model
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
+    public ICollection<MemberModel> Members { get; set; }
 }

@@ -1,8 +1,8 @@
-run: appsettings.Local.json
+run: appsettings.Development.json
 	dotnet watch run
 
-migrations: appsettings.Local.json
+migrations: appsettings.Development.json
 	dotnet ef migrations add
 
-migrate: appsettings.Local.json
+migrate: appsettings.Development.json
 	dotnet ef database update
