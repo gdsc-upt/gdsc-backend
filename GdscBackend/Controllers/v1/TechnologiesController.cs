@@ -3,6 +3,7 @@ using AutoMapper;
 using GdscBackend.Database;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GdscBackend.Controllers.v1;
@@ -31,8 +32,10 @@ public class TechnologiesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<TechnologyModel>> Post(TechnologyRequest entity)
     {
         var newEntity = await _repository.AddAsync(Map(entity));
@@ -40,8 +43,10 @@ public class TechnologiesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<TechnologyModel>> Delete([FromRoute] string id)
     {
