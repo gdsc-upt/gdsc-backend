@@ -483,43 +483,10 @@ namespace gdsc_web_backend.Migrations
                 nullable: false,
                 oldClrType: typeof(DateTime),
                 oldType: "timestamp without time zone");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Events",
-                table: "Events",
-                column: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_MemberModelTeamModel_Members_MembersId",
-                table: "MemberModelTeamModel",
-                column: "MembersId",
-                principalTable: "Members",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_MemberModelTeamModel_Teams_TeamsId",
-                table: "MemberModelTeamModel",
-                column: "TeamsId",
-                principalTable: "Teams",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_MemberModelTeamModel_Members_MembersId",
-                table: "MemberModelTeamModel");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_MemberModelTeamModel_Teams_TeamsId",
-                table: "MemberModelTeamModel");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Events",
-                table: "Events");
-
             migrationBuilder.AlterColumn<DateTime>(
                 name: "Updated",
                 table: "Technologies",

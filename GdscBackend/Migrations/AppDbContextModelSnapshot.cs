@@ -141,7 +141,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Contacts", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.EventModel", b =>
@@ -176,7 +176,7 @@ namespace GdscBackend.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.ExampleModel", b =>
@@ -202,7 +202,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Examples");
+                    b.ToTable("Examples", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.FaqModel", b =>
@@ -226,7 +226,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Faqs");
+                    b.ToTable("Faqs", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.FileModel", b =>
@@ -257,7 +257,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Files");
+                    b.ToTable("Files", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.MemberModel", b =>
@@ -281,7 +281,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Members");
+                    b.ToTable("Members", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.MenuItemModel", b =>
@@ -308,7 +308,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MenuItems");
+                    b.ToTable("MenuItems", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.PageModel", b =>
@@ -347,7 +347,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pages");
+                    b.ToTable("Pages", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.SettingModel", b =>
@@ -381,7 +381,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings");
+                    b.ToTable("Settings", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.TeamModel", b =>
@@ -401,7 +401,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("GdscBackend.Models.TechnologyModel", b =>
@@ -429,7 +429,7 @@ namespace GdscBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Technologies");
+                    b.ToTable("Technologies", (string)null);
                 });
 
             modelBuilder.Entity("MemberModelTeamModel", b =>
@@ -444,7 +444,7 @@ namespace GdscBackend.Migrations
 
                     b.HasIndex("TeamsId");
 
-                    b.ToTable("MemberModelTeamModel");
+                    b.ToTable("MemberModelTeamModel", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
