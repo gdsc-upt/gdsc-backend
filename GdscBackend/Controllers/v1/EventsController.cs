@@ -28,27 +28,7 @@ public class EventsController : ControllerBase
         _mapper = mapper;
         _filesRepository = filesRepository;
     }
-
-    [HttpGet]
-    [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<EventModel>>> Get()
-    {
-        var dbSet = _repository.DbSet.AsQueryable().Include(r => r.Image);
-        return Ok(dbSet.ToList());
-    }
-
-    [HttpGet("{id}")]
-    [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<EventModel>> Get([FromRoute] string id)
-    {
-        var entity = await _repository.GetAsync(id);
-        return entity is null ? NotFound() : Ok(entity);
-    }
-
+    
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
