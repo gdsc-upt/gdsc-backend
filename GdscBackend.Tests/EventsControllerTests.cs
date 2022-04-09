@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Faker;
 using GdscBackend.Controllers.v1;
@@ -10,6 +11,7 @@ using GdscBackend.Tests.Mocks;
 using GdscBackend.Utils.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -88,6 +90,39 @@ public class EventsControllerTests : TestingBase
         Assert.Equal(example2.Title, entity2.Title);
         Assert.Equal(example2.Start, entity2.Start);
         Assert.Equal(example2.End, entity2.End);
+    }
+
+    [Fact]
+    public async void Delete_ReturnOkObjectResult()
+    {
+        var repository = new Repository<EventModel>(new TestDbContext<EventModel>(_getTestData()).Object);
+        var filesRepository = new Repository<FileModel>(new TestDbContext<FileModel>().Object);
+        var controller = new EventsController(repository, _mapper, filesRepository);
+
+        var events = await repository.GetAsync();
+        
+        //Act
+        var deleted1 = await controller.Delete(events.First().Id);
+        WriteLine(deleted1);
+        var deleted2 = await controller.Delete(events.ToList()[1].Id);
+
+        var result1 = deleted1.Result as OkObjectResult;
+        WriteLine(result1);
+        var result2 = deleted2.Result as OkObjectResult;
+        WriteLine(result2);
+        
+        //Assert
+        Assert.NotNull(result1);
+        Assert.NotNull(result2);
+
+        var entity1 = result1.Value as EventModel;
+        var entity2 = result2.Value as EventModel;
+        
+        Assert.NotNull(entity1);
+        Assert.Equal(StatusCodes.Status200OK, result1.StatusCode);
+        
+        Assert.NotNull(entity2);
+        Assert.Equal(StatusCodes.Status200OK, result2.StatusCode);
     }
 
     private static IEnumerable<EventModel> _getTestData()
