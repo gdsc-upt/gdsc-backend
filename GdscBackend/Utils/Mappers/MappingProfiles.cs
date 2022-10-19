@@ -1,4 +1,5 @@
 using AutoMapper;
+using GdscBackend.Features.Redirects;
 using GdscBackend.Models;
 using GdscBackend.RequestModels;
 
@@ -17,5 +18,6 @@ public class MappingProfiles : Profile
         CreateMap(typeof(SettingModel), typeof(SettingRequest)).ReverseMap();
         CreateMap(typeof(TeamModel), typeof(TeamRequest)).ReverseMap();
         CreateMap(typeof(ContactModel), typeof(ContactRequest)).ReverseMap();
+        CreateMap(typeof(RedirectModel), typeof(RedirectRequest)).ReverseMap();
     }
 }

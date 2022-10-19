@@ -1,8 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.3.32922.545
-MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdscBackend", "GdscBackend\GdscBackend.csproj", "{19C6B87F-1946-4A06-B436-3302BFDF48E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdscBackend.Tests", "GdscBackend.Tests\GdscBackend.Tests.csproj", "{981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1}"
@@ -21,11 +18,5 @@ Global
 		{981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{981CCB08-9BEF-4D90-AFF6-6C6B0DBA89B1}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A4AD262B-598C-4806-8F56-7D5AE92AA8AE}
 	EndGlobalSection
 EndGlobal
