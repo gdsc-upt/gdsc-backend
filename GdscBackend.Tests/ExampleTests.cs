@@ -85,15 +85,17 @@ public class ExampleTests : TestingBase
 
     private static IEnumerable<ExampleModel> _getTestData()
     {
-        Bot.Define(x => new ExampleModel
-        {
-            Id = x.Strings.Guid(),
-            Title = x.Names.FullName(),
-            Number = x.Integer.Any(),
-            Type = x.Enums.Any<ExampleTypeEnum>(),
-            Created = x.Dates.Any(),
-            Updated = x.Dates.Any()
-        });
+        // Bot.Define<ExampleModel>(x => new ExampleModel
+        // {
+        //     Id = x.Strings.Guid(),
+        //     Title = x.Names.FullName(),
+        //     Number = x.Integer.Any(),
+        //     Type = x.Enums.Any<ExampleTypeEnum>(),
+        //     Created = x.Dates.Any(),
+        //     Updated = x.Dates.Any()
+        // });
+
+        Bot.DefineAuto<ExampleModel>();
 
         return Bot.BuildSequence<ExampleModel>().Take(10).ToList();
     }

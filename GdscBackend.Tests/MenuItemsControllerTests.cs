@@ -150,13 +150,14 @@ public class MenuItemsControllerTests : TestingBase
 
     private static IEnumerable<MenuItemModel> _getTestData()
     {
-        Bot.Define(x => new MenuItemModel
-        {
-            Id = x.Strings.Guid(),
-            Name = x.Names.FirstName(),
-            Type = x.Enums.Any<MenuItemTypeEnum>(),
-            Link = Lorem.Words(3).ToString()
-        });
+        // Bot.Define<MenuItemModel>(x => new MenuItemModel
+        // {
+        //     Id = x.Strings.Guid(),
+        //     Name = x.Names.FirstName(),
+        //     Type = x.Enums.Any<MenuItemTypeEnum>(),
+        //     Link = Lorem.Words(3).ToString()
+        // });
+        Bot.DefineAuto<MenuItemModel>();
 
         return Bot.BuildSequence<MenuItemModel>().Take(10).ToList();
     }
