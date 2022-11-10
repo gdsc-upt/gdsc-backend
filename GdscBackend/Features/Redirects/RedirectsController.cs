@@ -50,7 +50,28 @@ public class RedirectsController : ControllerBase
 
         return Created("v1/redirects", newEntity);
     }
-    
+
+    [HttpDelete("{path}")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<RedirectResponse>> Delete([FromRoute] string path)
+    {
+        var all = await _repository.GetAsync();
+        var newEntity = all.FirstOrDefault(entity => entity.path == path);
+        if (newEntity is null)
+        {
+            return NotFound();
+        }
+        var result = await _repository.DeleteAsync(newEntity.Id);
+        if (result is null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+
+    }
+
     private RedirectModel Map(RedirectRequest entity)
     {
         return _mapper.Map<RedirectModel>(entity);

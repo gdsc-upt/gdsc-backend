@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using GdscBackend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace GdscBackend.Database;
 
@@ -65,7 +66,7 @@ public class Repository<T> : IRepository<T> where T : class, IModel
         return entity;
     }
 
-    public async Task<T> DeleteAsync([NotNull] string id)
+    public async Task<T>? DeleteAsync([NotNull] string id)
     {
         var entity = await DbSet.FirstOrDefaultAsync(item => item.Id == id);
 
