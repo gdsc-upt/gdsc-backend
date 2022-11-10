@@ -12,6 +12,6 @@ public interface IRepository<T> where T : class, IModel
     Task<IEnumerable<T>> GetAsync();
     Task<T> AddOrUpdateAsync([NotNull] T entity);
     Task<T> UpdateAsync([NotNull] T entity);
-    Task<T> DeleteAsync([NotNull] string id);
+    Task<T>? DeleteAsync([NotNull] string id);
     Task<IEnumerable<T>> DeleteAsync([NotNull] IEnumerable<string> ids);
 }
