@@ -72,6 +72,27 @@ public class RedirectsController : ControllerBase
 
     }
 
+    [HttpPatch("{path}")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<RedirectResponse>> Update([FromRoute] string path, [FromBody]RedirectRequest request)
+    {
+        var all = await _repository.GetAsync();
+        var newEntity = all.FirstOrDefault(entity => entity.path == path);
+        if (newEntity is null)
+        {
+            return NotFound();
+        }
+
+        newEntity.path = request.path;
+        newEntity.redirectTo = request.redirectTo;
+        newEntity.Updated = DateTime.UtcNow;
+
+        var result = await _repository.UpdateAsync(newEntity);
+        return Ok(result);
+    }
+
     private RedirectModel Map(RedirectRequest entity)
     {
         return _mapper.Map<RedirectModel>(entity);
