@@ -66,13 +66,13 @@ public class MenuItemsController : ControllerBase
         return entity is null ? NotFound() : Ok(entity);
     }
 
-    [HttpPatch]
+    [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<MenuItemModel>> Update(MenuItemRequest entity)
+    public async Task<ActionResult<MenuItemModel>> Update([FromRoute]string id ,MenuItemRequest entity)
     {
-        var newEntity = await _repository.UpdateAsync(Map(entity));
+        var newEntity = await _repository.UpdateAsync(id,Map(entity));
 
         return Ok(newEntity);
     }

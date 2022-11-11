@@ -135,8 +135,20 @@ public class MenuItemsControllerTests : TestingBase
             Link = Lorem.Words(3).ToString()
         };
 
-        var actionResult1 = await controller.Update(model1);
-        var actionResult2 = await controller.Update(model2);
+        var entry1 = repository.DbSet.FirstOrDefault();
+        if (entry1 is null)
+        {
+            Assert.Fail("DbSet is empty");
+        }
+
+        var entry2 = repository.DbSet.LastOrDefault();
+        if (entry2 is null)
+        {
+            Assert.Fail("DbSet is empty");
+        }
+
+        var actionResult1 = await controller.Update(entry1.Id, model1);
+        var actionResult2 = await controller.Update(entry2.Id ,model2);
 
         var resultResult1 = actionResult1.Result as OkObjectResult;
         var resultResult2 = actionResult2.Result as OkObjectResult;

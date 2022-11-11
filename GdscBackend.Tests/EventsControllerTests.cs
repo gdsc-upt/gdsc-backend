@@ -41,7 +41,7 @@ public class EventsControllerTests : TestingBase
                     new FileModel { Id = imageId1, Extension = "txt", Name = "test", Path = "/media" },
                     new FileModel { Id = imageId2, Extension = "txt", Name = "test2", Path = "/media" }
                 })
-               .Object);
+                .Object);
         var controller = new EventsController(repository, _mapper, filesRepository);
 
         var example1 = new EventRequest
@@ -100,24 +100,24 @@ public class EventsControllerTests : TestingBase
         var controller = new EventsController(repository, _mapper, filesRepository);
 
         var events = await repository.GetAsync();
-        
+
         //Act
         var deleted1 = await controller.Delete(events.First().Id);
         var deleted2 = await controller.Delete(events.ToList()[1].Id);
 
         var result1 = deleted1.Result as OkObjectResult;
         var result2 = deleted2.Result as OkObjectResult;
-        
+
         //Assert
         Assert.NotNull(result1);
         Assert.NotNull(result2);
 
         var entity1 = result1.Value as EventModel;
         var entity2 = result2.Value as EventModel;
-        
+
         Assert.NotNull(entity1);
         Assert.Equal(StatusCodes.Status200OK, result1.StatusCode);
-        
+
         Assert.NotNull(entity2);
         Assert.Equal(StatusCodes.Status200OK, result2.StatusCode);
     }
@@ -129,12 +129,12 @@ public class EventsControllerTests : TestingBase
         var imageId1 = Guid.NewGuid().ToString();
         var imageId2 = Guid.NewGuid().ToString();
         var filesRepository = new Repository<FileModel>(new TestDbContext<FileModel>(new[]
-            {
-                new FileModel { Id = imageId1, Extension = "txt", Name = "test", Path = "/media" },
-                new FileModel { Id = imageId2, Extension = "txt", Name = "test2", Path = "/media" }
-            }).Object);
+        {
+            new FileModel { Id = imageId1, Extension = "txt", Name = "test", Path = "/media" },
+            new FileModel { Id = imageId2, Extension = "txt", Name = "test2", Path = "/media" }
+        }).Object);
         var controller = new EventsController(repository, _mapper, filesRepository);
-        
+
         var example1 = new EventRequest
         {
             Title = Lorem.Words(1).ToString(),
@@ -151,24 +151,34 @@ public class EventsControllerTests : TestingBase
             Start = Identification.DateOfBirth(),
             End = Identification.DateOfBirth()
         };
-        
+
+        var entry1 = await repository.DbSet.FirstOrDefaultAsync();
+        Assert.NotNull(entry1);
+        WriteLine(entry1);
+        WriteLine(imageId1);
+
+        var entry2 = await repository.DbSet.LastOrDefaultAsync();
+        Assert.NotNull(entry2);
+
         //Act
-        var updated1 = await controller.Update(example1);
-        var updated2 = await controller.Update(example2);
+        var updated1 = await controller.Update(entry1.Id, example1);
+        var updated2 = await controller.Update(entry2.Id, example2);
 
         var result1 = updated1.Result as OkObjectResult;
         var result2 = updated2.Result as OkObjectResult;
-        
+
         //Assert
         Assert.NotNull(result1);
         Assert.NotNull(result2);
-        
+
         var entity1 = result1.Value as EventModel;
         var entity2 = result2.Value as EventModel;
-        
+
         Assert.NotNull(entity1);
         Assert.Equal(StatusCodes.Status200OK, result1.StatusCode);
-        
+        Assert.Equal(entity1.Title, example1.Title);
+        Assert.Equal(entity1.Description, example1.Description);
+
         Assert.NotNull(entity2);
         Assert.Equal(StatusCodes.Status200OK, result2.StatusCode);
     }

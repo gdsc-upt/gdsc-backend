@@ -89,7 +89,7 @@ public class RedirectsController : ControllerBase
         newEntity.RedirectTo = request.RedirectTo;
         newEntity.Updated = DateTime.UtcNow;
 
-        var result = await _repository.UpdateAsync(newEntity);
+        var result = await _repository.UpdateAsync(newEntity.Id, newEntity);
         return Ok(result);
     }
     
