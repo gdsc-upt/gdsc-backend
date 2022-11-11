@@ -5,7 +5,6 @@ using GdscBackend.Models;
 using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GdscBackend.Controllers.v1;
 
@@ -28,6 +27,7 @@ public class EventsController : ControllerBase
         _mapper = mapper;
         _filesRepository = filesRepository;
     }
+
 /*<<<<<<< HEAD
 
 =======
@@ -54,13 +54,13 @@ public class EventsController : ControllerBase
         return entity is null ? NotFound() : Ok(entity);
     }
 
-    [HttpPatch]
+    [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<EventModel>> Update(EventRequest entity)
+    public async Task<ActionResult<EventModel>> Update([FromRoute] string id, EventRequest entity)
     {
-        var newEntity = await _repository.UpdateAsync(Map(entity));
+        var newEntity = await _repository.UpdateAsync(id, entity);
         return newEntity is null ? BadRequest() : Ok(newEntity);
     }
 

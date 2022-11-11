@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using GdscBackend.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace GdscBackend.Database;
 
@@ -42,38 +41,30 @@ public class Repository<T> : IRepository<T> where T : class, IModel
 
     public async Task<T> AddOrUpdateAsync([NotNull] T entity)
     {
-        if (entity is null)
-        {
-            return null;
-        }
+        if (entity is null) return null;
 
         var existing = await DbSet.FirstOrDefaultAsync(item => item.Id == entity.Id);
 
-        return existing is null ? await AddAsync(entity) : await UpdateAsync(entity);
+        return existing is null ? await AddAsync(entity) : await UpdateAsync(entity.Id, entity);
     }
 
-    public async Task<T> UpdateAsync([NotNull] T entity)
+    public async Task<T> UpdateAsync([NotNull] string id, [NotNull] object newEntity)
     {
-        if (entity?.Id is null || await GetAsync(entity.Id) is null)
-        {
-            return null;
-        }
+        var entity = await GetAsync(id);
+        if (entity is null) return null;
 
-        entity.Updated = DateTime.UtcNow;
-        entity = DbSet.Update(entity).Entity;
-        await Save;
+        CheckUpdateObject(entity, newEntity);
 
-        return entity;
+        await _context.SaveChangesAsync();
+
+        return _dbSet.First(e => e.Id == id);
     }
 
     public async Task<T>? DeleteAsync([NotNull] string id)
     {
         var entity = await DbSet.FirstOrDefaultAsync(item => item.Id == id);
 
-        if (entity is null)
-        {
-            return null;
-        }
+        if (entity is null) return null;
 
         entity = DbSet.Remove(entity).Entity;
         await Save;
@@ -89,5 +80,15 @@ public class Repository<T> : IRepository<T> where T : class, IModel
         await Save;
 
         return entities;
+    }
+
+    public static void CheckUpdateObject(T originalObj, object updateObj)
+    {
+        foreach (var property in updateObj.GetType().GetProperties())
+        {
+            var propValue = property.GetValue(updateObj, null);
+            var originalProp = originalObj.GetType().GetProperty(property.Name);
+            if (propValue is not null && originalProp is not null) originalProp.SetValue(originalObj, propValue);
+        }
     }
 }

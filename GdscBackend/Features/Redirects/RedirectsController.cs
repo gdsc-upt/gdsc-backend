@@ -34,7 +34,7 @@ public class RedirectsController : ControllerBase
         var redirects = (await _repository.GetAsync()).ToList();
         foreach (var redirectModel in redirects)
         {
-            dict.Add(redirectModel.path, redirectModel.redirectTo);
+            dict.Add(redirectModel.Path, redirectModel.RedirectTo);
         }
 
         return Ok(dict);
@@ -58,7 +58,7 @@ public class RedirectsController : ControllerBase
     public async Task<ActionResult<RedirectResponse>> Delete([FromRoute] string path)
     {
         var all = await _repository.GetAsync();
-        var newEntity = all.FirstOrDefault(entity => entity.path == path);
+        var newEntity = all.FirstOrDefault(entity => entity.Path == path);
         if (newEntity is null)
         {
             return NotFound();
@@ -79,19 +79,21 @@ public class RedirectsController : ControllerBase
     public async Task<ActionResult<RedirectResponse>> Update([FromRoute] string path, [FromBody]RedirectRequest request)
     {
         var all = await _repository.GetAsync();
-        var newEntity = all.FirstOrDefault(entity => entity.path == path);
+        var newEntity = all.FirstOrDefault(entity => entity.Path == path);
         if (newEntity is null)
         {
             return NotFound();
         }
 
-        newEntity.path = request.path;
-        newEntity.redirectTo = request.redirectTo;
+        newEntity.Path = request.Path;
+        newEntity.RedirectTo = request.RedirectTo;
         newEntity.Updated = DateTime.UtcNow;
 
-        var result = await _repository.UpdateAsync(newEntity);
+        var result = await _repository.UpdateAsync(newEntity.Id, newEntity);
         return Ok(result);
     }
+    
+    
 
     private RedirectModel Map(RedirectRequest entity)
     {

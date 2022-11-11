@@ -12,6 +12,12 @@ public class AppDbContext : IdentityDbContext<User, Role, string>
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<RedirectModel>().HasIndex(entity => entity.Path).IsUnique();
+        base.OnModelCreating(builder);
+    }
+
     public DbSet<ExampleModel> Examples { get; set; }
     public DbSet<ContactModel> Contacts { get; set; }
     public DbSet<EventModel> Events { get; set; }
