@@ -2,8 +2,8 @@
 
 public class RedirectRequest : Request
 {
-    public String path { get; set; }
+    public string Path { get; set; }
     
-    public String redirectTo { get; set; }
+    public string RedirectTo { get; set; }
     
 }

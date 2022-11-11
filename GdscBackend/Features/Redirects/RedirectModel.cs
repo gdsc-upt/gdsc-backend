@@ -4,7 +4,7 @@ namespace GdscBackend.Features.Redirects;
 
 public class RedirectModel : Model
 {
-    public String path { get; set; }
+    public string Path { get; set; }
     
-    public String redirectTo { get; set; }
+    public string RedirectTo { get; set; }
 }
