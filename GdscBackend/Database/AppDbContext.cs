@@ -1,4 +1,5 @@
 using GdscBackend.Auth;
+using GdscBackend.Features.Articles;
 using GdscBackend.Features.Redirects;
 using GdscBackend.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -30,4 +31,5 @@ public class AppDbContext : IdentityDbContext<User, Role, string>
     public DbSet<TechnologyModel> Technologies { get; set; }
     public DbSet<FileModel> Files { get; set; }
     public DbSet<RedirectModel> Redirects { get; set; }
+    public DbSet<ArticleModel> Articles { get; set; }
 }
