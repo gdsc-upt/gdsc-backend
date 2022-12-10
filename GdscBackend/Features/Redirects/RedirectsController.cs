@@ -1,7 +1,6 @@
 ﻿using System.Net.Mime;
 using AutoMapper;
 using GdscBackend.Database;
-using GdscBackend.RequestModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

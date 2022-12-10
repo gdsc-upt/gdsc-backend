@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using GdscBackend.Models;
+using GdscBackend.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GdscBackend.Database;
