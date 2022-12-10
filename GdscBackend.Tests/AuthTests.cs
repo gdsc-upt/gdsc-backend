@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using GdscBackend.Auth;
-using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

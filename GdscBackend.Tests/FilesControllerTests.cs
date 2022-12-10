@@ -2,9 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using GdscBackend.Controllers.v1;
 using GdscBackend.Database;
-using GdscBackend.Models;
+using GdscBackend.Features.FIles;
 using GdscBackend.Tests.Mocks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

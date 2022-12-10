@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using GdscBackend.Common.Models;
 using GdscBackend.Database;
-using GdscBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GdscBackend.Tests.Mocks;

@@ -1,4 +1,4 @@
-﻿using GdscBackend.Models;
+﻿using GdscBackend.Common.Models;
 
 namespace GdscBackend.Features.Redirects;
 
