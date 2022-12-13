@@ -1,4 +1,5 @@
 using AutoMapper;
+using GdscBackend.Features.Articles;
 using GdscBackend.Features.Contacts;
 using GdscBackend.Features.Events;
 using GdscBackend.Features.Faqs;
@@ -26,5 +27,7 @@ public class MappingProfiles : Profile
         CreateMap(typeof(TeamModel), typeof(TeamRequest)).ReverseMap();
         CreateMap(typeof(ContactModel), typeof(ContactRequest)).ReverseMap();
         CreateMap(typeof(RedirectModel), typeof(RedirectRequest)).ReverseMap();
+        CreateMap(typeof(ArticleModel), typeof(ArticleRequest)).ReverseMap();
+        CreateMap(typeof(ArticleModel), typeof(ArticleResponse)).ReverseMap();
     }
 }

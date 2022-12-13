@@ -9,5 +9,5 @@ public class ArticleModel : Model
     
     public string Content { get; set; }
     
-    public User? Author { get; set; }
+    public string AuthorId { get; set; }
 }

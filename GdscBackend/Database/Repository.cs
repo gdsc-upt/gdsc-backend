@@ -7,17 +7,16 @@ namespace GdscBackend.Database;
 public class Repository<T> : IRepository<T> where T : class, IModel
 {
     private readonly AppDbContext _context;
-    private DbSet<T> _dbSet;
+    public DbSet<T> DbSet { get; }
 
     public Repository(AppDbContext context)
     {
         _context = context;
+        DbSet = _context.Set<T>();
     }
 
     private Task<int> Save => _context.SaveChangesAsync();
-
-    public DbSet<T> DbSet => _dbSet ??= _context.Set<T>();
-
+    
     public async Task<T> AddAsync([NotNull] T entity)
     {
         entity.Id = Guid.NewGuid().ToString();
@@ -57,7 +56,7 @@ public class Repository<T> : IRepository<T> where T : class, IModel
 
         await _context.SaveChangesAsync();
 
-        return _dbSet.First(e => e.Id == id);
+        return DbSet.First(e => e.Id == id);
     }
 
     public async Task<T>? DeleteAsync([NotNull] string id)

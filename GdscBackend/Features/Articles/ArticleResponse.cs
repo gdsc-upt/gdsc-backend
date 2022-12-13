@@ -11,5 +11,5 @@ public class ArticleResponse
     
     public string Content { get; set; }
     
-    public UserViewModel Author { get; set; }
+    public string AuthorId { get; set; }
 }
