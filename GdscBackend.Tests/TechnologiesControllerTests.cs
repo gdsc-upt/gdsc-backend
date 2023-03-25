@@ -34,13 +34,13 @@ public class TechnologiesControllerTests : TestingBase
         {
             Name = Lorem.Words(3).ToString(),
             Description = Lorem.Sentence(7),
-            Icon = Lorem.Words(1).ToString()
+            IconId = Lorem.Words(1).ToString()
         };
         var example2 = new TechnologyRequest
         {
             Name = Lorem.Words(3).ToString(),
             Description = Lorem.Sentence(7),
-            Icon = Lorem.Words(1).ToString()
+            IconId = Lorem.Words(1).ToString()
         };
 
         var added1 = await controller.Post(example1);
@@ -58,14 +58,14 @@ public class TechnologiesControllerTests : TestingBase
         Assert.NotNull(entity1.Id);
         Assert.Equal(StatusCodes.Status201Created, result1.StatusCode);
         Assert.Equal(example1.Description, entity1.Description);
-        Assert.Equal(example1.Icon, entity1.Icon);
+        Assert.Equal(example1.IconId, entity1.Icon);
         Assert.Equal(example1.Name, entity1.Name);
 
         Assert.NotNull(entity2);
         Assert.NotNull(entity2.Id);
         Assert.Equal(StatusCodes.Status201Created, result2.StatusCode);
         Assert.Equal(example2.Description, entity2.Description);
-        Assert.Equal(example2.Icon, entity2.Icon);
+        Assert.Equal(example2.IconId, entity2.Icon);
         Assert.Equal(example2.Name, entity2.Name);
     }
 

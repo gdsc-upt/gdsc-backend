@@ -34,7 +34,7 @@ public class Repository<T> : IRepository<T> where T : class, IModel
         return await DbSet.ToListAsync();
     }
 
-    public async Task<T> GetAsync([NotNull] string id)
+    public async Task<T?> GetAsync(string id)
     {
         return await DbSet.FirstOrDefaultAsync(e => e.Id == id);
     }

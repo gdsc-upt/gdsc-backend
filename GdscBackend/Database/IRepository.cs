@@ -8,7 +8,7 @@ public interface IRepository<T> where T : class, IModel
 {
     DbSet<T> DbSet { get; }
     Task<T> AddAsync([NotNull] T entity);
-    Task<T> GetAsync([NotNull] string id);
+    Task<T?> GetAsync(string id);
     Task<IEnumerable<T>> GetAsync();
     Task<T> AddOrUpdateAsync([NotNull] T entity);
     Task<T> UpdateAsync([NotNull] string id ,[NotNull] object entity);

@@ -1,8 +1,10 @@
 ﻿using System.Net.Mime;
 using AutoMapper;
 using GdscBackend.Database;
+using GdscBackend.Features.FIles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GdscBackend.Features.Technologies;
 
@@ -15,18 +17,21 @@ public class TechnologiesController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IRepository<TechnologyModel> _repository;
+    private readonly IRepository<FileModel> _fileRepository;
 
-    public TechnologiesController(IRepository<TechnologyModel> repository, IMapper mapper)
+    public TechnologiesController(IRepository<TechnologyModel> repository, IMapper mapper, IRepository<FileModel> fileRepository)
     {
         _repository = repository;
         _mapper = mapper;
+        _fileRepository = fileRepository;
     }
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<TechnologyModel>>> Get()
     {
-        return Ok((await _repository.GetAsync()).ToList());
+        var technologiesQueryable = _repository.DbSet.AsQueryable().Include(t => t.Icon);
+        return Ok(await technologiesQueryable.ToListAsync());
     }
 
     [HttpPost]
@@ -36,8 +41,17 @@ public class TechnologiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<TechnologyModel>> Post(TechnologyRequest entity)
     {
-        var newEntity = await _repository.AddAsync(Map(entity));
-        return Created("v1/technology", newEntity);
+        var icon = await _fileRepository.GetAsync(entity.IconId);
+        if (icon is null)
+        {
+            return BadRequest("Icon not found");
+        }
+
+        var technology = Map(entity);
+        technology.Icon = icon;
+
+        var newEntity = await _repository.AddAsync(technology);
+        return Ok(newEntity);
     }
 
     [HttpDelete("{id}")]
