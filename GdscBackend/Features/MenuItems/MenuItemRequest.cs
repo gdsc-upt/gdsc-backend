@@ -7,4 +7,5 @@ public class MenuItemRequest : Request
     public string Name { get; set; }
     public MenuItemTypeEnum Type { get; set; }
     public string Link { get; set; }
+    public string Icon { get; set; }
 }
