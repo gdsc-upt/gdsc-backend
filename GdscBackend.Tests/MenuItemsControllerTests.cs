@@ -34,13 +34,15 @@ public class MenuItemsControllerTests : TestingBase
         {
             Name = Name.First(),
             Type = MenuItemTypeEnum.ExternalLink,
-            Link = Lorem.Words(3).ToString()
+            Link = Lorem.Words(3).ToString(),
+            Icon = Lorem.Words(5).ToString()
         };
         var model2 = new MenuItemRequest
         {
             Name = Name.First(),
             Type = MenuItemTypeEnum.InternalLink,
-            Link = Lorem.Words(3).ToString()
+            Link = Lorem.Words(3).ToString(),
+            Icon = Lorem.Words(5).ToString()
         };
         var added1 = await controller.Post(model1);
         var added2 = await controller.Post(model2);
@@ -123,29 +125,25 @@ public class MenuItemsControllerTests : TestingBase
         {
             Name = Name.First(),
             Type = MenuItemTypeEnum.ExternalLink,
-            Link = Lorem.Words(3).ToString()
+            Link = Lorem.Words(3).ToString(),
+            Icon = Lorem.Words(5).ToString()
         };
         var model2 = new MenuItemRequest
         {
             Name = Name.First(),
             Type = MenuItemTypeEnum.InternalLink,
-            Link = Lorem.Words(3).ToString()
+            Link = Lorem.Words(3).ToString(),
+            Icon = Lorem.Words(5).ToString()
         };
 
         var entry1 = repository.DbSet.FirstOrDefault();
-        if (entry1 is null)
-        {
-            Assert.Fail("DbSet is empty");
-        }
+        if (entry1 is null) Assert.Fail("DbSet is empty");
 
         var entry2 = repository.DbSet.LastOrDefault();
-        if (entry2 is null)
-        {
-            Assert.Fail("DbSet is empty");
-        }
+        if (entry2 is null) Assert.Fail("DbSet is empty");
 
         var actionResult1 = await controller.Update(entry1.Id, model1);
-        var actionResult2 = await controller.Update(entry2.Id ,model2);
+        var actionResult2 = await controller.Update(entry2.Id, model2);
 
         var resultResult1 = actionResult1.Result as OkObjectResult;
         var resultResult2 = actionResult2.Result as OkObjectResult;
