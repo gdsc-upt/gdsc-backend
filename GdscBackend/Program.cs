@@ -4,6 +4,7 @@ using GdscBackend.Utils;
 using GdscBackend.Utils.Mappers;
 using GdscBackend.Utils.Services;
 using Keycloak.AuthServices.Authentication;
+using Keycloak.AuthServices.Authorization;
 using Keycloak.AuthServices.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,9 @@ if (keycloakOptions is null) throw new Exception("keyCloakAdminConfiguartions is
 services.AddSwaggerConfiguration(keycloakOptions);
 
 services.AddKeycloakAuthentication(configuration);
+services.AddAuthorization(
+    o => o.AddPolicy(AuthorizeConstants.CoreTeam, b => { b.RequireRealmRoles("GDSC_CORE_TEAM"); }));
+services.AddKeycloakAuthorization(configuration);
 
 services.AddTransient<IEmailSender, EmailSender>();
 services.AddTransient<IWebhookService, WebhookService>();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GdscBackend.Database;
+using GdscBackend.Utils;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace GdscBackend.Features.Pages;
 
 [ApiController]
 [ApiVersion("1")]
-[Authorize(Roles = "admin")]
+[Authorize(AuthorizeConstants.CoreTeam)]
 [Route("v1/pages")]
 public class PagesController : ControllerBase
 {

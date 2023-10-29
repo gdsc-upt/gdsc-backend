@@ -1,4 +1,5 @@
 ﻿using GdscBackend.Database;
+using GdscBackend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace GdscBackend.Features.FIles;
 
 [ApiController]
 [ApiVersion("1")]
-[Authorize(Roles = "admin")]
+[Authorize(AuthorizeConstants.CoreTeam)]
 [Route("v1/files")]
 public class FilesController : ControllerBase
 {

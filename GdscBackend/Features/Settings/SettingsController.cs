@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using AutoMapper;
 using GdscBackend.Database;
+using GdscBackend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ namespace GdscBackend.Features.Settings;
 // This marks this controller as a public one that can be called from the internet
 [ApiController]
 [ApiVersion("1")]
-[Authorize(Roles = "admin")]
+[Authorize(AuthorizeConstants.CoreTeam)]
 // This sets the URL that we can enter to call the controller's methods
 // ex: https://localhost:5000/v1/examples
 [Route("v1/settings")]

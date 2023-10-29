@@ -2,6 +2,7 @@
 using AutoMapper;
 using GdscBackend.Database;
 using GdscBackend.Features.FIles;
+using GdscBackend.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ namespace GdscBackend.Features.Events;
 
 [ApiController]
 [ApiVersion("1")]
-[Authorize(Roles = "admin")]
+[Authorize(AuthorizeConstants.CoreTeam)]
 [Route("v1/events")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
@@ -30,7 +31,7 @@ public class EventsController : ControllerBase
 /*<<<<<<< HEAD
 
 =======
-    
+
 >>>>>>> dev*/
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]

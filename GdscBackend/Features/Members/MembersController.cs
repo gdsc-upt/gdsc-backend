@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using AutoMapper;
 using GdscBackend.Database;
+using GdscBackend.Utils;
 using GdscBackend.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace GdscBackend.Features.Members;
 
 [ApiController]
 [ApiVersion("1")]
-[Authorize(Roles = "admin")]
+[Authorize(AuthorizeConstants.CoreTeam)]
 [Route("v1/members")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]

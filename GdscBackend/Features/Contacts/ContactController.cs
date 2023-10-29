@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace GdscBackend.Features.Contacts;
 
 [ApiController]
-[Authorize(Roles = "admin")]
-[ApiVersion("1")]
+[Authorize(AuthorizeConstants.CoreTeam)]
+[ApiVersion("v1")]
 [Route("v1/contact")]
 public class ContactController : ControllerBase
 {
@@ -35,15 +35,10 @@ public class ContactController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ContactModel>>> Post(ContactRequest entity)
     {
-        if (entity is null)
-        {
-            return BadRequest(new ErrorViewModel { Message = "Request has no body" });
-        }
+        if (entity is null) return BadRequest(new ErrorViewModel { Message = "Request has no body" });
 
         if (!new EmailAddressAttribute().IsValid(entity.Email))
-        {
             return BadRequest(new ErrorViewModel { Message = "Invalid email provided" });
-        }
 
         var newEntity = await _repository.AddAsync(Map(entity));
 
