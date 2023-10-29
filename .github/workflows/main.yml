@@ -35,7 +35,7 @@ jobs:
           context: .
           secrets: GIT_AUTH_TOKEN=${{ secrets.CR_PAT }}
           push: true
-          tags: ghcr.io/dsc-upt/gdsc-backend-${{ env.BRANCH }}:latest
+          tags: ghcr.io/gdsc-upt/gdsc-backend-${{ env.BRANCH }}:latest
 
   deploy:
     needs: [ build ]

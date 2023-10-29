@@ -21,4 +21,4 @@ RUN chmod +x /usr/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"] 
 
 # Link image with github repo
-LABEL org.opencontainers.image.source=https://github.com/dsc-upt/gdsc-backend
+LABEL org.opencontainers.image.source=https://github.com/gdsc-upt/gdsc-backend
