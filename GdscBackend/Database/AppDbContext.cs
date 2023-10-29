@@ -1,4 +1,3 @@
-using GdscBackend.Auth;
 using GdscBackend.Features.Articles;
 using GdscBackend.Features.Contacts;
 using GdscBackend.Features.Events;
@@ -17,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GdscBackend.Database;
 
-public class AppDbContext : IdentityDbContext<User, Role, string>
+public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
