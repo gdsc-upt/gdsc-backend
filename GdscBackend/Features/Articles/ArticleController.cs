@@ -7,7 +7,7 @@ namespace GdscBackend.Features.Articles;
 
 [ApiController]
 [ApiVersion("1")]
-[Authorize]
+[Authorize("CoreTeam")]
 [Route("v1/Articles")]
 public class ArticleController : ControllerBase
 {
