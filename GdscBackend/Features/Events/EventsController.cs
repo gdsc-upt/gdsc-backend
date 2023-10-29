@@ -28,11 +28,6 @@ public class EventsController : ControllerBase
         _filesRepository = filesRepository;
     }
 
-/*<<<<<<< HEAD
-
-=======
-
->>>>>>> dev*/
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

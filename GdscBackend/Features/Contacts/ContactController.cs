@@ -11,7 +11,7 @@ namespace GdscBackend.Features.Contacts;
 
 [ApiController]
 [Authorize(AuthorizeConstants.CoreTeam)]
-[ApiVersion("v1")]
+[ApiVersion("1")]
 [Route("v1/contact")]
 public class ContactController : ControllerBase
 {
