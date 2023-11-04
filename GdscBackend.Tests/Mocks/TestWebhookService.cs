@@ -1,4 +1,4 @@
-﻿using GdscBackend.Models;
+﻿using GdscBackend.Features.Contacts;
 using GdscBackend.Utils.Services;
 using Xunit.Abstractions;
 

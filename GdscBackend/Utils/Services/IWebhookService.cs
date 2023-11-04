@@ -1,4 +1,4 @@
-﻿using GdscBackend.Models;
+﻿using GdscBackend.Features.Contacts;
 
 namespace GdscBackend.Utils.Services;
 

@@ -1,4 +1,6 @@
-﻿namespace GdscBackend.RequestModels;
+﻿using GdscBackend.Common.RequestModels;
+
+namespace GdscBackend.Features.Redirects;
 
 public class RedirectRequest : Request
 {
