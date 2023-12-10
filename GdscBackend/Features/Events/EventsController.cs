@@ -43,7 +43,7 @@ public class EventsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<EventModel>> Delete([FromRoute] string id)
+    public async Task<ActionResult<EventModel?>> Delete([FromRoute] string id)
     {
         var entity = await _repository.DeleteAsync(id);
         return entity is null ? NotFound() : Ok(entity);

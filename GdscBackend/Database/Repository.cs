@@ -34,21 +34,21 @@ public class Repository<T> : IRepository<T> where T : class, IModel
         return await DbSet.ToListAsync();
     }
 
-    public async Task<T> GetAsync([NotNull] string id)
+    public async Task<T?> GetAsync([NotNull] string id)
     {
         return await DbSet.FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task<T> AddOrUpdateAsync([NotNull] T entity)
     {
-        if (entity is null) return null;
+       // if (entity is null) return null;
 
         var existing = await DbSet.FirstOrDefaultAsync(item => item.Id == entity.Id);
-
+        
         return existing is null ? await AddAsync(entity) : await UpdateAsync(entity.Id, entity);
     }
 
-    public async Task<T> UpdateAsync([NotNull] string id, [NotNull] object newEntity)
+    public async Task<T?> UpdateAsync([NotNull] string id, [NotNull] object newEntity)
     {
         var entity = await GetAsync(id);
         if (entity is null) return null;
@@ -60,7 +60,7 @@ public class Repository<T> : IRepository<T> where T : class, IModel
         return _dbSet.First(e => e.Id == id);
     }
 
-    public async Task<T>? DeleteAsync([NotNull] string id)
+    public async Task<T?> DeleteAsync([NotNull] string id)
     {
         var entity = await DbSet.FirstOrDefaultAsync(item => item.Id == id);
 
