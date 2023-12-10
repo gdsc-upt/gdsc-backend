@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
-
 services.AddAutoMapper(typeof(MappingProfiles));
 
 services.AddControllers();
@@ -49,6 +48,11 @@ app.MigrateIfNeeded();
 if (builder.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
 app.UseCors("EnableAll");
+
+app.Lifetime.ApplicationStopping.Register(() =>
+{
+    Console.WriteLine(Environment.StackTrace);
+});
 
 app.UseRouting();
 

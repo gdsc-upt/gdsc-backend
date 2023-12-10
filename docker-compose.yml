@@ -2,6 +2,6 @@ services:
     web:
         build: .
         ports:
-            - "8000:80"
+            - "8000:8080"
         volumes:
-            - ./GdscBackend/appsettings.Local.json:/app/appsettings.json
+            - ./GdscBackend/appsettings.Development.json:/app/appsettings.json
