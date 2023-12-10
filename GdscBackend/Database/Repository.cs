@@ -60,7 +60,7 @@ public class Repository<T> : IRepository<T> where T : class, IModel
         return _dbSet.First(e => e.Id == id);
     }
 
-    public async Task<T>? DeleteAsync([NotNull] string id)
+    public async Task<T?> DeleteAsync([NotNull] string id)
     {
         var entity = await DbSet.FirstOrDefaultAsync(item => item.Id == id);
 

@@ -27,4 +27,20 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Features\Users\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Features\Users\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Features\Users\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Features\Users\**" />
+    </ItemGroup>
+
 </Project>

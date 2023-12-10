@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Security.Claims;
+using System.Xml.Linq;
 using GdscBackend.Common.Extensions;
 using GdscBackend.Database;
 using GdscBackend.Utils;
@@ -14,15 +15,12 @@ namespace GdscBackend.Features.Articles;
 [Route("v1/Articles")]
 public class ArticleController : ControllerBase
 {
-    private readonly AppDbContext _dbContext;
     private readonly IRepository<ArticleModel> _repo;
 
-    public ArticleController(AppDbContext appDbContext,IRepository<ArticleModel> repo)
+    public ArticleController( IRepository<ArticleModel> repo )
     {
-        _dbContext = appDbContext;
         _repo = repo;
     }
-
     
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -31,16 +29,11 @@ public class ArticleController : ControllerBase
     public async Task<ActionResult<ArticleModel>> Post(ArticleRequest request)
     {
 
-        var author = User.GetUserId();
-
-        return Ok(User.Claims.ToString());
-        
-        if (author is null)
-        {
+        var authorid = User.GetUserId();
+        if (authorid is null)
+        { 
             return NotFound("User not found!");
         }
-
-        return Ok(author);
         
         var article = new ArticleModel
         {
@@ -49,13 +42,12 @@ public class ArticleController : ControllerBase
             Updated = DateTime.UtcNow,
             Title = request.Title,
             Content = request.Content,
-            //Author = author --> author from keycloak
+            AuthorId = authorid
         };
+        
+        var result = await _repo.AddAsync(article);
 
-        var result = await _dbContext.Articles.AddAsync(article);
-        await _dbContext.SaveChangesAsync();
-
-        return Created("v1/Articles", result.Entity);
+        return Created("v1/Articles", result);
     }
     
 
@@ -101,18 +93,16 @@ public class ArticleController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<ArticleResponse>> ChangeAuthor([FromRoute] string id)
     {
-       var article = await _repo.GetAsync(id);
+        var article = await _repo.GetAsync(id);
         if (article is null) return NotFound("Article not found!");
 
         var authorid = User.GetUserId();
-        
-        if (authorid is null)
-        {
-            return NotFound("Author not found!");
-        }
+        if (authorid is null) return NotFound("Author not found!");
 
         article.AuthorId = authorid;
         article.Updated = DateTime.UtcNow;
+
+        await _repo.UpdateAsync(article.Id,article);
         
         return Ok(new ArticleResponse
         {
@@ -120,7 +110,7 @@ public class ArticleController : ControllerBase
             Created = article.Created,
             Title = article.Title,
             Content = article.Content,
-            AuthorId = article.AuthorId
+            AuthorId = article.AuthorId // from keycloak
         });
     }
 
@@ -136,6 +126,8 @@ public class ArticleController : ControllerBase
 
         article.Content = content;
         article.Updated = DateTime.UtcNow;
+        
+        await _repo.UpdateAsync(article.Id, article);
        
         return Ok(new ArticleResponse
         {
@@ -159,6 +151,9 @@ public class ArticleController : ControllerBase
 
         article.Title = title;
         article.Updated = DateTime.UtcNow;
+        
+        await _repo.UpdateAsync(article.Id, article);
+        
        
         return Ok(new ArticleResponse
         {
