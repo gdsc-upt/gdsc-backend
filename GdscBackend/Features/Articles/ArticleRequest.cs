@@ -8,5 +8,5 @@ public class ArticleRequest
     
     public string Content { get; set; }
     
-    [Required]public string AuthorId { get; set; }
+    //[Required]public string AuthorId { get; set; }
 }
