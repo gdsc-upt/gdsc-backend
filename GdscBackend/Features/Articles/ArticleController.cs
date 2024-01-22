@@ -1,4 +1,5 @@
-﻿using GdscBackend.Database;
+﻿using GdscBackend.Common.Extensions;
+using GdscBackend.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ public class ArticleController : ControllerBase
         _dbContext = appDbContext;
     }
 
-    /*
+    
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -27,8 +28,8 @@ public class ArticleController : ControllerBase
     {
 
 
-        //var author = await _dbContext.Users.FirstOrDefaultAsync(entity => entity.Id == request.AuthorId);
-        if (author is null)
+        var authorid = User.GetUserId();
+        if (authorid is null)
         {
             return NotFound("User not found!");
         }
@@ -40,7 +41,7 @@ public class ArticleController : ControllerBase
             Updated = DateTime.UtcNow,
             Title = request.Title,
             Content = request.Content,
-            //Author = author --> author from keycloak
+            AuthorId = authorid
         };
 
         var result = await _dbContext.Articles.AddAsync(article);
@@ -48,7 +49,7 @@ public class ArticleController : ControllerBase
 
         return Created("v1/Articles", result.Entity);
     }
-    */
+    
 
     [HttpGet]
     [AllowAnonymous]
